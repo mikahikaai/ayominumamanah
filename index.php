@@ -1,5 +1,5 @@
 <?php
-  session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <!--
@@ -8,9 +8,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
 
-<?php include "database/database.php"; ?>
-<?php include "partials/head.php"; ?>
-<?php include_once "partials/scripts.php"; ?>
+<?php
+include "database/database.php";
+$title = '';
+include "partials/head.php";
+include_once "partials/scripts.php";
+?>
 
 
 <body class="hold-transition sidebar-mini">
@@ -34,5 +37,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- REQUIRED SCRIPTS -->
 </body>
+<script>
+  $(document).ready(function() {
+    $("title").html("Amanah | <?= $title ?>") 
+    });
+</script>
 
 </html>

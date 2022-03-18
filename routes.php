@@ -8,6 +8,7 @@ if (isset($_GET['page'])) {
 
         case 'home':
             file_exists('pages/home.php') ? include 'pages/home.php' : include 'pages/404.php';
+            $title = 'Home';
             break;
         case 'lokasiread':
             file_exists('pages/admin/lokasi/lokasiread.php') ? include 'pages/admin/lokasi/lokasiread.php' : include 'pages/404.php';
@@ -35,6 +36,7 @@ if (isset($_GET['page'])) {
             break;
         case 'armadaread':
             file_exists('pages/admin/armada/armadaread.php') ? include 'pages/admin/armada/armadaread.php' : include 'pages/404.php';
+            $title = 'Armada';
             break;
         case 'armadacreate':
             file_exists('pages/admin/armada/armadacreate.php') ? include 'pages/admin/armada/armadacreate.php' : include 'pages/404.php';
