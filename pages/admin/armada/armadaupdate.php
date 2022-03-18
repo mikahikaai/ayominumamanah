@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-                    <li class="breadcrumb-item">Armada</li>
+                    <li class="breadcrumb-item"><a href="?page=armadaread">Armada</a></li>
                     <li class="breadcrumb-item active">Ubah Armada</li>
                 </ol>
             </div><!-- /.col -->
