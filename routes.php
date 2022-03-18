@@ -40,12 +40,15 @@ if (isset($_GET['page'])) {
             break;
         case 'armadacreate':
             file_exists('pages/admin/armada/armadacreate.php') ? include 'pages/admin/armada/armadacreate.php' : include 'pages/404.php';
+            $title = 'Armada';
             break;
         case 'armadaupdate':
             file_exists('pages/admin/armada/armadaupdate.php') ? include 'pages/admin/armada/armadaupdate.php' : include 'pages/404.php';
+            $title = 'Armada';
             break;
         case 'armadadelete':
             file_exists('pages/admin/armada/armadadelete.php') ? include 'pages/admin/armada/armadadelete.php' : include 'pages/404.php';
+            $title = 'Armada';
             break;
         case 'karyawanread':
             file_exists('pages/admin/karyawan/karyawanread.php') ? include 'pages/admin/karyawan/karyawanread.php' : include 'pages/404.php';

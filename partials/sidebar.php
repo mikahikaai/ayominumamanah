@@ -36,7 +36,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="?page=home" class="nav-link">
+          <a href="?page=home" class='nav-link' id='home'>
             <i class="nav-icon fas fa-home"></i>
             <p>
               Home
@@ -66,8 +66,8 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item" id='master_data'>
+          <a href="#" class="nav-link" id='link_master_data'>
             <i class="fas fa-th nav-icon"></i>
             <p>
               Master Data
@@ -86,7 +86,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=armadaread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+              <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
                 <p>Armada</p>
               </a>
             </li>

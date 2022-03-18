@@ -20,7 +20,6 @@ include_once "partials/scripts.php";
   <div class="wrapper">
 
     <?php include "partials/nav.php"; ?>
-
     <?php include "partials/sidebar.php"; ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -38,7 +37,17 @@ include_once "partials/scripts.php";
   <!-- REQUIRED SCRIPTS -->
 </body>
 <script>
-    $("title").html("Amanah | <?= $title ?>") ;
+  $("title").html("Amanah | <?= $title ?>");
+  $(document).ready(function() {
+    var title = '<?= $title; ?>';
+    if (title == "Home") {
+      $("a#home").addClass("active");
+    } else if (title == "Armada"){
+      $("a#armada").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    }
+  });
 </script>
 
 </html>
