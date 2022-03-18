@@ -10,7 +10,7 @@ class Database
         $this->host = 'localhost';
         $this->username = 'root';
         $this->password = '';
-        $this->db_name = 'praktikum_7';
+        $this->db_name = 'ayominumamanah';
     }
 
     public function getConnection()

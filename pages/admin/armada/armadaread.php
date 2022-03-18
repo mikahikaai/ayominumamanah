@@ -29,12 +29,12 @@ if (isset($_SESSION['hasil'])) {
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Bagian</h1>
+                <h1 class="m-0">Armada</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Bagian</li>
+                    <li class="breadcrumb-item"><a href="./">Home</a></li>
+                    <li class="breadcrumb-item active">Armada</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -46,8 +46,8 @@ if (isset($_SESSION['hasil'])) {
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Bagian</h3>
-            <a href="?page=bagiancreate" class="btn btn-success btn-sm float-right">
+            <h3 class="card-title">Data Armada</h3>
+            <a href="?page=armadacreate" class="btn btn-success btn-sm float-right">
                 <i class="fa fa-plus-circle"></i> Tambah Data
             </a>
         </div>
@@ -56,9 +56,12 @@ if (isset($_SESSION['hasil'])) {
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Jabatan</th>
-                        <th>Nama Kepala Bagian</th>
-                        <th>Lokasi Kantor</th>
+                        <th>Plat</th>
+                        <th>Nama Mobil</th>
+                        <th>Jenis Mobil</th>
+                        <th>Kecepatan Kosong</th>
+                        <th>Kecepatan Muatan</th>
+                        <th>Status Keaktifan</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -67,7 +70,7 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = 'SELECT b.*, b.nama_bagian, k.nama_lengkap, l.nama_lokasi FROM bagian b INNER JOIN karyawan k on k.id = b.karyawan_id INNER JOIN lokasi l ON l.id = b.lokasi_id';
+                    $selectsql = 'SELECT * FROM armada';
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 
@@ -76,14 +79,17 @@ if (isset($_SESSION['hasil'])) {
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= $row['nama_bagian'] ?></td>
-                            <td><?= $row['nama_lengkap'] ?></td>
-                            <td><?= $row['nama_lokasi'] ?></td>
+                            <td><?= $row['plat'] ?></td>
+                            <td><?= $row['nama_mobil'] ?></td>
+                            <td><?= $row['jenis_mobil'] ?></td>
+                            <td><?= $row['kecepatan_kosong'] ?></td>
+                            <td><?= $row['kecepatan_muatan'] ?></td>
+                            <td><?= $row['status_keaktifan'] ?></td>
                             <td>
-                                <a href="?page=bagianupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
+                                <a href="?page=armadaupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=bagiandelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=armadadelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>

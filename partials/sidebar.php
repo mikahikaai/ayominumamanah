@@ -86,8 +86,8 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=bagianread" class="nav-link"><i class="far fa-circle nav-icon"></i>
-                <p>Bagian</p>
+              <a href="?page=armadaread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+                <p>Armada</p>
               </a>
             </li>
             <li class="nav-item">

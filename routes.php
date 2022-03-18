@@ -33,17 +33,17 @@ if (isset($_GET['page'])) {
         case 'jabatandelete':
             file_exists('pages/admin/jabatan/jabatandelete.php') ? include 'pages/admin/jabatan/jabatandelete.php' : include 'pages/404.php';
             break;
-        case 'bagianread':
-            file_exists('pages/admin/bagian/bagianread.php') ? include 'pages/admin/bagian/bagianread.php' : include 'pages/404.php';
+        case 'armadaread':
+            file_exists('pages/admin/armada/armadaread.php') ? include 'pages/admin/armada/armadaread.php' : include 'pages/404.php';
             break;
-        case 'bagiancreate':
-            file_exists('pages/admin/bagian/bagiancreate.php') ? include 'pages/admin/bagian/bagiancreate.php' : include 'pages/404.php';
+        case 'armadacreate':
+            file_exists('pages/admin/armada/armadacreate.php') ? include 'pages/admin/armada/armadacreate.php' : include 'pages/404.php';
             break;
-        case 'bagianupdate':
-            file_exists('pages/admin/bagian/bagianupdate.php') ? include 'pages/admin/bagian/bagianupdate.php' : include 'pages/404.php';
+        case 'armadaupdate':
+            file_exists('pages/admin/armada/armadaupdate.php') ? include 'pages/admin/armada/armadaupdate.php' : include 'pages/404.php';
             break;
-        case 'bagiandelete':
-            file_exists('pages/admin/bagian/bagiandelete.php') ? include 'pages/admin/bagian/bagiandelete.php' : include 'pages/404.php';
+        case 'armadadelete':
+            file_exists('pages/admin/armada/armadadelete.php') ? include 'pages/admin/armada/armadadelete.php' : include 'pages/404.php';
             break;
         case 'karyawanread':
             file_exists('pages/admin/karyawan/karyawanread.php') ? include 'pages/admin/karyawan/karyawanread.php' : include 'pages/404.php';
