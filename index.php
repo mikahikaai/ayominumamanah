@@ -10,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <?php
 include "database/database.php";
-$title = '';
+$title = 'Home';
 include "partials/head.php";
 include_once "partials/scripts.php";
 ?>
@@ -38,9 +38,7 @@ include_once "partials/scripts.php";
   <!-- REQUIRED SCRIPTS -->
 </body>
 <script>
-  $(document).ready(function() {
-    $("title").html("Amanah | <?= $title ?>") 
-    });
+    $("title").html("Amanah | <?= $title ?>") ;
 </script>
 
 </html>
