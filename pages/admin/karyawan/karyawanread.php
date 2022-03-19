@@ -150,6 +150,7 @@ include_once "partials/scriptdatatables.php";
             }
         }, ".dataTables_wrapper tr");
         $('#mytable').DataTable({
+            pagingType: "full_numbers",
             scrollX: true,
             scrollCollapse: true,
             fixedColumns: {
