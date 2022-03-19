@@ -52,11 +52,11 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap;">
+            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white;">
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Nama</th>
+                        <th>Nama Lengkap</th>
                         <th>Username</th>
                         <th>Password</th>
                         <th>NIK</th>
@@ -97,7 +97,7 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['password'] ?></td>
                             <td><?= $row['nik'] ?></td>
                             <td><?= $row['tempat_lahir'] ?></td>
-                            <td><?= $row['tanggal_lahir'] ?></td>
+                            <td><?= date('d-m-Y', strtotime($row['tanggal_lahir'])) ?></td>
                             <td><?= $row['jenis_kelamin'] ?></td>
                             <td><?= $row['alamat'] ?></td>
                             <td><?= $row['agama'] ?></td>
@@ -109,12 +109,12 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['masker'] ?></td>
                             <td><?= $row['status_karyawan'] ?></td>
                             <td><?= $row['status_keaktifan'] ?></td>
-                            <td><?= $row['upah_borongan'] ?></td>
+                            <td><?= number_format($row['upah_borongan']) ?></td>
                             <td>
-                                <a href="?page=karyawanupdate&username=<?= $row['username']; ?>" class="btn btn-primary btn-sm mr-1">
+                                <a href="?page=karyawanupdate&username=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=karyawandelete&username=<?= $row['username']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=karyawandelete&username=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
