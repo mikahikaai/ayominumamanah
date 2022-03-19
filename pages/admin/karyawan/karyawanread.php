@@ -111,10 +111,10 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['status_keaktifan'] ?></td>
                             <td><?= number_format($row['upah_borongan']) ?></td>
                             <td>
-                                <a href="?page=karyawanupdate&username=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
+                                <a href="?page=karyawanupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=karyawandelete&username=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=karyawandelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
@@ -131,6 +131,24 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
+        $(document).on({
+            mouseenter: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").addClass("hover");
+                    });
+                });
+            },
+            mouseleave: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").removeClass("hover");
+                    });
+                });
+            }
+        }, ".dataTables_wrapper tr");
         $('#mytable').DataTable({
             scrollX: true,
             scrollCollapse: true,
