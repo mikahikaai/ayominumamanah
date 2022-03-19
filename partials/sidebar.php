@@ -91,7 +91,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=karyawanread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+              <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
                 <p>Karyawan</p>
               </a>
             </li>

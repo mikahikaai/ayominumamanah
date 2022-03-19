@@ -46,6 +46,10 @@ include_once "partials/scripts.php";
       $("a#armada").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
+    } else if (title == "Karyawan"){
+      $("a#karyawan").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
     }
   });
 </script>

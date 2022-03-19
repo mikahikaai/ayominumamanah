@@ -2,102 +2,47 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['id'])) {
-    $selectsqlk = "SELECT * FROM karyawan WHERE id=?";
-    $stmtk = $db->prepare($selectsqlk);
-    $stmtk->bindParam(1, $_GET['id']);
-    $stmtk->execute();
-
-    $rowk = $stmtk->fetch(PDO::FETCH_ASSOC);
-
-    $selectsqlp = "SELECT * FROM pengguna where id=?";
-    $stmtp = $db->prepare($selectsqlp);
-    $stmtp->bindParam(1, $_GET['id']);
-    $stmtp->execute();
-
-    $rowp = $stmtp->fetch(PDO::FETCH_ASSOC);
-}
-
 if (isset($_POST['button_edit'])) {
-    if ($_POST['password'] != $_POST['password2']) {
-?>
-        <div class="alert alert-danger alert-dismissable">
-            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
-            <h5><i class="icon fas fa-times"></i>Gagal</h5>
-            Password tidak sama
-        </div>
-    <?php
-    } elseif ($_POST['peran'] == "") {
-    ?>
-        <div class="alert alert-danger alert-dismissable">
-            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
-            <h5><i class="icon fas fa-times"></i>Gagal</h5>
-            Peran belum dipilih
-        </div>
-    <?php
-    } elseif ($rowp['username'] != $_POST['username']) {
-    ?>
-        <div class="alert alert-danger alert-dismissable">
-            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
-            <h5><i class="icon fas fa-times"></i>Gagal</h5>
-            Username sudah terdaftar
-        </div>
-    <?php
-    } elseif ($rowk['nik'] != $_POST['nik']) {
-    ?>
-        <div class="alert alert-danger alert-dismissable">
-            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
-            <h5><i class="icon fas fa-times"></i>Gagal</h5>
-            NIK sudah terdaftar
-        </div>
-<?php
+    $updatesql = "UPDATE armada SET plat=?, nama_mobil=?, jenis_mobil=?, kecepatan_kosong=?, kecepatan_muatan=?, status_keaktifan=?  where id=?";
+    $stmt = $db->prepare($updatesql);
+    $stmt->bindParam(1, $_POST['plat']);
+    $stmt->bindParam(2, $_POST['nama_mobil']);
+    $stmt->bindParam(3, $_POST['jenis_mobil']);
+    $stmt->bindParam(4, $_POST['kecepatan_kosong']);
+    $stmt->bindParam(5, $_POST['kecepatan_muatan']);
+    $stmt->bindParam(6, $_POST['status_keaktifan']);
+    $stmt->bindParam(7, $_GET['id']);
+    if ($stmt->execute()) {
+        $_SESSION['hasil'] = true;
+        $_SESSION['pesan'] = "Berhasil Mengubah Data";
     } else {
-        $md5pass = $_POST['password'] == '' ? $rowp['password'] : md5($_POST['password']);
-
-        $updatesqlp = "UPDATE pengguna set username=?, password=?, peran=?, login_terakhir=null where id=?";
-        $stmtp = $db->prepare($updatesqlp);
-        $stmtp->bindParam(1, $_POST['username']);
-        $stmtp->bindParam(2, $md5pass);
-        $stmtp->bindParam(3, $_POST['peran']);
-        $stmtp->bindParam(4, $_GET['id']);
-
-        if ($stmtp->execute()) {
-            $lastid = $db->lastInsertId();
-            $updatesqlk = "UPDATE karyawan set nik=?, nama_lengkap=?, handphone=?, email=?, tanggal_masuk=?, pengguna_id=? WHERE id=?";
-            $stmtk = $db->prepare($updatesqlk);
-            $stmtk->bindParam(1, $_POST['nik']);
-            $stmtk->bindParam(2, $_POST['nama']);
-            $stmtk->bindParam(3, $_POST['nohp']);
-            $stmtk->bindParam(4, $_POST['email']);
-            $stmtk->bindParam(5, $_POST['tglmasuk']);
-            $stmtk->bindParam(6, $lastid);
-            $stmtk->bindParam(7, $_GET['id']);
-            if ($stmtk->execute()) {
-                $_SESSION['hasil'] = true;
-                $_SESSION['pesan'] = "Berhasil Mengubah Data";
-            } else {
-                $_SESSION['hasil'] = false;
-                $_SESSION['pesan'] = "Gagal Mengubah Data";
-            }
-            echo '<meta http-equiv="refresh" content="0;url=?page=karyawanread"/>';
-        }
+        $_SESSION['hasil'] = false;
+        $_SESSION['pesan'] = "Gagal Mengubah Data";
     }
+    echo '<meta http-equiv="refresh" content="0;url=?page=armadaread"/>';
 }
 
-?>
+if (isset($_GET['id'])) {
+    $selectsql = "SELECT * FROM armada where id=?";
+    $stmt = $db->prepare($selectsql);
+    $stmt->bindParam(1, $_GET['id']);
+    $stmt->execute();
 
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Karyawan</h1>
+                <h1 class="m-0">Armada</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-                    <li class="breadcrumb-item">Karyawan</li>
-                    <li class="breadcrumb-item">Ubah Karyawan</li>
+                    <li class="breadcrumb-item"><a href="?page=armadaread">Armada</a></li>
+                    <li class="breadcrumb-item active">Ubah Armada</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -109,63 +54,61 @@ if (isset($_POST['button_edit'])) {
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Ubah Karyawan</h3>
-            <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
+            <h3 class="card-title">Ubah Data Armada</h3>
+            <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
                 <i class="fa fa-arrow-left"></i> Kembali
             </a>
         </div>
         <div class="card-body">
             <form action="" method="post">
-                <div class="form-group">
-                    <label for="nik">Nomor Induk Karyawan</label>
-                    <input type="text" name="nik" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" maxlength="16" value="<?= $rowk['nik'] ?>" required>
+            <div class="form-group">
+                    <label for="plat">Plat</label>
+                    <input type="text" name="plat" class="form-control" value="<?= $row['plat']?>" required>
                 </div>
                 <div class="form-group">
-                    <label for="nama">Nama Lengkap</label>
-                    <input type="text" name="nama" class="form-control" value="<?= $rowk['nama_lengkap'] ?>" required>
+                    <label for="nama_mobil">Nama Mobil</label>
+                    <input type="text" name="nama_mobil" class="form-control" value="<?= $row['nama_mobil']?>" required>
                 </div>
                 <div class="form-group">
-                    <label for="nohp">Handphone</label>
-                    <input type="text" name="nohp" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" maxlength="14" value="<?= $rowk['handphone'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control" value="<?= $rowk['email'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="tglmasuk">Tanggal Masuk</label>
-                    <input type="date" name="tglmasuk" class="form-control" value="<?= $rowk['tanggal_masuk'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" class="form-control" value="<?= $rowp['username'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" class="form-control" value="" placeholder="kosongkan jika tidak ingin merubah password">
-                </div>
-                <div class="form-group">
-                    <label for="password2">Password (Ulangi)</label>
-                    <input type="password" name="password2" class="form-control" value="" placeholder="kosongkan jika tidak ingin merubah password">
-                </div>
-                <div class="form-group">
-                    <label for="peran">Peran</label>
-                    <select name="peran" class="form-control" required>
-                        <option value="">--Pilih Peran--</option>
+                    <label for="jenis_mobil">Jenis Mobil</label>
+                    <select name="jenis_mobil" class="form-control" required>
+                        <option value="">--Pilih Jenis Mobil--</option>
                         <?php
-                        $options = array('ADMIN', 'USER');
+                        $options = array('S', 'M', 'L', 'XL');
                         foreach ($options as $option) {
-                            $selected = $rowp['peran'] == $option ? 'selected' : '';
+                            $selected = $row['jenis_mobil'] == $option ? 'selected' : '';
                             echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
                         }
                         ?>
                     </select>
                 </div>
-                <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
+                <div class="form-group">
+                    <label for="kecepatan_kosong">Kecepatan Kosong</label>
+                    <input type="text" name="kecepatan_kosong" class="form-control" value="<?= $row['kecepatan_kosong']?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="kecepatan_muatan">Kecepatan Muatan</label>
+                    <input type="text" name="kecepatan_muatan" class="form-control" value="<?= $row['kecepatan_muatan']?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="status_keaktifan">Jenis Mobil</label>
+                    <select name="status_keaktifan" class="form-control" required>
+                        <option value="">--Pilih Status Keaktifan--</option>
+                        <?php
+                        $options = array('AKTIF', 'NON AKTIF');
+                        foreach ($options as $option) {
+                            $selected = $row['status_keaktifan'] == $option ? 'selected' : '';
+                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal
                 </a>
-                <button type="submit" name="button_edit" class="btn btn-success btn-sm float-right mr-1">
-                    <i class="fa fa-save"></i> Simpan
+                <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1">
+                    <i class="fa fa-save"></i> Ubah
                 </button>
             </form>
         </div>

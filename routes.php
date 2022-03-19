@@ -52,15 +52,19 @@ if (isset($_GET['page'])) {
             break;
         case 'karyawanread':
             file_exists('pages/admin/karyawan/karyawanread.php') ? include 'pages/admin/karyawan/karyawanread.php' : include 'pages/404.php';
+            $title = 'Karyawan';
             break;
         case 'karyawancreate':
             file_exists('pages/admin/karyawan/karyawancreate.php') ? include 'pages/admin/karyawan/karyawancreate.php' : include 'pages/404.php';
+            $title = 'Karyawan';
             break;
         case 'karyawanupdate':
             file_exists('pages/admin/karyawan/karyawanupdate.php') ? include 'pages/admin/karyawan/karyawanupdate.php' : include 'pages/404.php';
+            $title = 'Karyawan';
             break;
         case 'karyawandelete':
             file_exists('pages/admin/karyawan/karyawandelete.php') ? include 'pages/admin/karyawan/karyawandelete.php' : include 'pages/404.php';
+            $title = 'Karyawan';
             break;
         case 'karyawanbagian':
             file_exists('pages/admin/karyawanbagian.php') ? include 'pages/admin/karyawanbagian.php' : include 'pages/404.php';
