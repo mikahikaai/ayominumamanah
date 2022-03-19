@@ -1,7 +1,7 @@
 <?php
 $database = new Database;
 $db = $database->getConnection();
-    if(isset($_GET['username'])){
+    if(isset($_GET['id'])){
         $deletesql = "DELETE from karyawan where id=?"; 
         $stmt = $db->prepare($deletesql);
         $stmt->bindParam(1, $_GET['id']);

@@ -70,7 +70,6 @@ if (isset($_SESSION['hasil'])) {
                         <th>No. Telpon</th>
                         <th>Golongan Darah</th>
                         <th>SIM</th>
-                        <th>Masa Kerja (Hari)</th>
                         <th>Status Karyawan</th>
                         <th>Status Keaktifan</th>
                         <th>Upah</th>
@@ -106,10 +105,9 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['no_telepon'] ?></td>
                             <td><?= $row['gol_darah'] ?></td>
                             <td><?= $row['sim'] ?></td>
-                            <td><?= $row['masker'] ?></td>
                             <td><?= $row['status_karyawan'] ?></td>
                             <td><?= $row['status_keaktifan'] ?></td>
-                            <td><?= number_format($row['upah_borongan']) ?></td>
+                            <td><?= number_format($row['upah_borongan'],0,",",".") ?></td>
                             <td>
                                 <a href="?page=karyawanupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
@@ -151,6 +149,8 @@ include_once "partials/scriptdatatables.php";
         }, ".dataTables_wrapper tr");
         $('#mytable').DataTable({
             pagingType: "full_numbers",
+            stateSave: true,
+            stateDuration: 60,
             scrollX: true,
             scrollCollapse: true,
             fixedColumns: {

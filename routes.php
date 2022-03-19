@@ -83,7 +83,9 @@ if (isset($_GET['page'])) {
             break;
         default:
             include 'pages/404.php';
+            $title = '';
     }
 } else {
     include 'pages/home.php';
+    $title = '';
 }

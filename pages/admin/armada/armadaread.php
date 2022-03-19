@@ -106,6 +106,8 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
-        $('#mytable').DataTable();
+        $('#mytable').DataTable({
+            pagingType: "full_numbers",
+        });
     });
 </script>
