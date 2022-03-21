@@ -10,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <?php
 include "database/database.php";
-$title = 'Home';
+$title = '';
 include "partials/head.php";
 include_once "partials/scripts.php";
 ?>

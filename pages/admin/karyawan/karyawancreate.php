@@ -112,7 +112,7 @@ if ($stmt->rowCount() > 0) {
                     <div class="input-group">
                         <input type="text" name="username" class="form-control" id="username" style="text-transform:lowercase" value="<?= isset($_POST['button_create']) ? $_POST['username'] : '' ?>" required readonly>
                         <div class="input-group-append">
-                            <a href="javascript:void(0);" class="btn btn-success btn-active" id='generate'>Generate</a>
+                            <a href="javascript:void(0);" class="btn btn-success btn-active" id='generate' style="display: none;">Generate</a>
                         </div>
                     </div>
 

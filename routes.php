@@ -5,7 +5,7 @@ if (isset($_GET['page'])) {
 
     switch ($page) {
         case '':
-
+            
         case 'home':
             file_exists('pages/home.php') ? include 'pages/home.php' : include 'pages/404.php';
             $title = 'Home';
@@ -83,9 +83,9 @@ if (isset($_GET['page'])) {
             break;
         default:
             include 'pages/404.php';
-            $title = '';
+            $title = '404 Halaman Tidak Ditemukan';
     }
 } else {
     include 'pages/home.php';
-    $title = '';
+    $title = 'Home';
 }
