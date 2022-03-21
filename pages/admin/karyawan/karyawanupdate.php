@@ -24,6 +24,7 @@ if (isset($_POST['button_edit'])) {
         $updatesql = "UPDATE karyawan SET password=?, nama=?, nik=?, tempat_lahir=?, tanggal_lahir=?, jenis_kelamin=?,
         alamat=?, agama=?, status=?, gol_darah=?, jabatan=?, no_telepon=?, sim=?, status_karyawan=?,
         status_keaktifan=?, upah_borongan=?  where id=?";
+        $alamat = strtoupper($_POST['alamat']);
         $stmt = $db->prepare($updatesql);
         $stmt->bindParam(1, $password);
         $stmt->bindParam(2, $_POST['nama']);
@@ -31,7 +32,7 @@ if (isset($_POST['button_edit'])) {
         $stmt->bindParam(4, $_POST['tempat_lahir']);
         $stmt->bindParam(5, $_POST['tanggal_lahir']);
         $stmt->bindParam(6, $_POST['jenis_kelamin']);
-        $stmt->bindParam(7, $_POST['alamat']);
+        $stmt->bindParam(7, $alamat);
         $stmt->bindParam(8, $_POST['agama']);
         $stmt->bindParam(9, $_POST['status']);
         $stmt->bindParam(10, $_POST['gol_darah']);
@@ -144,7 +145,7 @@ if (isset($_POST['button_edit'])) {
                 </div>
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
-                    <input type="text" name="alamat" class="form-control" value="<?= $row['alamat'] ?>" required>
+                    <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat'])?>" maxlength="0" required>
                 </div>
                 <div class="row">
                     <div class="col-md-6">

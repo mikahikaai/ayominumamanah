@@ -2,7 +2,7 @@
 $database = new Database;
 $db = $database->getConnection();
     if(isset($_GET['id'])){
-        $deletesql = "DELETE from jabatan where id=?"; 
+        $deletesql = "DELETE from distributor where id=?"; 
         $stmt = $db->prepare($deletesql);
         $stmt->bindParam(1, $_GET['id']);
     }

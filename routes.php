@@ -10,17 +10,21 @@ if (isset($_GET['page'])) {
             file_exists('pages/home.php') ? include 'pages/home.php' : include 'pages/404.php';
             $title = 'Home';
             break;
-        case 'lokasiread':
-            file_exists('pages/admin/lokasi/lokasiread.php') ? include 'pages/admin/lokasi/lokasiread.php' : include 'pages/404.php';
+        case 'distributorread':
+            file_exists('pages/admin/distributor/distributorread.php') ? include 'pages/admin/distributor/distributorread.php' : include 'pages/404.php';
+            $title = 'Distributor';
             break;
-        case 'lokasicreate':
-            file_exists('pages/admin/lokasi/lokasicreate.php') ? include 'pages/admin/lokasi/lokasicreate.php' : include 'pages/404.php';
+        case 'distributorcreate':
+            file_exists('pages/admin/distributor/distributorcreate.php') ? include 'pages/admin/distributor/distributorcreate.php' : include 'pages/404.php';
+            $title = 'Distributor';
             break;
-        case 'lokasiupdate':
-            file_exists('pages/admin/lokasi/lokasiupdate.php') ? include 'pages/admin/lokasi/lokasiupdate.php' : include 'pages/404.php';
+        case 'distributorupdate':
+            file_exists('pages/admin/distributor/distributorupdate.php') ? include 'pages/admin/distributor/distributorupdate.php' : include 'pages/404.php';
+            $title = 'Distributor';
             break;
-        case 'lokasidelete':
-            file_exists('pages/admin/lokasi/lokasidelete.php') ? include 'pages/admin/lokasi/lokasidelete.php' : include 'pages/404.php';
+        case 'distributordelete':
+            file_exists('pages/admin/distributor/distributordelete.php') ? include 'pages/admin/distributor/distributordelete.php' : include 'pages/404.php';
+            $title = 'Distributor';
             break;
         case 'jabatanread':
             file_exists('pages/admin/jabatan/jabatanread.php') ? include 'pages/admin/jabatan/jabatanread.php' : include 'pages/404.php';

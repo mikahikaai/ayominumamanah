@@ -42,12 +42,16 @@ include_once "partials/scripts.php";
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
-    } else if (title == "Armada"){
+    } else if (title == "Armada") {
       $("a#armada").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
-    } else if (title == "Karyawan"){
+    } else if (title == "Karyawan") {
       $("a#karyawan").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Distributor") {
+      $("a#distributor").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
     }

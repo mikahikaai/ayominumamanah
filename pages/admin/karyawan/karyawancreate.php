@@ -80,7 +80,7 @@ if ($stmt->rowCount() > 0) {
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
                     <li class="breadcrumb-item"><a href="?page=karyawanread">Karyawan</a></li>
-                    <li class="breadcrumb-item active">Tambah Data</li>
+                    <li class="breadcrumb-item active">Tambah Karyawan</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
