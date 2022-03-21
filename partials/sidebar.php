@@ -14,7 +14,7 @@
         <img src="dist/img/user9-128x128.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="www.facebook.com/rsonemoretime" class="d-block">Rian Septiadi</a>
+        <a href="https://www.facebook.com/rsonemoretime" target="_Blank" class="d-block">Rian Septiadi</a>
       </div>
     </div>
 
@@ -76,16 +76,6 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="?page=lokasiread" class="nav-link"><i class="far fa-circle nav-icon"></i>
-                <p>Lokasi</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="?page=jabatanread" class="nav-link"><i class="far fa-circle nav-icon"></i>
-                <p>Jabatan</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
                 <p>Armada</p>
               </a>
@@ -93,6 +83,16 @@
             <li class="nav-item">
               <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
                 <p>Karyawan</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="?page=lokasiread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+                <p>Lokasi</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="?page=jabatanread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+                <p>Jabatan</p>
               </a>
             </li>
           </ul>
