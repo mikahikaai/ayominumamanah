@@ -73,7 +73,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Status Karyawan</th>
                         <th>Status Keaktifan</th>
                         <th>Upah</th>
-                        <th style="display: flex; justify-content: center;">Aksi</th>
+                        <th style="display: flex; justify-content: flex-start;">Aksi</th>
 
                     </tr>
                 </thead>

@@ -67,7 +67,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Minimal Order</th>
                         <th>Ongkir</th>
                         <th>Status Keaktifan</th>
-                        <th style="display: flex; justify-content: center;">Opsi</th>
+                        <th style="display: flex; justify-content: flex-start;">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
