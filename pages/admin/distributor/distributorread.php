@@ -67,7 +67,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Minimal Order</th>
                         <th>Ongkir</th>
                         <th>Status Keaktifan</th>
-                        <th style="display: flex; justify-content: flex-start;">Opsi</th>
+                        <th style="display: flex;">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -145,7 +145,7 @@ include_once "partials/scriptdatatables.php";
             fixedColumns: {
                 leftColumns: 2,
                 rightColumns: 1
-            }
+            }            
         });
     });
 </script>
