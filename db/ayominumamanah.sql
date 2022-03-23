@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 21, 2022 at 06:26 PM
--- Server version: 5.7.33
+-- Generation Time: Mar 22, 2022 at 10:11 AM
+-- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -38,8 +38,8 @@ CREATE TABLE `armada` (
   `rasio_persentase` float NOT NULL,
   `rasio_armada` float NOT NULL,
   `rasio_armada2` float NOT NULL,
-  `tanggal_registrasi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tanggal_update_data` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tanggal_registrasi` datetime NOT NULL DEFAULT current_timestamp(),
+  `tanggal_update_data` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status_keaktifan` enum('AKTIF','NON AKTIF') NOT NULL DEFAULT 'AKTIF'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -4858,8 +4858,8 @@ CREATE TABLE `distributor` (
   `bmm` int(6) DEFAULT NULL,
   `bml` int(6) DEFAULT NULL,
   `bmxl` int(6) DEFAULT NULL,
-  `tanggal_registrasi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tanggal_update_data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tanggal_registrasi` datetime NOT NULL DEFAULT current_timestamp(),
+  `tanggal_update_data` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status_keaktifan` enum('AKTIF','NON AKTIF') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -17548,8 +17548,8 @@ CREATE TABLE `karyawan` (
   `jabatan` enum('DRIVER','HELPER','ADMINKEU','SPVDISTRIBUSI','MGRDISTRIBUSI') NOT NULL,
   `no_telepon` varchar(14) NOT NULL,
   `sim` enum('-','A','B1','B2','C','D','A UMUM','B1 UMUM','B2 UMUM') NOT NULL,
-  `tanggal_registrasi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tanggal_update_data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tanggal_registrasi` datetime NOT NULL DEFAULT current_timestamp(),
+  `tanggal_update_data` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status_karyawan` enum('BORONGAN','BULANAN') NOT NULL,
   `status_keaktifan` enum('AKTIF','NON AKTIF') NOT NULL,
   `upah_borongan` int(7) NOT NULL
@@ -29814,7 +29814,7 @@ ALTER TABLE `versi`
 -- AUTO_INCREMENT for table `armada`
 --
 ALTER TABLE `armada`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `distribusi`
