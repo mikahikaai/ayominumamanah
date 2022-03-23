@@ -52,7 +52,7 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover">
+            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; width: 100%;">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -62,7 +62,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Kecepatan Kosong</th>
                         <th>Kecepatan Muatan</th>
                         <th>Status Keaktifan</th>
-                        <th>Opsi</th>
+                        <th style="display: flex;">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,6 +108,7 @@ include_once "partials/scriptdatatables.php";
     $(function() {
         $('#mytable').DataTable({
             pagingType: "full_numbers",
+            scrollX : true,
         });
     });
 </script>
