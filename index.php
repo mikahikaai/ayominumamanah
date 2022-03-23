@@ -14,11 +14,48 @@ $title = '';
 include "partials/head.php";
 include_once "partials/scripts.php";
 ?>
+<style>
+  .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #fff;
+    align-items: center;
+  }
 
+  .preloader .loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font: 14p;
+  }
+
+  #preloader {
+    font-weight: 800;
+    font-size: larger;
+    display: flex;
+    justify-content: center;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini">
-  <div class="wrapper">
+  <?php
+  $host = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+  if ($host == 'ayominumamanah.test/') {
+  ?>
+    <div class="preloader">
+      <div class="loading">
+        <img class="animation__shake" src="./images/preloader.gif">
+        <p id="preloader">. . .Sedang memuat. . .</p>
+      </div>
+    </div>
+  <?php } ?>
 
+  <div class="wrapper">
     <?php include "partials/nav.php"; ?>
     <?php include "partials/sidebar.php"; ?>
 
@@ -39,6 +76,7 @@ include_once "partials/scripts.php";
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
+    // $(".preloader").delay(5000).fadeOut("slow");
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");

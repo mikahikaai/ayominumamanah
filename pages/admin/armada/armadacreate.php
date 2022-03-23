@@ -20,8 +20,10 @@ if ($stmt->rowCount() > 0) {
     if (isset($_POST['button_create'])) {
         $insertsql = "insert into armada (plat, nama_mobil, jenis_mobil, kecepatan_kosong, kecepatan_muatan) values (?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
-        $stmt->bindParam(1, $_POST['plat']);
-        $stmt->bindParam(2, $_POST['nama_mobil']);
+        $plat = strtoupper($_POST['plat']);
+        $nama = strtoupper($_POST['nama_mobil']);
+        $stmt->bindParam(1, $plat );
+        $stmt->bindParam(2, $nama);
         $stmt->bindParam(3, $_POST['jenis_mobil']);
         $stmt->bindParam(4, $_POST['kecepatan_kosong']);
         $stmt->bindParam(5, $_POST['kecepatan_muatan']);
@@ -69,11 +71,11 @@ if ($stmt->rowCount() > 0) {
             <form action="" method="post">
                 <div class="form-group">
                     <label for="plat">Plat</label>
-                    <input type="text" name="plat" class="form-control" required>
+                    <input type="text" name="plat" class="form-control" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_mobil">Nama Mobil</label>
-                    <input type="text" name="nama_mobil" class="form-control" required>
+                    <input type="text" name="nama_mobil" class="form-control" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
                     <label for="jenis_mobil">Jenis Mobil</label>
@@ -90,11 +92,11 @@ if ($stmt->rowCount() > 0) {
                 </div>
                 <div class="form-group">
                     <label for="kecepatan_kosong">Kecepatan Kosong</label>
-                    <input type="text" name="kecepatan_kosong" class="form-control" required>
+                    <input type="text" name="kecepatan_kosong" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="3" value="<?= isset($_POST['button_create']) ? $_POST['kecepatan_kosong'] : '' ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="kecepatan_muatan">Kecepatan Muatan</label>
-                    <input type="text" name="kecepatan_muatan" class="form-control" required>
+                    <input type="text" name="kecepatan_muatan" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="3" value="<?= isset($_POST['button_create']) ? $_POST['kecepatan_muatan'] : '' ?>" required>
                 </div>
                 <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

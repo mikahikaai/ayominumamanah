@@ -52,7 +52,7 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; width: 100%;">
+            <table id="mytable" class="table table-bordered" style="white-space: nowrap; background-color: white; width: 100%">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -106,9 +106,27 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
+        $(document).on({
+            mouseenter: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").addClass("hover");
+                    });
+                });
+            },
+            mouseleave: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").removeClass("hover");
+                    });
+                });
+            }
+        }, ".dataTables_wrapper tr");
         $('#mytable').DataTable({
             pagingType: "full_numbers",
-            scrollX : true,
+            scrollX: true,
         });
     });
 </script>

@@ -52,7 +52,7 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; width: 100%">
+            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; table-layout: fixed;">
                 <thead>
                     <tr>
                         <th>No.</th>
