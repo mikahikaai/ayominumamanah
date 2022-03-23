@@ -53,7 +53,7 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; width: 100%">
+            <table id="mytable" class="table table-bordered table-hover table-lg" style="white-space: nowrap; background-color: white; width: 100%">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -142,10 +142,11 @@ include_once "partials/scriptdatatables.php";
             stateDuration: 60,
             scrollX: true,
             scrollCollapse: true,
+            select : true,
             fixedColumns: {
                 leftColumns: 2,
                 rightColumns: 1
-            }            
+            },
         });
     });
 </script>
