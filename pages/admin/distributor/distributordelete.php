@@ -13,6 +13,6 @@ $db = $database->getConnection();
         $_SESSION['hasil'] = false;
         $_SESSION['pesan'] = "Gagal Menghapus Data";
     }
-    echo '<meta http-equiv="refresh" content="0;url=?page=jabatanread"/>';
+    echo '<meta http-equiv="refresh" content="0;url=?page=distributorread"/>';
 
 ?>
