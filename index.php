@@ -33,7 +33,6 @@ include_once "partials/scripts.php";
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font: 14p;
   }
 
   #preloader {
@@ -51,7 +50,7 @@ include_once "partials/scripts.php";
   ?>
     <div class="preloader">
       <div class="loading">
-        <img class="animation__shake" src="./images/preloader.gif">
+        <img src="./images/preloader.gif">
         <p id="preloader">. . .Sedang memuat. . .</p>
       </div>
     </div>
@@ -78,9 +77,7 @@ include_once "partials/scripts.php";
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
-    $p(function(){
-      $p(".preloader").delay(2000).fadeOut();
-    });
+    $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
