@@ -1,5 +1,7 @@
 <?php
 session_start();
+$host = $_SERVER['REQUEST_URI'];
+// die();
 ?>
 <!DOCTYPE html>
 <!--
@@ -44,8 +46,8 @@ include_once "partials/scripts.php";
 
 <body class="hold-transition sidebar-mini">
   <?php
-  $host = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-  if ($host == 'ayominumamanah.test/') {
+
+  if ($host == '/') {
   ?>
     <div class="preloader">
       <div class="loading">
@@ -76,7 +78,9 @@ include_once "partials/scripts.php";
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
-    // $(".preloader").delay(5000).fadeOut("slow");
+    $p(function(){
+      $p(".preloader").delay(2000).fadeOut();
+    });
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
