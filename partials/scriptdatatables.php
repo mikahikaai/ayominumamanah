@@ -10,3 +10,4 @@
 <script src="./plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="./plugins/pdfmake/pdfmake.min.js"></script>
 <script src="./plugins/pdfmake/vfs_fonts.js"></script>
+<script src="./plugins/sweetalert2/sweetalert2.all.min.js"></script>

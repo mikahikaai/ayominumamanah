@@ -101,7 +101,7 @@ if (isset($_SESSION['hasil'])) {
                                 <a href="?page=distributorupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=distributordelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=distributordelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="deleted()">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
@@ -117,6 +117,25 @@ if (isset($_SESSION['hasil'])) {
 include_once "partials/scriptdatatables.php";
 ?>
 <script>
+    function deleted() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    }
     $(function() {
         $(document).on({
             mouseenter: function() {
@@ -142,7 +161,7 @@ include_once "partials/scriptdatatables.php";
             stateDuration: 60,
             scrollX: true,
             scrollCollapse: true,
-            select : true,
+            select: true,
             fixedColumns: {
                 leftColumns: 2,
                 rightColumns: 1
