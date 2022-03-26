@@ -89,7 +89,7 @@ if (isset($_SESSION['hasil'])) {
                                 <a href="?page=armadaupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=armadadelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=armadadelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" id='deletearmada'>
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
@@ -106,6 +106,32 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
+        $('a#deletearmada').click(function(e) {
+            e.preventDefault();
+            var urlToRedirect = e.currentTarget.getAttribute('href');
+            //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data yang dihapus tidak dapat kembali!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Data berhasil dihapus',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        window.location = urlToRedirect;
+                    })
+                }
+            })
+        });
         $(document).on({
             mouseenter: function() {
                 trIndex = $(this).index() + 1;

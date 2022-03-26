@@ -130,36 +130,33 @@ if (isset($_SESSION['hasil'])) {
 include_once "partials/scriptdatatables.php";
 ?>
 <script>
-    $('a#deletekaryawan').click(function(e) {
-        e.preventDefault();
-        var urlToRedirect = e.currentTarget.getAttribute('href');
-        //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            text: "Data yang dihapus tidak dapat kembali!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'Batal',
-            confirmButtonText: 'Hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location = urlToRedirect;
-                (function() {
-                    $(document).ready(function() {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Data berhasil dihapus.',
-                            icon: 'success',
-                            confirmButtonText: 'Ok'
-                        })
-                    });
-                });
-            }
-        })
-    });
     $(function() {
+        $('a#deletekaryawan').click(function(e) {
+            e.preventDefault();
+            var urlToRedirect = e.currentTarget.getAttribute('href');
+            //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data yang dihapus tidak dapat kembali!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Data berhasil dihapus',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        window.location = urlToRedirect;
+                    })
+                }
+            })
+        });
         $(document).on({
             mouseenter: function() {
                 trIndex = $(this).index() + 1;

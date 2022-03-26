@@ -175,7 +175,7 @@ if ($stmt->rowCount() > 0) {
                             <select name="agama" class="form-control" required>
                                 <option value="">--Pilih Agama--</option>
                                 <?php
-                                $options = array('ISLAM', 'KRISTEN PROTESTAN', 'KRISTEN KATOLIK', 'HINDU', 'BUDHA', 'KONGHOCU');
+                                $options = array('ISLAM', 'KRISTEN PROTESTAN', 'KRISTEN KATOLIK', 'HINDU', 'BUDHA', 'KONGHUCU');
                                 foreach ($options as $option) {
                                     $selected = $_POST['agama'] == $option ? 'selected' : '';
                                     echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
