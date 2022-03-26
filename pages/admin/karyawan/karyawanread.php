@@ -145,13 +145,16 @@ include_once "partials/scriptdatatables.php";
             confirmButtonText: 'Hapus'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Deleted!',
-                    text: 'Data anda berhasil dihapus.',
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                }).then(function() {
-                    window.location = urlToRedirect;
+                window.location = urlToRedirect;
+                (function() {
+                    $(document).ready(function() {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Data berhasil dihapus.',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    });
                 });
             }
         })
