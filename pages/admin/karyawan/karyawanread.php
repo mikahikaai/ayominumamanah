@@ -18,9 +18,27 @@ if (isset($_SESSION['hasil'])) {
             <h5><i class="icon fas fa-times"></i>Terjadi Kesalahan</h5>
             <?= $_SESSION['pesan'] ?>
         </div>
-<?php }
+    <?php }
     unset($_SESSION['hasil']);
     unset($_SESSION['pesan']);
+} elseif (isset($_SESSION['hasil_delete'])) {
+    if ($_SESSION['hasil_delete']) {
+    ?>
+        <div id='hasil_delete'></div>
+<?php }
+    unset($_SESSION['hasil_delete']);
+} elseif (isset($_SESSION['hasil_create'])) {
+    if ($_SESSION['hasil_create']) {
+    ?>
+        <div id='hasil_create'></div>
+<?php }
+    unset($_SESSION['hasil_create']);
+} elseif (isset($_SESSION['hasil_update'])) {
+    if ($_SESSION['hasil_update']) {
+    ?>
+        <div id='hasil_update'></div>
+<?php }
+    unset($_SESSION['hasil_update']);
 } ?>
 
 
@@ -146,17 +164,32 @@ include_once "partials/scriptdatatables.php";
                 confirmButtonText: 'Hapus'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Sukses!',
-                        text: 'Data berhasil dihapus',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        window.location = urlToRedirect;
-                    })
+                    window.location = urlToRedirect;
                 }
             })
         });
+        if ($('div#hasil_delete').length) {
+            Swal.fire({
+                title: 'Deleted!',
+                text: 'Data berhasil dihapus',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        } else if ($('div#hasil_create').length) {
+            Swal.fire({
+                title: 'Created!',
+                text: 'Data berhasil disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        } else if ($('div#hasil_update').length) {
+            Swal.fire({
+                title: 'Updated!',
+                text: 'Data berhasil diubah',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        }
         $(document).on({
             mouseenter: function() {
                 trIndex = $(this).index() + 1;

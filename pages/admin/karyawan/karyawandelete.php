@@ -7,10 +7,10 @@ $db = $database->getConnection();
         $stmt->bindParam(1, $_GET['id']);
     }
     if ($stmt->execute()){
-        $_SESSION['hasil'] = true;
+        $_SESSION['hasil_delete'] = true;
         $_SESSION['pesan'] = "Berhasil Menghapus Data";
     } else {
-        $_SESSION['hasil'] = false;
+        $_SESSION['hasil_delete'] = false;
         $_SESSION['pesan'] = "Gagal Menghapus Data";
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=karyawanread"/>';

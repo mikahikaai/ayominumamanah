@@ -44,10 +44,10 @@ if (isset($_POST['button_edit'])) {
         $stmt->bindParam(16, $_POST['upah_borongan']);
         $stmt->bindParam(17, $_GET['id']);
         if ($stmt->execute()) {
-            $_SESSION['hasil'] = true;
+            $_SESSION['hasil_update'] = true;
             $_SESSION['pesan'] = "Berhasil Mengubah Data";
         } else {
-            $_SESSION['hasil'] = false;
+            $_SESSION['hasil_update'] = false;
             $_SESSION['pesan'] = "Gagal Mengubah Data";
         }
         echo '<meta http-equiv="refresh" content="0;url=?page=karyawanread"/>';
@@ -270,12 +270,12 @@ if (isset($_POST['button_edit'])) {
                     <label for="upah">Gaji Per Hari</label>
                     <input type="text" name="upah_borongan" class="form-control" value="<?= $row['upah_borongan'] ?>" required>
                 </div>
-                <button type="submit" name="button_edit" class="btn btn-success btn-sm float-right">
-                    <i class="fa fa-save"></i> Ubah
-                </button>
-                <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right mr-1">
+                <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal
                 </a>
+                <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1">
+                    <i class="fa fa-save"></i> Ubah
+                </button>
             </form>
         </div>
     </div>

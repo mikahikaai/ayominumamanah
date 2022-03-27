@@ -35,12 +35,13 @@ if ($stmt->rowCount() > 0) {
 <?php
     } else {
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
-        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, status_keaktifan, upah_borongan) values
+        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan) values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
         $nama_upper = strtoupper($_POST['nama']);
+        $username = strtolower($_POST['username']);
         $stmt->bindParam(1, $nama_upper);
-        $stmt->bindParam(2, $_POST['username']);
+        $stmt->bindParam(2, $username);
         $md5 = md5($_POST['password']);
         $stmt->bindParam(3, $md5);
         $stmt->bindParam(4, $_POST['nik']);
@@ -55,14 +56,13 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(13, $_POST['gol_darah']);
         $stmt->bindParam(14, $_POST['sim']);
         $stmt->bindParam(15, $_POST['status_karyawan']);
-        $stmt->bindParam(16, $_POST['status_keaktifan']);
         $stmt->bindParam(17, $_POST['upah_borongan']);
 
         if ($stmt->execute()) {
-            $_SESSION['hasil'] = true;
+            $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menyimpan Data";
         } else {
-            $_SESSION['hasil'] = false;
+            $_SESSION['hasil_create'] = false;
             $_SESSION['pesan'] = "Gagal Menyimpan Data";
         }
         echo '<meta http-equiv="refresh" content="0;url=?page=karyawanread"/>';
@@ -267,23 +267,10 @@ if ($stmt->rowCount() > 0) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="status_keaktifan">Status Keaktifan</label>
-                            <select name="status_keaktifan" class="form-control" required>
-                                <option value="">--Pilih Status Keaktifan--</option>
-                                <?php
-                                $options = array('AKTIF', 'NON AKTIF');
-                                foreach ($options as $option) {
-                                    $selected = $_POST['status_keaktifan'] == $option ? 'selected' : '';
-                                    echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-                                }
-                                ?>
-                            </select>
+                            <label for="upah">Gaji Per Hari</label>
+                            <input type="text" name="upah_borongan" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['upah_borongan'] : '' ?>" required>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="upah">Gaji Per Hari</label>
-                    <input type="text" name="upah_borongan" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['upah_borongan'] : '' ?>" required>
                 </div>
                 <button type="submit" name="button_create" class="btn btn-success btn-sm float-right">
                     <i class="fa fa-save"></i> Simpan

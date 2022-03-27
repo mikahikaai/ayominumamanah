@@ -18,23 +18,25 @@ if ($stmt->rowCount() > 0) {
 } else {
 
     if (isset($_POST['button_create'])) {
-        $insertsql = "insert into distributor (id_da, nama, paket, alamat_dropping, no_telepon, kateg, jarak, min_order, ongkir, status_keaktifan) values (?,?,?,?,?,?,?,?,?,?)";
+        $insertsql = "insert into distributor (id_da, nama, paket, alamat_dropping, no_telepon, kateg, jarak, min_order, ongkir) values (?,?,?,?,?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
-        $stmt->bindParam(1, $_POST['id_da']);
-        $stmt->bindParam(2, $_POST['nama']);
+        $id_da = strtoupper($_POST['id_da']);
+        $nama_distributor = strtoupper($_POST['nama']);
+        $alamat_dropping_distributor = strtoupper($_POST['alamat_dropping']);
+        $stmt->bindParam(1, $id_da);
+        $stmt->bindParam(2, $nama_distributor);
         $stmt->bindParam(3, $_POST['paket']);
-        $stmt->bindParam(4, $_POST['alamat_dropping']);
+        $stmt->bindParam(4, $alamat_dropping_distributor);
         $stmt->bindParam(5, $_POST['no_telepon']);
         $stmt->bindParam(6, $_POST['kateg']);
         $stmt->bindParam(7, $_POST['jarak']);
         $stmt->bindParam(8, $_POST['min_order']);
         $stmt->bindParam(9, $_POST['ongkir']);
-        $stmt->bindParam(10, $_POST['status_keaktifan']);
         if ($stmt->execute()) {
-            $_SESSION['hasil'] = true;
+            $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menyimpan Data";
         } else {
-            $_SESSION['hasil'] = false;
+            $_SESSION['hasil_create'] = false;
             $_SESSION['pesan'] = "Gagal Menyimpan Data";
         }
         echo '<meta http-equiv="refresh" content="0;url=?page=distributorread"/>';
@@ -73,11 +75,11 @@ if ($stmt->rowCount() > 0) {
             <form action="" method="post">
                 <div class="form-group">
                     <label for="id_da">ID Distributor</label>
-                    <input type="text" name="id_da" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['id_da'] : '' ?>" required>
+                    <input type="text" name="id_da" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['id_da'] : '' ?>" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
-                    <input type="text" name="nama" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['nama'] : '' ?>" required>
+                    <input type="text" name="nama" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['nama'] : '' ?>" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
                     <label for="paket">Paket</label>
@@ -94,7 +96,7 @@ if ($stmt->rowCount() > 0) {
                 </div>
                 <div class="form-group">
                     <label for="alamat_dropping">Alamat Dropping</label>
-                    <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" required>
+                    <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
                     <label for="no_telepon">No. Telepon</label>
@@ -127,19 +129,6 @@ if ($stmt->rowCount() > 0) {
                             <input type="text" name="ongkir" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= isset($_POST['button_create']) ? $_POST['ongkir'] : '' ?>" required>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="status_keaktifan">Status Keaktifan</label>
-                    <select name="status_keaktifan" class="form-control" required>
-                        <option value="">--Pilih Status Keaktifan--</option>
-                        <?php
-                        $options = array('AKTIF', 'NON AKTIF');
-                        foreach ($options as $option) {
-                            $selected = $_POST['status_keaktifan'] == $option ? 'selected' : '';
-                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-                        }
-                        ?>
-                    </select>
                 </div>
                 <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

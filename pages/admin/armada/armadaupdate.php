@@ -13,10 +13,10 @@ if (isset($_POST['button_edit'])) {
     $stmt->bindParam(6, $_POST['status_keaktifan']);
     $stmt->bindParam(7, $_GET['id']);
     if ($stmt->execute()) {
-        $_SESSION['hasil'] = true;
+        $_SESSION['hasil_update'] = true;
         $_SESSION['pesan'] = "Berhasil Mengubah Data";
     } else {
-        $_SESSION['hasil'] = false;
+        $_SESSION['hasil_update'] = false;
         $_SESSION['pesan'] = "Gagal Mengubah Data";
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=armadaread"/>';
@@ -60,14 +60,14 @@ if (isset($_GET['id'])) {
             </a>
         </div>
         <div class="card-body">
-            <form action="" method="post">
-            <div class="form-group">
+            <form action="" method="post"" id="updateForm">
+                <div class="form-group">
                     <label for="plat">Plat</label>
-                    <input type="text" name="plat" class="form-control" value="<?= $row['plat']?>" required>
+                    <input type="text" name="plat" class="form-control" value="<?= $row['plat'] ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_mobil">Nama Mobil</label>
-                    <input type="text" name="nama_mobil" class="form-control" value="<?= $row['nama_mobil']?>" required>
+                    <input type="text" name="nama_mobil" class="form-control" value="<?= $row['nama_mobil'] ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="jenis_mobil">Jenis Mobil</label>
@@ -84,11 +84,11 @@ if (isset($_GET['id'])) {
                 </div>
                 <div class="form-group">
                     <label for="kecepatan_kosong">Kecepatan Kosong</label>
-                    <input type="text" name="kecepatan_kosong" class="form-control" value="<?= $row['kecepatan_kosong']?>" required>
+                    <input type="text" name="kecepatan_kosong" class="form-control" value="<?= $row['kecepatan_kosong'] ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="kecepatan_muatan">Kecepatan Muatan</label>
-                    <input type="text" name="kecepatan_muatan" class="form-control" value="<?= $row['kecepatan_muatan']?>" required>
+                    <input type="text" name="kecepatan_muatan" class="form-control" value="<?= $row['kecepatan_muatan'] ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="status_keaktifan">Jenis Mobil</label>
@@ -107,7 +107,7 @@ if (isset($_GET['id'])) {
                 <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal
                 </a>
-                <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1">
+                <button type="submit" name="button_edit" id="updatearmada" class="btn btn-primary btn-sm float-right mr-1">
                     <i class="fa fa-save"></i> Ubah
                 </button>
             </form>

@@ -29,10 +29,10 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(5, $_POST['kecepatan_muatan']);
 
         if ($stmt->execute()) {
-            $_SESSION['hasil'] = true;
+            $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menyimpan Data";
         } else {
-            $_SESSION['hasil'] = false;
+            $_SESSION['hasil_create'] = false;
             $_SESSION['pesan'] = "Gagal Menyimpan Data";
         }
         echo '<meta http-equiv="refresh" content="0;url=?page=armadaread"/>';
