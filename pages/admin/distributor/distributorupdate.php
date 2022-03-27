@@ -41,13 +41,13 @@ if (isset($_GET['id'])) {
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Karyawan</h1>
+                <h1 class="m-0">Distributor</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-                    <li class="breadcrumb-item"><a href="?page=karyawanread">Karyawan</a></li>
-                    <li class="breadcrumb-item active">Ubah Karyawan</li>
+                    <li class="breadcrumb-item"><a href="?page=distributorread">Distributor</a></li>
+                    <li class="breadcrumb-item active">Ubah Distributor</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -59,8 +59,8 @@ if (isset($_GET['id'])) {
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Ubah Karyawan</h3>
-            <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
+            <h3 class="card-title">Data Ubah Distributor</h3>
+            <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                 <i class="fa fa-arrow-left"></i> Kembali
             </a>
         </div>
