@@ -22,7 +22,7 @@
     
     table.dataTable th {
       color: white;
-      background-color: #5e6469;
+      background-color: #6C757D;
     }
   </style>
 </head>

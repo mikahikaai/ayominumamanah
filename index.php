@@ -24,8 +24,7 @@ include_once "partials/scripts.php";
     width: 100%;
     height: 100%;
     z-index: 9999;
-    background-color: #fff;
-    align-items: center;
+    background-color: #343A40;
   }
 
   .preloader .loading {
@@ -33,11 +32,15 @@ include_once "partials/scripts.php";
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   #preloader {
     font-weight: 800;
     font-size: larger;
+    color: lightblue;
     display: flex;
     justify-content: center;
   }
@@ -50,8 +53,8 @@ include_once "partials/scripts.php";
   ?>
     <div class="preloader">
       <div class="loading">
-        <img src="./images/preloader.gif">
-        <p id="preloader">. . .Sedang memuat. . .</p>
+        <img src="./images/hampirsampai.gif" width="25%"><br>
+        <p id="preloader">. . .Hampir sampai. . .</p>
       </div>
     </div>
   <?php } ?>
