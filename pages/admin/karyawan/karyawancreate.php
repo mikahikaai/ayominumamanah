@@ -36,7 +36,7 @@ if ($stmt->rowCount() > 0) {
     } else {
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
         alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan) values
-        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
         $nama_upper = strtoupper($_POST['nama']);
         $username = strtolower($_POST['username']);
@@ -56,7 +56,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(13, $_POST['gol_darah']);
         $stmt->bindParam(14, $_POST['sim']);
         $stmt->bindParam(15, $_POST['status_karyawan']);
-        $stmt->bindParam(17, $_POST['upah_borongan']);
+        $stmt->bindParam(16, $_POST['upah_borongan']);
 
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
