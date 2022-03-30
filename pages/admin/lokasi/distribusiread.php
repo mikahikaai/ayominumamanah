@@ -28,12 +28,12 @@ if (isset($_SESSION['hasil'])) {
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Lokasi</h1>
+                <h1 class="m-0">Distribusi</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Lokasi</li>
+                    <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
+                    <li class="breadcrumb-item active">Distribusi</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -45,8 +45,8 @@ if (isset($_SESSION['hasil'])) {
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Lokasi</h3>
-            <a href="?page=lokasicreate" class="btn btn-success btn-sm float-right">
+            <h3 class="card-title">Data Distribusi</h3>
+            <a href="?page=distribusicreate" class="btn btn-success btn-sm float-right">
                 <i class="fa fa-plus-circle"></i> Tambah Data
             </a>
         </div>
@@ -55,17 +55,27 @@ if (isset($_SESSION['hasil'])) {
                 <thead>
                     <tr>
                         <th>No.</th>
+                        <th>No. Perjalanan</th>
+                        <th>Opsi</th>
+                        <th>No.</th>
                         <th>Nama Lokasi</th>
                         <th>Opsi</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
+                        <th>No.</th>
+                        <th>Nama Lokasi</th>
+                        <th>Opsi</th>
+                        <th>No.</th>
+                        <th>Nama Lokasi</th>
+                        <th>Opsi</th>
+                        <th>No.</th>
+                        <th>Nama Lokasi</th>
+                        <th>Opsi</th> <th>No.</th>
+                        <th>Nama Lokasi</th>
+                        <th>Opsi</th>
                         <th>No.</th>
                         <th>Nama Lokasi</th>
                         <th>Opsi</th>
                     </tr>
-                </tfoot>
+                </thead>
                 <tbody>
                     <?php
                     $database = new Database;
