@@ -55,24 +55,27 @@ if (isset($_SESSION['hasil'])) {
                 <thead>
                     <tr>
                         <th>No.</th>
+                        <th>Tanggal</th>
                         <th>No. Perjalanan</th>
-                        <th>Opsi</th>
-                        <th>No.</th>
+                        <th>Plat</th>
+                        <th>Nama Driver</th>
+                        <th>Nama Helper 1</th>
+                        <th>Nama Helper 2</th>
                         <th>Nama Lokasi</th>
-                        <th>Opsi</th>
-                        <th>No.</th>
-                        <th>Nama Lokasi</th>
-                        <th>Opsi</th>
-                        <th>No.</th>
-                        <th>Nama Lokasi</th>
-                        <th>Opsi</th>
-                        <th>No.</th>
-                        <th>Nama Lokasi</th>
-                        <th>Opsi</th> <th>No.</th>
-                        <th>Nama Lokasi</th>
-                        <th>Opsi</th>
-                        <th>No.</th>
-                        <th>Nama Lokasi</th>
+                        <th>Tujuan 1</th>
+                        <th>Tujuan 2</th>
+                        <th>Tujuan 3</th>
+                        <th>Total Cup</th>
+                        <th>Total A330</th>
+                        <th>Total A500</th>
+                        <th>Total A600</th>
+                        <th>Total Refill</th>
+                        <th>Jam Berangkat</th>
+                        <th>Estimasi Jam Datang</th>
+                        <th>Aktual Jam Datang</th>
+                        <th>Keterangan</th>
+                        <th>Tanggal Validasi</th>
+                        <th>Divalidasi Oleh</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -81,7 +84,8 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = 'SELECT * FROM lokasi';
+                    $selectsql = 'SELECT *.d, *.k, *.a, *.do FROM distribusi d INNER JOIN karyawan k on d.driver = k.id
+                    INNER JOIN armada a on d.plat = a.id INNER JOIN distributor do on d.tujuan = do.id';
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 

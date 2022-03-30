@@ -26,17 +26,17 @@ if (isset($_GET['page'])) {
             file_exists('pages/admin/distributor/distributordelete.php') ? include 'pages/admin/distributor/distributordelete.php' : include 'pages/404.php';
             $title = 'Distributor';
             break;
-        case 'jabatanread':
-            file_exists('pages/admin/jabatan/jabatanread.php') ? include 'pages/admin/jabatan/jabatanread.php' : include 'pages/404.php';
+        case 'distribusiread':
+            file_exists('pages/admin/distribusi/distribusiread.php') ? include 'pages/admin/distribusi/distribusiread.php' : include 'pages/404.php';
             break;
-        case 'jabatancreate':
-            file_exists('pages/admin/jabatan/jabatancreate.php') ? include 'pages/admin/jabatan/jabatancreate.php' : include 'pages/404.php';
+        case 'distribusicreate':
+            file_exists('pages/admin/distribusi/distribusicreate.php') ? include 'pages/admin/distribusi/distribusicreate.php' : include 'pages/404.php';
             break;
-        case 'jabatanupdate':
-            file_exists('pages/admin/jabatan/jabatanupdate.php') ? include 'pages/admin/jabatan/jabatanupdate.php' : include 'pages/404.php';
+        case 'distribusiupdate':
+            file_exists('pages/admin/distribusi/distribusiupdate.php') ? include 'pages/admin/distribusi/distribusiupdate.php' : include 'pages/404.php';
             break;
-        case 'jabatandelete':
-            file_exists('pages/admin/jabatan/jabatandelete.php') ? include 'pages/admin/jabatan/jabatandelete.php' : include 'pages/404.php';
+        case 'distribusidelete':
+            file_exists('pages/admin/distribusi/distribusidelete.php') ? include 'pages/admin/distribusi/distribusidelete.php' : include 'pages/404.php';
             break;
         case 'armadaread':
             file_exists('pages/admin/armada/armadaread.php') ? include 'pages/admin/armada/armadaread.php' : include 'pages/404.php';
