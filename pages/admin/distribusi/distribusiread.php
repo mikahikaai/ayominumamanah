@@ -61,7 +61,6 @@ if (isset($_SESSION['hasil'])) {
                         <th>Nama Driver</th>
                         <th>Nama Helper 1</th>
                         <th>Nama Helper 2</th>
-                        <th>Nama Lokasi</th>
                         <th>Tujuan 1</th>
                         <th>Tujuan 2</th>
                         <th>Tujuan 3</th>
@@ -84,8 +83,16 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = 'SELECT *.d, *.k, *.a, *.do FROM distribusi d INNER JOIN karyawan k on d.driver = k.id
-                    INNER JOIN armada a on d.plat = a.id INNER JOIN distributor do on d.tujuan = do.id';
+                    $selectsql = 'SELECT a.*, d.*, k1.nama, k1.upah_borongan, k2.nama, k2.upah_borongan, k3.nama,
+                    k3.upah_borongan, do1.nama, do1.jarak, do2.nama, do2.jarak, do3.nama, do3.jarak
+                    FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
+                    LEFT JOIN karyawan k1 on d.driver = k1.id
+                    LEFT JOIN karyawan k2 on d.helper_1 = k2.id
+                    LEFT JOIN karyawan k3 on d.helper_2 = k3.id
+                    LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id_da
+                    LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id_da
+                    LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id_da
+                    ORDER BY d.no_perjalanan asc; ';
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 
@@ -94,13 +101,31 @@ if (isset($_SESSION['hasil'])) {
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= $row['nama_lokasi'] ?></td>
+                            <td><?= $row['tanggal'] ?></td>
+                            <td><?= $row['no_perjalanan'] ?></td>
+                            <td><?= $row['id_plat'] ?></td>
+                            <td><?= $row['driver'] ?></td>
+                            <td><?= $row['helper_1'] ?></td>
+                            <td><?= $row['helper_2'] ?></td>
+                            <td><?= $row['nama_pel_1'] ?></td>
+                            <td><?= $row['nama_pel_2'] ?></td>
+                            <td><?= $row['nama_pel_3'] ?></td>
+                            <td>Total Cup</td>
+                            <td>Total A330</td>
+                            <td>Total A500</td>
+                            <td>Total A600</td>
+                            <td>Total Refill</td>
+                            <td>Jam Berangkat</td>
+                            <td>Estimasi Jam Datang</td>
+                            <td>Aktual Jam Datang</td>
+                            <td>Keterangan</td>
+                            <td>Tanggal Validasi</td>
+                            <td>Divalidasi Oleh</td>
                             <td>
                                 <a href="?page=lokasiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=lokasidelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1"
-                                onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=lokasidelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
