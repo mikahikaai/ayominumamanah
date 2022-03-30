@@ -53,7 +53,7 @@ include_once "partials/scripts.php";
   ?>
     <div class="preloader">
       <div class="loading">
-        <img src="./images/hampirsampai.gif" width="35%"><br>
+        <img src="./images/hampirsampaicompressed.gif"><br>
         <p id="preloader">. . .Hampir sampai. . .</p>
       </div>
     </div>
