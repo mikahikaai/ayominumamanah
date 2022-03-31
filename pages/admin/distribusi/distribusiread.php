@@ -51,12 +51,12 @@ if (isset($_SESSION['hasil'])) {
             </a>
         </div>
         <div class="card-body">
-            <table id="mytable" class="table table-bordered table-hover">
+            <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; table-layout: fixed;">
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Tanggal</th>
                         <th>No. Perjalanan</th>
+                        <th>Tanggal</th>
                         <th>Plat</th>
                         <th>Nama Driver</th>
                         <th>Nama Helper 1</th>
@@ -75,7 +75,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Keterangan</th>
                         <th>Tanggal Validasi</th>
                         <th>Divalidasi Oleh</th>
-                        <th>Opsi</th>
+                        <th style="display: flex;">Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,8 +83,7 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = 'SELECT a.*, d.*, k1.nama, k1.upah_borongan, k2.nama, k2.upah_borongan, k3.nama,
-                    k3.upah_borongan, do1.nama, do1.jarak, do2.nama, do2.jarak, do3.nama, do3.jarak
+                    $selectsql = 'SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
                     FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
                     LEFT JOIN karyawan k1 on d.driver = k1.id
                     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
@@ -98,18 +97,24 @@ if (isset($_SESSION['hasil'])) {
 
                     $no = 1;
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $supir = $row['supir'] == NULL ? '-' : $row['supir'];
+                        $helper1 = $row['helper1'] == NULL ? '-' : $row['helper1'];
+                        $helper2 = $row['helper2'] == NULL ? '-' : $row['helper2'];
+                        $distro1 = $row['distro1'] == NULL ? '-' : $row['distro1'];
+                        $distro2 = $row['distro2'] == NULL ? '-' : $row['distro2'];
+                        $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= $row['tanggal'] ?></td>
                             <td><?= $row['no_perjalanan'] ?></td>
-                            <td><?= $row['id_plat'] ?></td>
-                            <td><?= $row['driver'] ?></td>
-                            <td><?= $row['helper_1'] ?></td>
-                            <td><?= $row['helper_2'] ?></td>
-                            <td><?= $row['nama_pel_1'] ?></td>
-                            <td><?= $row['nama_pel_2'] ?></td>
-                            <td><?= $row['nama_pel_3'] ?></td>
+                            <td><?= $row['tanggal'] ?></td>
+                            <td><?= $row['plat'], ' - ' ,$row['nama_mobil'];?></td>
+                            <td><?= $supir ?></td>
+                            <td><?= $helper1 ?></td>
+                            <td><?= $helper2 ?></td>
+                            <td><?= $distro1?></td>
+                            <td><?= $distro2?></td>
+                            <td><?= $distro3?></td>
                             <td>Total Cup</td>
                             <td>Total A330</td>
                             <td>Total A500</td>
@@ -142,6 +147,34 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
-        $('#mytable').DataTable();
+        $(document).on({
+            mouseenter: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").addClass("hover");
+                    });
+                });
+            },
+            mouseleave: function() {
+                trIndex = $(this).index() + 1;
+                $("table.dataTable").each(function(index) {
+                    $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
+                        $(this).find("td").removeClass("hover");
+                    });
+                });
+            }
+        }, ".dataTables_wrapper tr");
+        $('#mytable').DataTable({
+            pagingType: "full_numbers",
+            stateSave: true,
+            stateDuration: 60,
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 2,
+                rightColumns: 1
+            },
+        });
     });
 </script>

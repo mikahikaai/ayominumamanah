@@ -28,15 +28,19 @@ if (isset($_GET['page'])) {
             break;
         case 'distribusiread':
             file_exists('pages/admin/distribusi/distribusiread.php') ? include 'pages/admin/distribusi/distribusiread.php' : include 'pages/404.php';
+            $title = 'Distribusi';
             break;
         case 'distribusicreate':
             file_exists('pages/admin/distribusi/distribusicreate.php') ? include 'pages/admin/distribusi/distribusicreate.php' : include 'pages/404.php';
+            $title = 'Distribusi';
             break;
         case 'distribusiupdate':
             file_exists('pages/admin/distribusi/distribusiupdate.php') ? include 'pages/admin/distribusi/distribusiupdate.php' : include 'pages/404.php';
+            $title = 'Distribusi';
             break;
         case 'distribusidelete':
             file_exists('pages/admin/distribusi/distribusidelete.php') ? include 'pages/admin/distribusi/distribusidelete.php' : include 'pages/404.php';
+            $title = 'Distribusi';
             break;
         case 'armadaread':
             file_exists('pages/admin/armada/armadaread.php') ? include 'pages/admin/armada/armadaread.php' : include 'pages/404.php';
