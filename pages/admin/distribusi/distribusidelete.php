@@ -2,7 +2,7 @@
 $database = new Database;
 $db = $database->getConnection();
     if(isset($_GET['id'])){
-        $deletesql = "DELETE from lokasi where id=?"; 
+        $deletesql = "DELETE from distribusi where id=?"; 
         $stmt = $db->prepare($deletesql);
         $stmt->bindParam(1, $_GET['id']);
 
@@ -14,6 +14,6 @@ $db = $database->getConnection();
             $_SESSION['pesan'] = "Gagal Menambah Data";
         }
     }
-    echo '<meta http-equiv="refresh" content="0;url=?page=lokasiread"/>';
+    echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
 
 ?>

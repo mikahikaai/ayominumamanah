@@ -2,9 +2,8 @@
 <!-- Content Header (Page header) -->
 <?php
 if (isset($_SESSION['hasil'])) {
+    if ($_SESSION['hasil']) {
 ?>
-    <?php if ($_SESSION['hasil']) {
-    ?>
         <div class="alert alert-success alert-dismissable">
             <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
             <h5><i class="icon fas fa-check"></i>Sukses</h5>
@@ -19,9 +18,27 @@ if (isset($_SESSION['hasil'])) {
             <h5><i class="icon fas fa-times"></i>Terjadi Kesalahan</h5>
             <?= $_SESSION['pesan'] ?>
         </div>
-<?php }
+    <?php }
     unset($_SESSION['hasil']);
     unset($_SESSION['pesan']);
+} elseif (isset($_SESSION['hasil_delete'])) {
+    if ($_SESSION['hasil_delete']) {
+    ?>
+        <div id='hasil_delete'></div>
+<?php }
+    unset($_SESSION['hasil_delete']);
+} elseif (isset($_SESSION['hasil_create'])) {
+    if ($_SESSION['hasil_create']) {
+    ?>
+        <div id='hasil_create'></div>
+<?php }
+    unset($_SESSION['hasil_create']);
+} elseif (isset($_SESSION['hasil_update'])) {
+    if ($_SESSION['hasil_update']) {
+    ?>
+        <div id='hasil_update'></div>
+<?php }
+    unset($_SESSION['hasil_update']);
 } ?>
 
 <div class="content-header">
@@ -103,6 +120,7 @@ if (isset($_SESSION['hasil'])) {
                         $distro1 = $row['distro1'] == NULL ? '-' : $row['distro1'];
                         $distro2 = $row['distro2'] == NULL ? '-' : $row['distro2'];
                         $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
+                        $keterangan = $row['keterangan'] == NULL ? '-' : $row['keterangan'];
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
@@ -115,22 +133,22 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $distro1?></td>
                             <td><?= $distro2?></td>
                             <td><?= $distro3?></td>
-                            <td>Total Cup</td>
-                            <td>Total A330</td>
-                            <td>Total A500</td>
-                            <td>Total A600</td>
-                            <td>Total Refill</td>
-                            <td>Jam Berangkat</td>
-                            <td>Estimasi Jam Datang</td>
-                            <td>Aktual Jam Datang</td>
-                            <td>Keterangan</td>
-                            <td>Tanggal Validasi</td>
-                            <td>Divalidasi Oleh</td>
+                            <td><?= $row['cup1']+$row['cup2']+$row['cup3'] ?></td>
+                            <td><?= $row['a3301']+$row['a3302']+$row['a3303'] ?></td>
+                            <td><?= $row['a5001']+$row['a5002']+$row['a5003'] ?></td>
+                            <td><?= $row['a6001']+$row['a6002']+$row['a6003'] ?></td>
+                            <td><?= $row['refill1']+$row['refill2']+$row['refill3'] ?></td>
+                            <td><?= $row['jam_berangkat'] ?></td>
+                            <td><?= $row['estimasi_jam_datang'] ?></td>
+                            <td><?= $row['jam_datang'] ?></td>
+                            <td><?= $keterangan ?></td>
+                            <td><?= $row['tgl_validasi'] ?></td>
+                            <td><?= $row['validasi_oleh'] ?></td>
                             <td>
-                                <a href="?page=lokasiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
+                                <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah
                                 </a>
-                                <a href="?page=lokasidelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" onclick="javasript: return confirm('Konfirmasi data akan dihapus?');">
+                                <a href="?page=distribusidelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" id="deletedistribusi">
                                     <i class="fa fa-trash"></i> Hapus
                                 </a>
                             </td>
@@ -147,6 +165,47 @@ include_once "partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
+        $('a#deletedistribusi').click(function(e) {
+            e.preventDefault();
+            var urlToRedirect = e.currentTarget.getAttribute('href');
+            //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data yang dihapus tidak dapat kembali!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = urlToRedirect;
+                }
+            })
+        });
+        if ($('div#hasil_delete').length) {
+            Swal.fire({
+                title: 'Deleted!',
+                text: 'Data berhasil dihapus',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        } else if ($('div#hasil_create').length) {
+            Swal.fire({
+                title: 'Created!',
+                text: 'Data berhasil disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        } else if ($('div#hasil_update').length) {
+            Swal.fire({
+                title: 'Updated!',
+                text: 'Data berhasil diubah',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+        }
         $(document).on({
             mouseenter: function() {
                 trIndex = $(this).index() + 1;
