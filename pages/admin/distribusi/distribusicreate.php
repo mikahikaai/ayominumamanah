@@ -2,7 +2,7 @@
 $database = new Database;
 $db = $database->getConnection();
 
-$validasi = "SELECT * FROM lokasi WHERE nama_lokasi = ?";
+$validasi = "SELECT * FROM distribusi WHERE id = ?";
 $stmt = $db->prepare($validasi);
 $stmt->bindParam(1, $_POST['nama_lokasi']);
 $stmt->execute();
@@ -36,13 +36,13 @@ if ($stmt->rowCount() > 0) {
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Lokasi</h1>
+                <h1 class="m-0">Distribusi</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-                    <li class="breadcrumb-item">Lokasi</li>
-                    <li class="breadcrumb-item">Tambah Lokasi</li>
+                    <li class="breadcrumb-item">Distribusi</li>
+                    <li class="breadcrumb-item active">Tambah Distribusi</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -54,8 +54,8 @@ if ($stmt->rowCount() > 0) {
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Tambah Lokasi</h3>
-            <a href="?page=lokasiread" class="btn btn-danger btn-sm float-right">
+            <h3 class="card-title">Data Tambah Distribusi</h3>
+            <a href="?page=distribusiread" class="btn btn-danger btn-sm float-right">
                 <i class="fa fa-arrow-left"></i> Kembali
             </a>
         </div>
