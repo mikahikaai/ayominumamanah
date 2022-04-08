@@ -2,9 +2,17 @@
 $database = new Database;
 $db = $database->getConnection();
 
-$select_distro = "SELECT * FROM distributor ORDER BY nama ASC";
+$select_distro = "SELECT * FROM distributor WHERE status_keaktifan = 'AKTIF' ORDER BY nama ASC";
 $stmt_distro = $db->prepare($select_distro);
-$stmt_distro->execute();
+// $stmt_distro->execute();
+
+$select_armada = "SELECT * FROM armada WHERE status_keaktifan = 'AKTIF' ORDER BY plat ASC";
+$stmt_armada = $db->prepare($select_armada);
+// $stmt_armada->execute();
+
+$select_karyawan = "SELECT * FROM karyawan WHERE status_keaktifan = 'AKTIF' ORDER BY nama ASC";
+$stmt_karyawan = $db->prepare($select_karyawan);
+// $stmt_karyawan->execute();
 
 $validasi = "SELECT * FROM distribusi WHERE id = ?";
 $stmt = $db->prepare($validasi);
@@ -65,190 +73,229 @@ if ($stmt->rowCount() > 0) {
         </div>
         <div class="card-body">
             <form action="" method="post">
-                <div class="form-group">
-                    <label for="distro1">Tujuan 1</label>
-                    <select name="distro1" class="form-control" required>
-                        <option value="">--Pilih Nama Distributor--</option>
-                        <?php
-                        $stmt_distro->execute();
-                        while ($row_distro = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tujuan 1</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="distro1">Distributor</label>
+                            <select name="distro1" class="form-control" required>
+                                <option value="">--Pilih Nama Distributor--</option>
+                                <?php
+                                $stmt_distro->execute();
+                                while ($row_distro = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
 
-                            echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['id_da'], " - ", $row_distro['nama'] . "</option>";
+                                    echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['nama'], " - ", $row_distro['id_da'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="cup1">Muatan Cup</label>
+                                    <input type="text" name="cup1" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a3301">Muatan A330</label>
+                                    <input type="text" name="a3301" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a5001">Muatan A500</label>
+                                    <input type="text" name="a5001" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a6001">Muatan A600</label>
+                                    <input type="text" name="a6001" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="refill1">Muatan Refill</label>
+                                    <input type="text" name="refill1" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tujuan 2</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="distro2">Distributor</label>
+                            <select name="distro2" class="form-control" required>
+                                <option value="">--Pilih Nama Distributor--</option>
+                                <?php
+                                $stmt_distro->execute();
+                                while ($row_distro2 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+
+                                    echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['nama'], " - ", $row_distro['id_da'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="cup2">Muatan Cup</label>
+                                    <input type="text" name="cup2" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a3302">Muatan A330</label>
+                                    <input type="text" name="a3301" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a5002">Muatan A500</label>
+                                    <input type="text" name="a5002" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a6002">Muatan A600</label>
+                                    <input type="text" name="a6002" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="refill2">Muatan Refill</label>
+                                    <input type="text" name="refill2" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tujuan 3</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="distro3">Distributor</label>
+                            <select name="distro3" class="form-control" required>
+                                <option value="">--Pilih Nama Distributor--</option>
+                                <?php
+                                $stmt_distro->execute();
+                                while ($row_distro3 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+
+                                    echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['nama'], " - ", $row_distro['id_da'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="cup3">Muatan Cup</label>
+                                    <input type="text" name="cup3" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a3303">Muatan A330</label>
+                                    <input type="text" name="a3303" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a5003">Muatan A500</label>
+                                    <input type="text" name="a5003" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="a6003">Muatan A600</label>
+                                    <input type="text" name="a6003" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-group">
+                                    <label for="refill3">Muatan Refill</label>
+                                    <input type="text" name="refill3" class="form-control" style="text-transform: uppercase;" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="armada">Armada</label>
+                    <select name="armada" class="form-control" required>
+                        <option value="">--Pilih Armada--</option>
+                        <?php
+                        $stmt_armada->execute();
+                        while ($row_armada = $stmt_armada->fetch(PDO::FETCH_ASSOC)) {
+
+                            echo "<option value=\"" . $row_armada['id'] . "\">" . $row_armada['plat'], " - ", $row_armada['nama_mobil'] . "</option>";
                         }
                         ?>
                     </select>
                 </div>
-                <div class="row">
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="cup1">Muatan Cup</label>
-                            <input type="text" name="cup1" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tim Pengirim</h4>
                     </div>
-                    <div class="col-md">
+                    <div class="card-body">
                         <div class="form-group">
-                            <label for="a3301">Muatan A330</label>
-                            <input type="text" name="a3301" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a5001">Muatan A500</label>
-                            <input type="text" name="a5001" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a6001">Muatan A600</label>
-                            <input type="text" name="a6001" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="refill1">Muatan Refill</label>
-                            <input type="text" name="refill1" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="distro2">Tujuan 2</label>
-                    <select name="distro2" class="form-control" required>
-                        <option value="">--Pilih Nama Distributor--</option>
-                        <?php
-                        $stmt_distro->execute();
-                        while ($row_distro2 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="supir">Supir</label>
+                                    <select name="supir" class="form-control" required>
+                                        <option value="">--Pilih Nama Supir--</option>
+                                        <?php
+                                        $stmt_karyawan->execute();
+                                        while ($row_karyawan = $stmt_karyawan->fetch(PDO::FETCH_ASSOC)) {
 
-                            echo "<option value=\"" . $row_distro2['id'] . "\">" . $row_distro2['id_da'], " - ", $row_distro2['nama'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="cup2">Muatan Cup</label>
-                            <input type="text" name="cup2" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a3302">Muatan A330</label>
-                            <input type="text" name="a3301" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a5002">Muatan A500</label>
-                            <input type="text" name="a5002" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a6002">Muatan A600</label>
-                            <input type="text" name="a6002" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="refill2">Muatan Refill</label>
-                            <input type="text" name="refill2" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="distro3">Tujuan 3</label>
-                    <select name="distro3" class="form-control" required>
-                        <option value="">--Pilih Nama Distributor--</option>
-                        <?php
-                        $stmt_distro->execute();
-                        while ($row_distro3 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+                                            echo "<option value=\"" . $row_karyawan['id'] . "\">" . $row_karyawan['nama'], " - ", $row_karyawan['sim'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="helper1">Helper 1</label>
+                                    <select name="helper1" class="form-control" required>
+                                        <option value="">--Pilih Nama Helper 1--</option>
+                                        <?php
+                                        $stmt_karyawan->execute();
+                                        while ($row_karyawan = $stmt_karyawan->fetch(PDO::FETCH_ASSOC)) {
 
-                            echo "<option value=\"" . $row_distro3['id'] . "\">" . $row_distro3['id_da'], " - ", $row_distro3['nama'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="cup3">Muatan Cup</label>
-                            <input type="text" name="cup3" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a3303">Muatan A330</label>
-                            <input type="text" name="a3303" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a5003">Muatan A500</label>
-                            <input type="text" name="a5003" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="a6003">Muatan A600</label>
-                            <input type="text" name="a6003" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="form-group">
-                            <label for="refill3">Muatan Refill</label>
-                            <input type="text" name="refill3" class="form-control" style="text-transform: uppercase;" required>
-                        </div>
-                    </div>
-                </div>
+                                            echo "<option value=\"" . $row_karyawan['id'] . "\">" . $row_karyawan['nama'], " - ", $row_karyawan['sim'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="helper2">Helper 2</label>
+                                    <select name="helper2" class="form-control" required>
+                                        <option value="">--Pilih Nama Helper 2--</option>
+                                        <?php
+                                        $stmt_karyawan->execute();
+                                        while ($row_karyawan = $stmt_karyawan->fetch(PDO::FETCH_ASSOC)) {
 
-                <div class="form-group">
-                    <label for="paket">Paket</label>
-                    <select name="paket" class="form-control" required>
-                        <option value="">--Pilih Jenis Paket--</option>
-                        <?php
-                        $options = array('DISTRIBUTOR', 'SUB DISTRIBUTOR', 'BUKAN SUB/DISTRIBUTOR');
-                        foreach ($options as $option) {
-                            $selected = $_POST['paket'] == $option ? 'selected' : '';
-                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-                        }
-                        ?>
-                    </select>
+                                            echo "<option value=\"" . $row_karyawan['id'] . "\">" . $row_karyawan['nama'], " - ", $row_karyawan['sim'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="alamat_dropping">Alamat Dropping</label>
-                    <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" style="text-transform: uppercase;" required>
-                </div>
-                <div class="form-group">
-                    <label for="no_telepon">No. Telepon</label>
-                    <input type="text" name="no_telepon" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['no_telepon'] : '' ?>" required>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="jarak">Jarak Dari Pabrik</label>
-                            <input type="text" name="jarak" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['jarak'] : '' ?>" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="kateg">Kategori Jarak</label>
-                            <input type="text" name="kateg" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= isset($_POST['button_create']) ? $_POST['kateg'] : '' ?>" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="min_order">Minimal Order</label>
-                            <input type="text" name="min_order" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['min_order'] : '' ?>" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="ongkir">Ongkos Kirim</label>
-                            <input type="text" name="ongkir" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= isset($_POST['button_create']) ? $_POST['ongkir'] : '' ?>" required>
-                        </div>
-                    </div>
+                    <label for="jam_berangkat">Jam Keberangkatan</label>
+                    <input id="datetimepicker" type="text" name="jam_berangkat" class="form-control" required>
                 </div>
                 <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

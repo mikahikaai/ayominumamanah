@@ -1,3 +1,4 @@
+<!-- <script src="./plugins/jquery/jquery.min.js"></script> -->
 <script src="./plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="./plugins/datatables-fixedcolumns/js/dataTables.fixedColumns.min.js"></script>
 <!-- <script src="./plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script> -->

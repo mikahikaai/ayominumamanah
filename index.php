@@ -77,9 +77,13 @@ include_once "partials/scripts.php";
 
   <!-- REQUIRED SCRIPTS -->
 </body>
+<link rel="stylesheet" href="plugins/jquery-datetimepicker/jquery.datetimepicker.min.css">
+<script src="plugins/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
+    $('#datetimepicker').datetimepicker();
+    // $("#datetimepicker").val(new Date().toJSON().slice(0,19));
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {
