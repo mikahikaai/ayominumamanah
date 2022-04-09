@@ -136,7 +136,7 @@ if ($stmt->rowCount() > 0) {
                                 <option value="">--Pilih Nama Distributor--</option>
                                 <?php
                                 $stmt_distro->execute();
-                                while ($row_distro2 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+                                while ($row_distro = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
 
                                     echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['nama'], " - ", $row_distro['id_da'] . "</option>";
                                 }
@@ -188,7 +188,7 @@ if ($stmt->rowCount() > 0) {
                                 <option value="">--Pilih Nama Distributor--</option>
                                 <?php
                                 $stmt_distro->execute();
-                                while ($row_distro3 = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
+                                while ($row_distro = $stmt_distro->fetch(PDO::FETCH_ASSOC)) {
 
                                     echo "<option value=\"" . $row_distro['id'] . "\">" . $row_distro['nama'], " - ", $row_distro['id_da'] . "</option>";
                                 }
@@ -295,7 +295,7 @@ if ($stmt->rowCount() > 0) {
                 </div>
                 <div class="form-group">
                     <label for="jam_berangkat">Jam Keberangkatan</label>
-                    <input id="datetimepicker" type="text" name="jam_berangkat" class="form-control" required>
+                    <input type="text" class="form-control datetimepicker-input col-md-4" id="datetimepicker" data-toggle="datetimepicker" data-target="#datetimepicker"/>
                 </div>
                 <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

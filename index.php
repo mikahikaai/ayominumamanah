@@ -77,12 +77,20 @@ include_once "partials/scripts.php";
 
   <!-- REQUIRED SCRIPTS -->
 </body>
-<link rel="stylesheet" href="plugins/jquery-datetimepicker/jquery.datetimepicker.min.css">
-<script src="plugins/jquery-datetimepicker/jquery.datetimepicker.full.js"></script>
+<!-- <link rel="stylesheet" href="plugins/jquery-datetimepicker/jquery.datetimepicker.min.css">
+<script src="plugins/jquery-datetimepicker/jquery.datetimepicker.full.js"></script> -->
+<script src="plugins/tempusdominus-bootstrap-4/js/moment.js"></script>
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
-    $('#datetimepicker').datetimepicker();
+    $('#datetimepicker').datetimepicker({
+      useCurrent : true,
+      locale : 'ru',
+      format: 'dddd, MMMM Do YYYY, HH:mm'
+    });
     // $("#datetimepicker").val(new Date().toJSON().slice(0,19));
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
