@@ -295,7 +295,7 @@ if ($stmt->rowCount() > 0) {
                 </div>
                 <div class="form-group">
                     <label for="jam_berangkat">Jam Keberangkatan</label>
-                    <input id='datetimepicker1Input' type='text' class='form-control' data-td-target='#datetimepicker1' />
+                    <input id='datetimepicker1' type='text' class='form-control' data-td-target='#datetimepicker1' placeholder="dd/mm/yyyy hh:mm" />
                 </div>
                 <a href="?page=distribusiread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

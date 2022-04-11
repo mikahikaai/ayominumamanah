@@ -82,11 +82,55 @@ include_once "partials/scripts.php";
 
 
 <script>
-  // new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
-    $('#datetimepicker1Input').tempusDominus({
-      useCurrent : true
+    $('#datetimepicker1').tempusDominus({
+      localization: {
+        today: 'Hari Ini',
+        clear: 'Hapus',
+        close: 'Tutup',
+        selectMonth: 'Pilih Bulan',
+        previousMonth: 'Bulan Sebelumnya',
+        nextMonth: 'В Bulan Selanjutnya',
+        selectYear: 'Pilih Tahun',
+        previousYear: 'Tahun Sebelumnya',
+        nextYear: 'В Tahun Selanjutnya',
+        selectDecade: 'Pilih Dekade',
+        previousDecade: 'Dekade Sebelumnya',
+        nextDecade: 'Dekade Selanjutnya',
+        previousCentury: 'Abad Sebelumnya',
+        nextCentury: 'Abad Selanjutnya',
+        pickHour: 'Pilih Jam',
+        incrementHour: 'Tambahkan Jam',
+        decrementHour: 'Kurangkan Jam',
+        pickMinute: 'Pilih Menit',
+        incrementMinute: 'Tambahkan Menit',
+        decrementMinute: 'Kurangkan Menit',
+        pickSecond: 'Pilih Detik',
+        incrementSecond: 'Tambahkan Detik',
+        decrementSecond: 'Kurangkan Detik',
+        toggleMeridiem: 'Matikan AM/PM',
+        selectTime: 'Pilih Waktu',
+        selectDate: 'Pilih Tanggal',
+        dayViewHeaderFormat: {
+          month: 'long',
+          year: '2-digit'
+        },
+        locale: 'id',
+        startOfTheWeek: 1
+      },
+      display: {
+        components: {
+          calendar: true,
+          date: true,
+          useTwentyfourHour: true
+        },
+        buttons: {
+          today: true,
+          close: true,
+          clear: true
+        }
+      },
     });
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
