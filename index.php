@@ -85,7 +85,7 @@ include_once "partials/scripts.php";
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
     $('#datetimepicker1').tempusDominus({
-      localization: {
+      localization: id = {
         today: 'Hari Ini',
         clear: 'Hapus',
         close: 'Tutup',
@@ -114,7 +114,7 @@ include_once "partials/scripts.php";
         selectDate: 'Pilih Tanggal',
         dayViewHeaderFormat: {
           month: 'long',
-          year: '2-digit'
+          year: 'numeric'
         },
         locale: 'id',
         startOfTheWeek: 1
