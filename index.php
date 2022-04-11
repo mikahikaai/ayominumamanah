@@ -77,21 +77,17 @@ include_once "partials/scripts.php";
 
   <!-- REQUIRED SCRIPTS -->
 </body>
-<!-- <link rel="stylesheet" href="plugins/jquery-datetimepicker/jquery.datetimepicker.min.css">
-<script src="plugins/jquery-datetimepicker/jquery.datetimepicker.full.js"></script> -->
-<script src="plugins/tempusdominus-bootstrap-4/js/moment.js"></script>
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+<script src="plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
+
 
 <script>
+  // new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
-    $('#datetimepicker').datetimepicker({
-      useCurrent : true,
-      locale : 'ru',
-      format: 'dddd, MMMM Do YYYY, HH:mm'
+    $('#datetimepicker1Input').tempusDominus({
+      useCurrent : true
     });
-    // $("#datetimepicker").val(new Date().toJSON().slice(0,19));
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {
@@ -106,6 +102,10 @@ include_once "partials/scripts.php";
       $("a#link_master_data").addClass("active");
     } else if (title == "Distributor") {
       $("a#distributor").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Distribusi") {
+      $("a#distribusi").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
     }

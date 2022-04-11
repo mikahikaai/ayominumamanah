@@ -91,7 +91,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=distribusiread" class="nav-link"><i class="far fa-circle nav-icon"></i>
+              <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                 <p>Distribusi</p>
               </a>
             </li>
