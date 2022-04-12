@@ -44,6 +44,10 @@ include_once "partials/scripts.php";
     display: flex;
     justify-content: center;
   }
+
+  input[name="bongkar"] {
+    transform: scale(1.5);
+  }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -91,10 +95,10 @@ include_once "partials/scripts.php";
         close: 'Tutup',
         selectMonth: 'Pilih Bulan',
         previousMonth: 'Bulan Sebelumnya',
-        nextMonth: 'В Bulan Selanjutnya',
+        nextMonth: 'Bulan Selanjutnya',
         selectYear: 'Pilih Tahun',
         previousYear: 'Tahun Sebelumnya',
-        nextYear: 'В Tahun Selanjutnya',
+        nextYear: 'Tahun Selanjutnya',
         selectDecade: 'Pilih Dekade',
         previousDecade: 'Dekade Sebelumnya',
         nextDecade: 'Dekade Selanjutnya',
