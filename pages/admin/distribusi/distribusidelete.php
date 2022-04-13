@@ -8,10 +8,10 @@ $db = $database->getConnection();
 
         if ($stmt->execute()){
             $_SESSION['hasil'] = true;
-            $_SESSION['pesan'] = "Berhasil Menambah Data";
+            $_SESSION['pesan'] = "Berhasil Menghapus Data";
         } else {
             $_SESSION['hasil'] = false;
-            $_SESSION['pesan'] = "Gagal Menambah Data";
+            $_SESSION['pesan'] = "Gagal Menghapus Data";
         }
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';

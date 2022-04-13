@@ -88,7 +88,8 @@ if (isset($_SESSION['hasil'])) {
                         <th>Total Refill</th>
                         <th>Jam Berangkat</th>
                         <th>Estimasi Jam Datang</th>
-                        <th>Aktual Jam Datang</th>
+                        <th>Estimasi Lama Perjalanan</th>
+                        <th>Jam Datang</th>
                         <th>Keterangan</th>
                         <th>Tanggal Validasi</th>
                         <th>Divalidasi Oleh</th>
@@ -100,15 +101,15 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = 'SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+                    $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
                     FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
                     LEFT JOIN karyawan k1 on d.driver = k1.id
                     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
                     LEFT JOIN karyawan k3 on d.helper_2 = k3.id
-                    LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id_da
-                    LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id_da
-                    LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id_da
-                    ORDER BY d.no_perjalanan asc; ';
+                    LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
+                    LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
+                    LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
+                    ORDER BY d.no_perjalanan asc; ";
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 
@@ -121,11 +122,15 @@ if (isset($_SESSION['hasil'])) {
                         $distro2 = $row['distro2'] == NULL ? '-' : $row['distro2'];
                         $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
                         $keterangan = $row['keterangan'] == NULL ? '-' : $row['keterangan'];
+                        $jam_datang = $row['jam_datang'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['jam_datang']));
+                        $tgl_validasi = $row['tgl_validasi'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['tgl_validasi']));
+                        $validasi_oleh = $row['validasi_oleh'] == NULL ? '-' : $row['validasi_oleh'];
+                        $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= $row['no_perjalanan'] ?></td>
-                            <td><?= $row['tanggal'] ?></td>
+                            <td><?= date('d-m-Y H:i:s',strtotime($row['tanggal'])) ?></td>
                             <td><?= $row['plat'], ' - ' ,$row['nama_mobil'];?></td>
                             <td><?= $supir ?></td>
                             <td><?= $helper1 ?></td>
@@ -140,10 +145,11 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['refill1']+$row['refill2']+$row['refill3'] ?></td>
                             <td><?= $row['jam_berangkat'] ?></td>
                             <td><?= $row['estimasi_jam_datang'] ?></td>
-                            <td><?= $row['jam_datang'] ?></td>
+                            <td><?= $estimasi_lama_perjalanan ?></td>
+                            <td><?= $jam_datang ?></td>
                             <td><?= $keterangan ?></td>
-                            <td><?= $row['tgl_validasi'] ?></td>
-                            <td><?= $row['validasi_oleh'] ?></td>
+                            <td><?= $tgl_validasi ?></td>
+                            <td><?= $validasi_oleh ?></td>
                             <td>
                                 <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah

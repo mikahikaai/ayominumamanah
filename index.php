@@ -127,6 +127,7 @@ include_once "partials/scripts.php";
         components: {
           calendar: true,
           date: true,
+          seconds: true,
           useTwentyfourHour: true
         },
         buttons: {
