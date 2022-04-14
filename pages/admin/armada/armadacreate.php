@@ -18,7 +18,7 @@ if ($stmt->rowCount() > 0) {
 } else {
 
     if (isset($_POST['button_create'])) {
-        $insertsql = "insert into armada (plat, nama_mobil, jenis_mobil, kecepatan_kosong, kecepatan_muatan) values (?,?,?,?,?)";
+        $insertsql = "insert into armada (plat, jenis_mobil, kateg_mobil, kecepatan_kosong, kecepatan_muatan) values (?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
         $plat = strtoupper($_POST['plat']);
         $nama = strtoupper($_POST['nama_mobil']);
@@ -74,17 +74,26 @@ if ($stmt->rowCount() > 0) {
                     <input type="text" name="plat" class="form-control" style="text-transform: uppercase;" required>
                 </div>
                 <div class="form-group">
-                    <label for="nama_mobil">Nama Mobil</label>
-                    <input type="text" name="nama_mobil" class="form-control" style="text-transform: uppercase;" required>
-                </div>
-                <div class="form-group">
                     <label for="jenis_mobil">Jenis Mobil</label>
                     <select name="jenis_mobil" class="form-control" required>
                         <option value="">--Pilih Jenis Mobil--</option>
                         <?php
+                        $options = array('GRAN MAX', 'L300', 'ENGKEL', 'PS', 'FUSO');
+                        foreach ($options as $option) {
+                            $selected = $_POST['jenis_mobil'] == $option ? 'selected' : '';
+                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kateg_mobil">Kategori Ukuran</label>
+                    <select name="kateg_mobil" class="form-control" required>
+                        <option value="">--Pilih Jenis Mobil--</option>
+                        <?php
                         $options = array('S', 'M', 'L', 'XL');
                         foreach ($options as $option) {
-                            $selected = $_POST['peran'] == $option ? 'selected' : '';
+                            $selected = $_POST['kateg_mobil'] == $option ? 'selected' : '';
                             echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
                         }
                         ?>

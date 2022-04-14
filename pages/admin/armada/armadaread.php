@@ -75,8 +75,8 @@ if (isset($_SESSION['hasil'])) {
                     <tr>
                         <th>No.</th>
                         <th>Plat</th>
-                        <th>Nama Mobil</th>
                         <th>Jenis Mobil</th>
+                        <th>Kategori Ukuran</th>
                         <th>Kecepatan Kosong</th>
                         <th>Kecepatan Muatan</th>
                         <th>Status Keaktifan</th>
@@ -98,8 +98,8 @@ if (isset($_SESSION['hasil'])) {
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= $row['plat'] ?></td>
-                            <td><?= $row['nama_mobil'] ?></td>
                             <td><?= $row['jenis_mobil'] ?></td>
+                            <td><?= $row['kateg_mobil'] ?></td>
                             <td><?= $row['kecepatan_kosong'] ?></td>
                             <td><?= $row['kecepatan_muatan'] ?></td>
                             <td><?= $row['status_keaktifan'] ?></td>
