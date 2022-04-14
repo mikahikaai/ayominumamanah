@@ -120,18 +120,20 @@ if ($stmt->rowCount() > 0) {
         // <akhir hitung lama kepulangan>
 
         // <hitung lama perjalanan>
-        if ($_POST['bongkar'] == 1){
+        if ($_POST['bongkar'] == 1) {
             $lama_perjalanan = ceil($lama_keberangkatan + $lama_bongkar + $lama_muat + $lama_istirahat + $lama_kepulangan);
         } else {
             $lama_perjalanan = ceil($lama_keberangkatan + $lama_istirahat + $lama_kepulangan);
         }
-        // <akhir hitung lama perjalanan>
-        
+
         $jam_berangkat_format = date_create_from_format('d/m/Y H.i.s', $_POST['jam_berangkat']);
         $jam_berangkat = $jam_berangkat_format->format('Y-m-d H:i:s');
-        $format_date_interval = "PT".$lama_perjalanan."S";
+        $format_date_interval = "PT" . $lama_perjalanan . "S";
         $estimasi_datang = $jam_berangkat_format->add(new DateInterval($format_date_interval))->format('Y-m-d H:i:s');
 
+        // <akhir hitung lama perjalanan>
+
+        // generate nomor perjalanan
         $select_no_perjalanan = "SELECT no_perjalanan FROM distribusi WHERE MONTH(tanggal) = MONTH(NOW()) and YEAR(tanggal) = YEAR(NOW()) ORDER BY no_perjalanan DESC LIMIT 1";
         $stmt_no_perjalanan = $db->prepare($select_no_perjalanan);
         $stmt_no_perjalanan->execute();
@@ -144,6 +146,9 @@ if ($stmt->rowCount() > 0) {
             $no_perjalanan = str_pad(number_format(substr($no_perjalanan, -4)) + 1, 4, '0', STR_PAD_LEFT);
         }
         $no_perjalanan_new = "NJ/" . date('Y/') . date('m/') . $no_perjalanan;
+        // akhir generate nomor perjalanan
+
+        // insert data distribusi ke db
         $insertsql = "INSERT INTO distribusi (no_perjalanan, id_plat, driver, helper_1, helper_2, nama_pel_1, nama_pel_2, nama_pel_3, bongkar, cup1, a3301, a5001, a6001, refill1, cup2, a3302, a5002, a6002, refill2, cup3, a3303, a5003, a6003, refill3,
         jam_berangkat, estimasi_jam_datang) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $helper_1 = !empty($_POST['helper_1']) ? $_POST['helper_1'] : null;
@@ -178,13 +183,14 @@ if ($stmt->rowCount() > 0) {
         $stmt_insert->bindParam(25, $jam_berangkat);
         $stmt_insert->bindParam(26, $estimasi_datang);
         if ($stmt_insert->execute()) {
-            $_SESSION['hasil'] = true;
+            $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menambah Data";
         } else {
-            $_SESSION['hasil'] = false;
+            $_SESSION['hasil_create'] = false;
             $_SESSION['pesan'] = "Gagal Menambah Data";
         }
         echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
+        // akhir insert data distribusi ke db
     }
 }
 ?>
@@ -225,7 +231,7 @@ if ($stmt->rowCount() > 0) {
                     <div class="card-body">
                         <div class="form-group">
                             <label for="nama_pel_1">Distributor</label>
-                            <select name="nama_pel_1" class="form-control">
+                            <select name="nama_pel_1" class="form-control" required>
                                 <option value="">--Pilih Nama Distributor--</option>
                                 <?php
                                 $stmt_distro->execute();
@@ -377,7 +383,7 @@ if ($stmt->rowCount() > 0) {
 
                 <div class="form-group">
                     <label for="id_plat">Armada</label>
-                    <select name="id_plat" class="form-control">
+                    <select name="id_plat" class="form-control" required>
                         <option value="">--Pilih Armada--</option>
                         <?php
                         $stmt_armada->execute();
@@ -397,7 +403,7 @@ if ($stmt->rowCount() > 0) {
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="driver">Supir</label>
-                                    <select name="driver" class="form-control">
+                                    <select name="driver" class="form-control" required>
                                         <option value="">--Pilih Nama Supir--</option>
                                         <?php
                                         $stmt_karyawan->execute();
@@ -442,12 +448,12 @@ if ($stmt->rowCount() > 0) {
                     <label for="jam_berangkat">Jam Keberangkatan</label>
                     <div class="row">
                         <div class="col-md-4">
-                            <input id='datetimepicker1' type='text' class='form-control' data-td-target='#datetimepicker1' placeholder="dd/mm/yyyy hh:mm" name="jam_berangkat" require>
+                            <input id='datetimepicker1' type='text' class='form-control' data-td-target='#datetimepicker1' placeholder="dd/mm/yyyy hh:mm" name="jam_berangkat" require readonly> 
                         </div>
                         <div class="col-md d-flex align-items-center">
                             <div class="form-check">
                                 <input type="hidden" name="bongkar" value="0">
-                                <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="bongkar">
+                                <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="bongkar" checked>
                                 <label class="form-check-label text-bold" for="flexCheckDefault">
                                     Bongkar muatan?
                                 </label>
