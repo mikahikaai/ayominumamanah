@@ -81,6 +81,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Tujuan 1</th>
                         <th>Tujuan 2</th>
                         <th>Tujuan 3</th>
+                        <th>Bongkar</th>
                         <th>Total Cup</th>
                         <th>Total A330</th>
                         <th>Total A500</th>
@@ -93,6 +94,7 @@ if (isset($_SESSION['hasil'])) {
                         <th>Keterangan</th>
                         <th>Tanggal Validasi</th>
                         <th>Divalidasi Oleh</th>
+                        <th>Status</th>
                         <th style="display: flex;">Opsi</th>
                     </tr>
                 </thead>
@@ -121,23 +123,38 @@ if (isset($_SESSION['hasil'])) {
                         $distro1 = $row['distro1'] == NULL ? '-' : $row['distro1'];
                         $distro2 = $row['distro2'] == NULL ? '-' : $row['distro2'];
                         $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
+                        $bongkar = $row['bongkar'] == 0 ? 'TIDAK' : 'YA'; 
                         $keterangan = $row['keterangan'] == NULL ? '-' : $row['keterangan'];
                         $jam_datang = $row['jam_datang'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['jam_datang']));
                         $tgl_validasi = $row['tgl_validasi'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['tgl_validasi']));
                         $validasi_oleh = $row['validasi_oleh'] == NULL ? '-' : $row['validasi_oleh'];
                         $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
+                        switch ($row['status']) {
+                            case '0':
+                                $status = 'Belum Divalidasi';
+                            case '1':
+                                $status = 'Divalidasi Oleh';
+                                break;
+                            case '2':
+                                $status = 'Perlu ACC Uang makan';
+                                break;
+                            case '3':
+                                $status = 'Tidak ACC';
+                                break;
+                        }
                     ?>
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= $row['no_perjalanan'] ?></td>
                             <td><?= date('d-m-Y H:i:s',strtotime($row['tanggal'])) ?></td>
-                            <td><?= $row['plat'], ' - ' ,$row['nama_mobil'];?></td>
+                            <td><?= $row['plat'], ' - ' ,$row['jenis_mobil'];?></td>
                             <td><?= $supir ?></td>
                             <td><?= $helper1 ?></td>
                             <td><?= $helper2 ?></td>
                             <td><?= $distro1?></td>
                             <td><?= $distro2?></td>
                             <td><?= $distro3?></td>
+                            <td><?= $bongkar ?></td>
                             <td><?= $row['cup1']+$row['cup2']+$row['cup3'] ?></td>
                             <td><?= $row['a3301']+$row['a3302']+$row['a3303'] ?></td>
                             <td><?= $row['a5001']+$row['a5002']+$row['a5003'] ?></td>
@@ -150,6 +167,7 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $keterangan ?></td>
                             <td><?= $tgl_validasi ?></td>
                             <td><?= $validasi_oleh ?></td>
+                            <td><?= $status ?></td>
                             <td>
                                 <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                                     <i class="fa fa-edit"></i> Ubah

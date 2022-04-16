@@ -20,6 +20,8 @@ if (isset($_POST['button_edit'])) {
             Password tidak sama
         </div>
 <?php } else {
+        $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
+        $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
         $password = $_POST['password'] == '' && $_POST['password2'] == '' ? $row['password'] : md5($_POST['password']);
         $updatesql = "UPDATE karyawan SET password=?, nama=?, nik=?, tempat_lahir=?, tanggal_lahir=?, jenis_kelamin=?,
         alamat=?, agama=?, status=?, gol_darah=?, jabatan=?, no_telepon=?, sim=?, status_karyawan=?,
@@ -30,7 +32,7 @@ if (isset($_POST['button_edit'])) {
         $stmt->bindParam(2, $_POST['nama']);
         $stmt->bindParam(3, $_POST['nik']);
         $stmt->bindParam(4, $_POST['tempat_lahir']);
-        $stmt->bindParam(5, $_POST['tanggal_lahir']);
+        $stmt->bindParam(5, $tanggal_lahir);
         $stmt->bindParam(6, $_POST['jenis_kelamin']);
         $stmt->bindParam(7, $alamat);
         $stmt->bindParam(8, $_POST['agama']);
@@ -139,7 +141,8 @@ if (isset($_POST['button_edit'])) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" class="form-control" value="<?= $row['tanggal_lahir'] ?>" required>
+                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= $row['tanggal_lahir']?>" required>
                         </div>
                     </div>
                 </div>

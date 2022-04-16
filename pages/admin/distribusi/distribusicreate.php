@@ -175,7 +175,7 @@ if ($stmt->rowCount() > 0) {
         $stmt_insert->bindParam(17, $_POST['a5002']);
         $stmt_insert->bindParam(18, $_POST['a6002']);
         $stmt_insert->bindParam(19, $_POST['refill2']);
-        $stmt_insert->bindParam(20, $_POST['acup3']);
+        $stmt_insert->bindParam(20, $_POST['cup3']);
         $stmt_insert->bindParam(21, $_POST['a3303']);
         $stmt_insert->bindParam(22, $_POST['a5003']);
         $stmt_insert->bindParam(23, $_POST['a6003']);
@@ -389,7 +389,7 @@ if ($stmt->rowCount() > 0) {
                         $stmt_armada->execute();
                         while ($row_armada = $stmt_armada->fetch(PDO::FETCH_ASSOC)) {
 
-                            echo "<option value=\"" . $row_armada['id'] . "\">" . $row_armada['plat'], " - ", $row_armada['nama_mobil'] . "</option>";
+                            echo "<option value=\"" . $row_armada['id'] . "\">" . $row_armada['plat'], " - ", $row_armada['jenis_mobil'] . "</option>";
                         }
                         ?>
                     </select>

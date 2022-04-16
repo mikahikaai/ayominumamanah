@@ -20,13 +20,47 @@ if ($stmt->rowCount() > 0) {
     if (isset($_POST['button_create'])) {
         $insertsql = "insert into armada (plat, jenis_mobil, kateg_mobil, kecepatan_kosong, kecepatan_muatan) values (?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
+
         $plat = strtoupper($_POST['plat']);
-        $nama = strtoupper($_POST['nama_mobil']);
-        $stmt->bindParam(1, $plat );
-        $stmt->bindParam(2, $nama);
-        $stmt->bindParam(3, $_POST['jenis_mobil']);
-        $stmt->bindParam(4, $_POST['kecepatan_kosong']);
-        $stmt->bindParam(5, $_POST['kecepatan_muatan']);
+        $jenis = strtoupper($_POST['jenis_mobil']);
+
+        switch ($jenis) {
+            case 'GRAN MAX':
+            case 'L300':
+                $kateg = 'S';
+                break;
+            case 'ENGKEL':
+                $kateg = 'M';
+                break;
+            case 'PS':
+                $kateg = 'L';
+                break;
+            case 'FUSO':
+                $kateg = 'XL';
+                break;
+        }
+
+        switch ($kateg) {
+            case 'S':
+            case 'M':
+                $kecepatan_kosong = '55';
+                $kecepatan_muatan = '40';
+                break;
+            case 'L':
+                $kecepatan_kosong = '50';
+                $kecepatan_muatan = '35';
+                break;
+            case 'XL':
+                $kecepatan_kosong = '45';
+                $kecepatan_muatan = '30';
+                break;
+        }
+
+        $stmt->bindParam(1, $plat);
+        $stmt->bindParam(2, $jenis);
+        $stmt->bindParam(3, $kateg);
+        $stmt->bindParam(4, $kecepatan_kosong);
+        $stmt->bindParam(5, $kecepatan_muatan);
 
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
@@ -85,27 +119,6 @@ if ($stmt->rowCount() > 0) {
                         }
                         ?>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="kateg_mobil">Kategori Ukuran</label>
-                    <select name="kateg_mobil" class="form-control" required>
-                        <option value="">--Pilih Jenis Mobil--</option>
-                        <?php
-                        $options = array('S', 'M', 'L', 'XL');
-                        foreach ($options as $option) {
-                            $selected = $_POST['kateg_mobil'] == $option ? 'selected' : '';
-                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="kecepatan_kosong">Kecepatan Kosong</label>
-                    <input type="text" name="kecepatan_kosong" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="3" value="<?= isset($_POST['button_create']) ? $_POST['kecepatan_kosong'] : '' ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="kecepatan_muatan">Kecepatan Muatan</label>
-                    <input type="text" name="kecepatan_muatan" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="3" value="<?= isset($_POST['button_create']) ? $_POST['kecepatan_muatan'] : '' ?>" required>
                 </div>
                 <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal

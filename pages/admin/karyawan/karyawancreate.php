@@ -34,6 +34,10 @@ if ($stmt->rowCount() > 0) {
         </div>
 <?php
     } else {
+
+        $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
+        $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
+
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
         alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan) values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -46,7 +50,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(3, $md5);
         $stmt->bindParam(4, $_POST['nik']);
         $stmt->bindParam(5, $_POST['tempat_lahir']);
-        $stmt->bindParam(6, $_POST['tanggal_lahir']);
+        $stmt->bindParam(6, $tanggal_lahir);
         $stmt->bindParam(7, $_POST['jenis_kelamin']);
         $stmt->bindParam(8, $_POST['alamat']);
         $stmt->bindParam(9, $_POST['agama']);
@@ -154,7 +158,7 @@ if ($stmt->rowCount() > 0) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" required>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" required>
                         </div>
                     </div>
                 </div>

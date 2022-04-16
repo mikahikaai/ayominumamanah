@@ -3,13 +3,49 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_edit'])) {
-    $updatesql = "UPDATE armada SET plat=?, nama_mobil=?, jenis_mobil=?, kecepatan_kosong=?, kecepatan_muatan=?, status_keaktifan=?  where id=?";
+    $updatesql = "UPDATE armada SET plat=?, jenis_mobil=?, kateg_mobil=?, kecepatan_kosong=?, kecepatan_muatan=?, status_keaktifan=?  where id=?";
     $stmt = $db->prepare($updatesql);
+
+    $plat = strtoupper($_POST['plat']);
+    $jenis = strtoupper($_POST['jenis_mobil']);
+
+    switch ($jenis) {
+        case 'GRAN MAX':
+        case 'L300':
+            $kateg = 'S';
+            break;
+        case 'ENGKEL':
+            $kateg = 'M';
+            break;
+        case 'PS':
+            $kateg = 'L';
+            break;
+        case 'FUSO':
+            $kateg = 'XL';
+            break;
+    }
+
+    switch ($kateg) {
+        case 'S':
+        case 'M':
+            $kecepatan_kosong = '55';
+            $kecepatan_muatan = '40';
+            break;
+        case 'L':
+            $kecepatan_kosong = '50';
+            $kecepatan_muatan = '35';
+            break;
+        case 'XL':
+            $kecepatan_kosong = '45';
+            $kecepatan_muatan = '30';
+            break;
+    }
+
     $stmt->bindParam(1, $_POST['plat']);
-    $stmt->bindParam(2, $_POST['nama_mobil']);
-    $stmt->bindParam(3, $_POST['jenis_mobil']);
-    $stmt->bindParam(4, $_POST['kecepatan_kosong']);
-    $stmt->bindParam(5, $_POST['kecepatan_muatan']);
+    $stmt->bindParam(2, $_POST['jenis_mobil']);
+    $stmt->bindParam(3, $kateg);
+    $stmt->bindParam(4, $kecepatan_kosong);
+    $stmt->bindParam(5, $kecepatan_muatan);
     $stmt->bindParam(6, $_POST['status_keaktifan']);
     $stmt->bindParam(7, $_GET['id']);
     if ($stmt->execute()) {
@@ -60,21 +96,17 @@ if (isset($_GET['id'])) {
             </a>
         </div>
         <div class="card-body">
-            <form action="" method="post"" id="updateForm">
+            <form action="" method="post"" id=" updateForm">
                 <div class="form-group">
                     <label for="plat">Plat</label>
                     <input type="text" name="plat" class="form-control" value="<?= $row['plat'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="nama_mobil">Nama Mobil</label>
-                    <input type="text" name="nama_mobil" class="form-control" value="<?= $row['nama_mobil'] ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="jenis_mobil">Jenis Mobil</label>
                     <select name="jenis_mobil" class="form-control" required>
                         <option value="">--Pilih Jenis Mobil--</option>
                         <?php
-                        $options = array('S', 'M', 'L', 'XL');
+                        $options = array('GRAN MAX', 'L300', 'ENGKEL', 'PS', 'FUSO');
                         foreach ($options as $option) {
                             $selected = $row['jenis_mobil'] == $option ? 'selected' : '';
                             echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
@@ -83,15 +115,7 @@ if (isset($_GET['id'])) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="kecepatan_kosong">Kecepatan Kosong</label>
-                    <input type="text" name="kecepatan_kosong" class="form-control" value="<?= $row['kecepatan_kosong'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="kecepatan_muatan">Kecepatan Muatan</label>
-                    <input type="text" name="kecepatan_muatan" class="form-control" value="<?= $row['kecepatan_muatan'] ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="status_keaktifan">Jenis Mobil</label>
+                    <label for="status_keaktifan">Status Keaktifan</label>
                     <select name="status_keaktifan" class="form-control" required>
                         <option value="">--Pilih Status Keaktifan--</option>
                         <?php
