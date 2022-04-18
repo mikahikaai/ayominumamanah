@@ -133,7 +133,7 @@ if (isset($_SESSION['hasil'])) {
                             case '0':
                                 $status = 'Belum Divalidasi';
                             case '1':
-                                $status = 'Divalidasi Oleh';
+                                $status = 'Divalidasi';
                                 break;
                             case '2':
                                 $status = 'Perlu ACC Uang makan';

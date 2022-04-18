@@ -84,7 +84,6 @@ include_once "partials/scripts.php";
 
 <script src="plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
 
-
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {

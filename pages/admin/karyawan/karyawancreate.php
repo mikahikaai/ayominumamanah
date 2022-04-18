@@ -158,7 +158,7 @@ if ($stmt->rowCount() > 0) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" required>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" style="text-transform: uppercase;" required>
                         </div>
                     </div>
                 </div>

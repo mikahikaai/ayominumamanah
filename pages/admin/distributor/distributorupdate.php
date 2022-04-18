@@ -104,12 +104,25 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="status_keaktifan">Status Keaktifan</label>
+                            <select name="status_keaktifan" class="form-control" required>
+                                <option value="">--Pilih Status Keaktifan--</option>
+                                <?php
+                                $options = array('AKTIF', 'NON AKTIF');
+                                foreach ($options as $option) {
+                                    $selected = $row['status_keaktifan'] == $option ? 'selected' : '';
+                                    echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <!-- <div class="form-group">
                             <label for="kateg">Kategori Jarak</label>
                             <input type="text" name="kateg" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= $row['kateg']; ?>" required>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="min_order">Minimal Order</label>
@@ -122,20 +135,8 @@ if (isset($_GET['id'])) {
                             <input type="text" name="ongkir" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= $row['ongkir']; ?>" required>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="status_keaktifan">Status Keaktifan</label>
-                    <select name="status_keaktifan" class="form-control" required>
-                        <option value="">--Pilih Status Keaktifan--</option>
-                        <?php
-                        $options = array('AKTIF', 'NON AKTIF');
-                        foreach ($options as $option) {
-                            $selected = $row['status_keaktifan'] == $option ? 'selected' : '';
-                            echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+                </div> -->
+
                 <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal
                 </a>

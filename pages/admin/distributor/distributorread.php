@@ -81,9 +81,6 @@ if (isset($_SESSION['hasil'])) {
                         <th>Alamat Dropping</th>
                         <th>No. Telepon</th>
                         <th>Jarak</th>
-                        <th>Kateg</th>
-                        <th>Minimal Order</th>
-                        <th>Ongkir</th>
                         <th>Status Keaktifan</th>
                         <th style="display: flex;">Opsi</th>
                     </tr>
@@ -111,9 +108,6 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $row['alamat_dropping'] ?></td>
                             <td><?= $row['no_telepon'] ?></td>
                             <td><?= $row['jarak'] ?></td>
-                            <td><?= $row['kateg'] ?></td>
-                            <td><?= $row['min_order'] ?></td>
-                            <td><?= $row['ongkir'] ?></td>
                             <td><?= $row['status_keaktifan'] ?></td>
                             <td>
                                 <a href="?page=distributorupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">

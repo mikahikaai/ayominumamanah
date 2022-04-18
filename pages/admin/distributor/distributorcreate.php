@@ -28,10 +28,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(3, $_POST['paket']);
         $stmt->bindParam(4, $alamat_dropping_distributor);
         $stmt->bindParam(5, $_POST['no_telepon']);
-        $stmt->bindParam(6, $_POST['kateg']);
         $stmt->bindParam(7, $_POST['jarak']);
-        $stmt->bindParam(8, $_POST['min_order']);
-        $stmt->bindParam(9, $_POST['ongkir']);
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menyimpan Data";
@@ -98,10 +95,7 @@ if ($stmt->rowCount() > 0) {
                     <label for="alamat_dropping">Alamat Dropping</label>
                     <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" style="text-transform: uppercase;" required>
                 </div>
-                <div class="form-group">
-                    <label for="no_telepon">No. Telepon</label>
-                    <input type="text" name="no_telepon" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['no_telepon'] : '' ?>" required>
-                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -111,12 +105,18 @@ if ($stmt->rowCount() > 0) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="no_telepon">No. Telepon</label>
+                            <input type="text" name="no_telepon" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['no_telepon'] : '' ?>" required>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
                             <label for="kateg">Kategori Jarak</label>
                             <input type="text" name="kateg" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= isset($_POST['button_create']) ? $_POST['kateg'] : '' ?>" required>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="min_order">Minimal Order</label>
@@ -129,7 +129,7 @@ if ($stmt->rowCount() > 0) {
                             <input type="text" name="ongkir" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= isset($_POST['button_create']) ? $_POST['ongkir'] : '' ?>" required>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
                     <i class="fa fa-times"></i> Batal
                 </a>
