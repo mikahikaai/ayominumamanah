@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])){
+  echo '<meta http-equiv="refresh" content="0;url=/login"/>';
+  die();
+}
+
 $host = $_SERVER['REQUEST_URI'];
 // die();
 ?>

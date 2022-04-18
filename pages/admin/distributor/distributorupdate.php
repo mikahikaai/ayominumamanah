@@ -3,18 +3,15 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_edit'])) {
-    $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, kateg=?, jarak=?, min_order=?, ongkir=?, status_keaktifan=?  where id=?";
+    $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?  WHERE id=?";
     $stmt = $db->prepare($updatesql);
     $stmt->bindParam(1, $_POST['nama']);
     $stmt->bindParam(2, $_POST['paket']);
     $stmt->bindParam(3, $_POST['alamat_dropping']);
     $stmt->bindParam(4, $_POST['no_telepon']);
-    $stmt->bindParam(5, $_POST['kateg']);
-    $stmt->bindParam(6, $_POST['jarak']);
-    $stmt->bindParam(7, $_POST['min_order']);
-    $stmt->bindParam(8, $_POST['ongkir']);
-    $stmt->bindParam(9, $_POST['status_keaktifan']);
-    $stmt->bindParam(10, $_GET['id']);
+    $stmt->bindParam(5, $_POST['jarak']);
+    $stmt->bindParam(6, $_POST['status_keaktifan']);
+    $stmt->bindParam(7, $_GET['id']);
 
     if ($stmt->execute()) {
         $_SESSION['hasil_update'] = true;

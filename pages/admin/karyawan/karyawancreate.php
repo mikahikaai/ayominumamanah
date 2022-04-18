@@ -37,6 +37,7 @@ if ($stmt->rowCount() > 0) {
 
         $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
         $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
+        $alamat = strtoupper($_POST['alamat']);
 
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
         alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan) values
@@ -52,7 +53,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(5, $_POST['tempat_lahir']);
         $stmt->bindParam(6, $tanggal_lahir);
         $stmt->bindParam(7, $_POST['jenis_kelamin']);
-        $stmt->bindParam(8, $_POST['alamat']);
+        $stmt->bindParam(8, $alamat);
         $stmt->bindParam(9, $_POST['agama']);
         $stmt->bindParam(10, $_POST['status']);
         $stmt->bindParam(11, $_POST['jabatan']);
@@ -158,13 +159,13 @@ if ($stmt->rowCount() > 0) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" style="text-transform: uppercase;" required>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>"  required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
-                    <input type="text" name="alamat" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" required>
+                    <input type="text" name="alamat" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" style="text-transform: uppercase;" required>
                 </div>
                 <div class="row">
                     <div class="col-md-6">

@@ -18,7 +18,7 @@ if ($stmt->rowCount() > 0) {
 } else {
 
     if (isset($_POST['button_create'])) {
-        $insertsql = "insert into distributor (id_da, nama, paket, alamat_dropping, no_telepon, kateg, jarak, min_order, ongkir) values (?,?,?,?,?,?,?,?,?)";
+        $insertsql = "insert into distributor (id_da, nama, paket, alamat_dropping, no_telepon, jarak) values (?,?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
         $id_da = strtoupper($_POST['id_da']);
         $nama_distributor = strtoupper($_POST['nama']);
@@ -28,7 +28,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(3, $_POST['paket']);
         $stmt->bindParam(4, $alamat_dropping_distributor);
         $stmt->bindParam(5, $_POST['no_telepon']);
-        $stmt->bindParam(7, $_POST['jarak']);
+        $stmt->bindParam(6, $_POST['jarak']);
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
             $_SESSION['pesan'] = "Berhasil Menyimpan Data";

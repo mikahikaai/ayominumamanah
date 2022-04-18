@@ -89,6 +89,10 @@ if (isset($_GET['page'])) {
         case 'penggajianrekapbulan':
             file_exists('pages/admin/penggajianrekapbulan.php') ? include 'pages/admin/penggajianrekapbulan.php' : include 'pages/404.php';
             break;
+        case 'logout':
+            file_exists('pages/logout.php') ? include 'pages/logout.php' : include 'pages/404.php';
+            $title = 'logout';
+            break;
         default:
             include 'pages/404.php';
             $title = '404 Halaman Tidak Ditemukan';
