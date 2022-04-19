@@ -5,6 +5,15 @@ if (!isset($_SESSION['jabatan'])){
   die();
 }
 
+if (isset($_SESSION['jabatan'])) {
+  if ($_SESSION['jabatan'] == "ADMINKEU") {
+      echo '<meta http-equiv="refresh" content="0;url=/"/>';
+  } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
+      echo '<meta http-equiv="refresh" content="0;url=/agung.php"/>';
+  }
+  die();
+}
+
 $host = $_SERVER['REQUEST_URI'];
 // die();
 ?>
