@@ -6,13 +6,11 @@ if (!isset($_SESSION['jabatan'])){
 }
 
 if (isset($_SESSION['jabatan'])) {
-  if ($_SESSION['jabatan'] == "ADMINKEU") {
-      echo '<meta http-equiv="refresh" content="0;url=/"/>';
-  } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
-      echo '<meta http-equiv="refresh" content="0;url=/agung.php"/>';
+  } if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
+      echo 'ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !';
+      echo '<meta http-equiv="refresh" content="3;url=/login.php"/>';
+      die();
   }
-  die();
-}
 
 $host = $_SERVER['REQUEST_URI'];
 // die();
