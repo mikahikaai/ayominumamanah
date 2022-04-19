@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])){
+if (!isset($_SESSION['jabatan'])){
   echo '<meta http-equiv="refresh" content="0;url=/login"/>';
   die();
 }

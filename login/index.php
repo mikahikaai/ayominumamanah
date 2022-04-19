@@ -4,8 +4,18 @@ $database = new Database;
 $db = $database->getConnection();
 session_start();
 
+$errorlogin = false;
+if (isset($_SESSION['jabatan'])) {
+    if ($_SESSION['jabatan'] == "ADMINKEU") {
+        echo '<meta http-equiv="refresh" content="0;url=/"/>';
+    } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
+        echo '<meta http-equiv="refresh" content="0;url=/agung.php"/>';
+    }
+    die();
+}
+
 if (isset($_POST['login'])) {
-    $loginsql = "SELECT * FROM karyawan WHERE username=? and password=? LIMIT 1";
+    $loginsql = "SELECT * FROM karyawan WHERE username=? and password=?";
     $stmt = $db->prepare($loginsql);
     $stmt->bindParam(1, $_POST['username']);
     $md5 = md5($_POST['password']);
@@ -16,18 +26,23 @@ if (isset($_POST['login'])) {
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['username'] = $row['username'];
-        echo '<meta http-equiv="refresh" content="0;url=http://192.168.0.88/"/>';
-        die();
+        $_SESSION['jabatan'] = $row['jabatan'];
+        $_SESSION['nama'] = $row['nama'];
+        if ($_SESSION['jabatan'] == "ADMINKEU") {
+            echo '<meta http-equiv="refresh" content="0;url=../"/>';
+            die();
+        } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER") {
+            echo '<meta http-equiv="refresh" content="0;url=../agung.php"/>';
+            die();
+        }
     } else {
-?>
-        <div class="alert alert-danger alert-dismissable">
-            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
-            <h5><i class="icon fas fa-times"></i>Gagal</h5>
-            Username atau password salah
-        </div>
-<?php
+        $errorlogin = true;
     }
 }
+
+
+// var_dump($errorlogin);
+// die();
 ?>
 <!doctype html>
 <html lang="en">
@@ -37,11 +52,15 @@ if (isset($_POST['login'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="icon" href="../images/logooo cropped resized compressed.png" type="image/x-icon">
+
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 
 </head>
 
@@ -56,6 +75,13 @@ if (isset($_POST['login'])) {
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="login-wrap p-0">
+                        <div style='display: <?= $errorlogin == true ? "block;" : "none;"; ?>'>
+                            <div class="alert alert-danger alert-dismissable">
+                                <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
+                                <h5><i class="fas fa-times"></i> Gagal</h5>
+                                Username atau password salah
+                            </div>
+                        </div>
                         <form action="" method="POST" class="signin-form">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Username" name="username" required>
