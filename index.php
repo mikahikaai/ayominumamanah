@@ -3,14 +3,13 @@ session_start();
 if (!isset($_SESSION['jabatan'])){
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
-}
-
-if (isset($_SESSION['jabatan'])) {
-  } if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
-      echo 'ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !';
-      echo '<meta http-equiv="refresh" content="3;url=/login.php"/>';
-      die();
+} else {
+  if ($_SESSION['jabatan'] != "ADMINKEU"){
+    echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
+    echo '<meta http-equiv="refresh" content="2;url=/login.php"/>';
+    die();
   }
+}
 
 $host = $_SERVER['REQUEST_URI'];
 // die();
