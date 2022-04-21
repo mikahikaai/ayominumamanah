@@ -40,8 +40,8 @@ if ($stmt->rowCount() > 0) {
         $alamat = strtoupper($_POST['alamat']);
 
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
-        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan) values
-        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan, foto) values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $db->prepare($insertsql);
         $nama_upper = strtoupper($_POST['nama']);
         $username = strtolower($_POST['username']);
@@ -62,6 +62,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(14, $_POST['sim']);
         $stmt->bindParam(15, $_POST['status_karyawan']);
         $stmt->bindParam(16, $_POST['upah_borongan']);
+        $stmt->bindParam(17, $_POST['foto']);
 
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
@@ -159,7 +160,7 @@ if ($stmt->rowCount() > 0) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>"  required>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['tanggal_lahir'] : '' ?>" required>
                         </div>
                     </div>
                 </div>
@@ -276,6 +277,10 @@ if ($stmt->rowCount() > 0) {
                             <input type="text" name="upah_borongan" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['upah_borongan'] : '' ?>" required>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="foto">URL FOTO</label>
+                    <input type="text" name="foto" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['foto'] : '' ?>" >
                 </div>
                 <button type="submit" name="button_create" class="btn btn-success btn-sm float-right">
                     <i class="fa fa-save"></i> Simpan

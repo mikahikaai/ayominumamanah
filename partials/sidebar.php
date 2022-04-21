@@ -11,7 +11,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="https://drive.adisasoftwaredev.com/apps/sharingpath/u1796449_rianseptiadi/ayominumamanah/rian_septiadi-128x128.jpg" class="img-circle elevation-2" alt="User Image">
+        <img src="<?= $_SESSION['foto']; ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <a href="#" target="_Blank" class="d-block"><?= $_SESSION['nama'];?></a>
