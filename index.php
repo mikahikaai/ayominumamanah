@@ -1,10 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['jabatan'])){
+if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
 } else {
-  if ($_SESSION['jabatan'] != "ADMINKEU"){
+  if ($_SESSION['jabatan'] != "ADMINKEU") {
     echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
     echo '<meta http-equiv="refresh" content="2;url=/login.php"/>';
     die();
@@ -58,6 +58,19 @@ include_once "partials/scripts.php";
 
   input[name="bongkar"] {
     transform: scale(1.5);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  .preview {
+    overflow: hidden;
+    width: 160px;
+    height: 160px;
+    margin: 10px;
+    border: 1px solid red;
   }
 </style>
 
