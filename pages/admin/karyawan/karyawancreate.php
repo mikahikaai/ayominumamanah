@@ -38,6 +38,7 @@ if ($stmt->rowCount() > 0) {
         $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
         $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
         $alamat = strtoupper($_POST['alamat']);
+        $tempat_lahir = strtoupper($_POST['tempat_lahir']);
 
         $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
         alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan, foto) values
@@ -50,7 +51,7 @@ if ($stmt->rowCount() > 0) {
         $md5 = md5($_POST['password']);
         $stmt->bindParam(3, $md5);
         $stmt->bindParam(4, $_POST['nik']);
-        $stmt->bindParam(5, $_POST['tempat_lahir']);
+        $stmt->bindParam(5, $tempat_lahir);
         $stmt->bindParam(6, $tanggal_lahir);
         $stmt->bindParam(7, $_POST['jenis_kelamin']);
         $stmt->bindParam(8, $alamat);
@@ -62,7 +63,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(14, $_POST['sim']);
         $stmt->bindParam(15, $_POST['status_karyawan']);
         $stmt->bindParam(16, $_POST['upah_borongan']);
-        $stmt->bindParam(17, $_SESSION['foto']);
+        $stmt->bindParam(17, $_SESSION['foto_upload']);
 
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
