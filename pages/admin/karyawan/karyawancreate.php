@@ -62,7 +62,7 @@ if ($stmt->rowCount() > 0) {
         $stmt->bindParam(14, $_POST['sim']);
         $stmt->bindParam(15, $_POST['status_karyawan']);
         $stmt->bindParam(16, $_POST['upah_borongan']);
-        $stmt->bindParam(17, $_POST['image']);
+        $stmt->bindParam(17, $_SESSION['foto']);
 
         if ($stmt->execute()) {
             $_SESSION['hasil_create'] = true;
@@ -283,10 +283,8 @@ if ($stmt->rowCount() > 0) {
                     <input type="text" name="foto" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['foto'] : '' ?>" >
                 </div> -->
                 <div class="form-group">
-                    <form>
-                        <h5>Upload Foto</h5>
-                        <input type="file" name="image" class="image">
-                    </form>
+                    <h5>Upload Foto</h5>
+                    <input type="file" name="image" class="image">
                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
