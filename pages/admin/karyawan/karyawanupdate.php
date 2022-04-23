@@ -27,11 +27,12 @@ if (isset($_POST['button_edit'])) {
         alamat=?, agama=?, status=?, gol_darah=?, jabatan=?, no_telepon=?, sim=?, status_karyawan=?,
         status_keaktifan=?, upah_borongan=?  where id=?";
         $alamat = strtoupper($_POST['alamat']);
+        $tempat_lahir = strtoupper($_POST['tempat_lahir']);
         $stmt = $db->prepare($updatesql);
         $stmt->bindParam(1, $password);
         $stmt->bindParam(2, $_POST['nama']);
         $stmt->bindParam(3, $_POST['nik']);
-        $stmt->bindParam(4, $_POST['tempat_lahir']);
+        $stmt->bindParam(4, $tempat_lahir);
         $stmt->bindParam(5, $tanggal_lahir);
         $stmt->bindParam(6, $_POST['jenis_kelamin']);
         $stmt->bindParam(7, $alamat);
@@ -142,13 +143,13 @@ if (isset($_POST['button_edit'])) {
                         <div class="form-group">
                             <label for="tanggal_lahir">Tanggal Lahir</label>
                             <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= $row['tanggal_lahir']?>" required>
+                            <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= $row['tanggal_lahir'] ?>" required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
-                    <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat'])?>" maxlength="0" required>
+                    <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat']) ?>" maxlength="0" required>
                 </div>
                 <div class="row">
                     <div class="col-md-6">

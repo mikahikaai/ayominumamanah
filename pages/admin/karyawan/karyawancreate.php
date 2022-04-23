@@ -279,10 +279,6 @@ if ($stmt->rowCount() > 0) {
                         </div>
                     </div>
                 </div>
-                <!-- <div class="form-group">
-                    <label for="foto">URL FOTO</label>
-                    <input type="text" name="foto" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['foto'] : '' ?>" >
-                </div> -->
                 <div class="form-group">
                     <h5>Upload Foto</h5>
                     <input type="file" name="image" class="image">
@@ -298,11 +294,11 @@ if ($stmt->rowCount() > 0) {
                                 <div class="modal-body">
                                     <div class="img-container">
                                         <div class="row">
-                                            <div class="col-md-8">
+                                            <div class="col-md-7">
                                                 <!--  default image where we will set the src via jquery-->
                                                 <img id="image">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
                                                 <div class="preview"></div>
                                             </div>
                                         </div>
