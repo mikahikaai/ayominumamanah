@@ -6,6 +6,7 @@ if (isset($_SESSION['hasil_update_pw'])) {
     <div id='hasil_update_pw'></div>
 <?php
   }
+  unset($_SESSION['hasil_update_pw']);
 } ?>
 
 <div class="content-header">

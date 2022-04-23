@@ -90,7 +90,7 @@ if (isset($_GET['page'])) {
             file_exists('pages/admin/penggajianrekapbulan.php') ? include 'pages/admin/penggajianrekapbulan.php' : include 'pages/404.php';
             break;
         case 'ubahpassword':
-            file_exists('pages/admin/ubahpassword.php') ? include 'pages/admin/ubahpassword.php' : include 'pages/404.php';
+            file_exists('ubahpassword.php') ? include 'ubahpassword.php' : include 'pages/404.php';
             break;
         default:
             include 'pages/404.php';
