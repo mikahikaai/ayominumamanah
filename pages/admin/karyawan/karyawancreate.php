@@ -283,7 +283,7 @@ if ($stmt->rowCount() > 0) {
                     <h5>Upload Foto</h5>
                     <input type="file" name="image" class="image">
                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-dialog modal-md" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalLabel">Crop image</h5>
@@ -294,11 +294,11 @@ if ($stmt->rowCount() > 0) {
                                 <div class="modal-body">
                                     <div class="img-container">
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-lg-7 col-7">
                                                 <!--  default image where we will set the src via jquery-->
                                                 <img id="image">
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-lg-5 col-5">
                                                 <div class="preview"></div>
                                             </div>
                                         </div>
