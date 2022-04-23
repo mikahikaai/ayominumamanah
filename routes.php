@@ -89,6 +89,9 @@ if (isset($_GET['page'])) {
         case 'penggajianrekapbulan':
             file_exists('pages/admin/penggajianrekapbulan.php') ? include 'pages/admin/penggajianrekapbulan.php' : include 'pages/404.php';
             break;
+        case 'ubahpassword':
+            file_exists('pages/admin/ubahpassword.php') ? include 'pages/admin/ubahpassword.php' : include 'pages/404.php';
+            break;
         default:
             include 'pages/404.php';
             $title = '404 Halaman Tidak Ditemukan';

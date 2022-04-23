@@ -25,6 +25,7 @@ if (isset($_POST['login'])) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($stmt->rowCount() > 0) {
+        $_SESSION['id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['jabatan'] = $row['jabatan'];
         $_SESSION['nama'] = $row['nama'];

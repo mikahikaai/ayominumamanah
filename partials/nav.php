@@ -12,7 +12,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item">Pengaturan Pengguna</span>
-                <a href="#" class="dropdown-item">
+                <a href="?page=ubahpassword" class="dropdown-item">
                     <i class="fas fa-key mr-2"></i> Ubah Password
                 </a>
                 <a href="/logout.php" class="dropdown-item" onClick="javascript: return confirm('Konfirmasi akan logout?');">

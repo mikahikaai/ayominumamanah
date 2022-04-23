@@ -1,4 +1,12 @@
 <!-- Content Header (Page header) -->
+<?php
+if (isset($_SESSION['hasil_update_pw'])) {
+  if ($_SESSION['hasil_update_pw']) {
+?>
+    <div id='hasil_update_pw'></div>
+<?php
+  }
+} ?>
 
 <div class="content-header">
   <div class="container-fluid">
@@ -85,4 +93,19 @@
     <!-- /.row -->
   </div><!-- /.container-fluid -->
 </div>
+
+<?php
+include_once "partials/scriptdatatables.php";
+?>
+
+<script>
+  if ($('div#hasil_update_pw').length) {
+    Swal.fire({
+      title: 'Updated!',
+      text: 'Password berhasil diubah',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  }
+</script>
 <!-- /.content -->

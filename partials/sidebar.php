@@ -1,5 +1,5 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4 vh-100 position-fixed">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 min-vh-100 position-fixed">
   <!-- Brand Logo -->
   <a href="/" class="brand-link">
     <img src="dist/img/AdminLTELogo.png" alt="AMDK Amanah" class="brand-image img-circle elevation-3" style="opacity: .8">
