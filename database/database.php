@@ -7,6 +7,8 @@ class Database
 
     function __construct()
     {
+        // tes
+
         // offline
         // $this->host = 'localhost';
         // $this->username = 'root';
