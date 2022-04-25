@@ -7,7 +7,7 @@ class Database
 
     function __construct()
     {
-        // tes123anggut
+        // tes123anggutanggut
 
         // offline
         // $this->host = 'localhost';
