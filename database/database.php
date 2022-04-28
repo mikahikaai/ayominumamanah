@@ -10,16 +10,16 @@ class Database
         // 1357
 
         // offline
-        // $this->host = 'localhost';
-        // $this->username = 'root';
-        // $this->password = '';
-        // $this->db_name = 'ayominumamanah';
+        $this->host = 'localhost';
+        $this->username = 'root';
+        $this->password = '';
+        $this->db_name = 'ayominumamanah';
 
         // online
-        $this->host = 'srv158.niagahoster.com';
-        $this->username = 'u1796449_rianseptiadi';
-        $this->password = 'Rtbcvyfhgnpozx1!';
-        $this->db_name = 'u1796449_ayominumamanah';
+        // $this->host = 'srv158.niagahoster.com';
+        // $this->username = 'u1796449_rianseptiadi';
+        // $this->password = 'Rtbcvyfhgnpozx1!';
+        // $this->db_name = 'u1796449_ayominumamanah';
     }
 
     public function getConnection()

@@ -1,5 +1,21 @@
 <!-- Content Header (Page header) -->
 <?php
+$database = new Database;
+$db = $database->getConnection();
+
+$selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
+LEFT JOIN karyawan k1 on d.driver = k1.id
+LEFT JOIN karyawan k2 on d.helper_1 = k2.id
+LEFT JOIN karyawan k3 on d.helper_2 = k3.id
+LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
+LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
+LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
+WHERE jam_datang IS NULL
+ORDER BY estimasi_jam_datang DESC; ";
+$stmt = $db->prepare($selectsql);
+$stmt->execute();
+
 if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
 ?>
@@ -26,6 +42,8 @@ if (isset($_SESSION['hasil_update_pw'])) {
 </div>
 <!-- /.content-header -->
 
+
+
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
@@ -46,150 +64,53 @@ if (isset($_SESSION['hasil_update_pw'])) {
           <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
 
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="row">
-
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                    <h5 class="card-header">No. Perjalanan</h5>
-                      <div class="card-body">
-                        <p class="card-text">Tujuan : </p>
-                        <p class="card-text">Tim Pengirim : </p>
-                        <p class="card-text">Muatan : </p>
-                        <p class="card-text">Estimasi Datang : </p>
-                        <p class="card-text">Terhadap Waktu : </p>
-                        <a href="?page=distribusiupdate&id=" class="btn btn-primary">Ubah</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=42b2d9ae6feb9c4ff98b9133addfb698">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=3d2e8a2039c06dd26db977fe6ac6186a">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532781914607-2031eca2f00d?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=7c625ea379640da3ef2e24f20df7ce8d">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532771098148-525cefe10c23?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=3f317c1f7a16116dec454fbc267dd8e4">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532715088550-62f09305f765?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ebadb044b374504ef8e81bdec4d0e840">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=0754ab085804ae8a3b562548e6b4aa2e">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532771098148-525cefe10c23?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=3f317c1f7a16116dec454fbc267dd8e4">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ee8417f0ea2a50d53a12665820b54e23">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532777946373-b6783242f211?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=8ac55cf3a68785643998730839663129">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1532763303805-529d595877c5?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=5ee4fd5d19b40f93eadb21871757eda6">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                    <div class="card">
-                      <img class="img-fluid" alt="100%x280" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ee8417f0ea2a50d53a12665820b54e23">
-                      <div class="card-body">
-                        <h4 class="card-title">Special title treatment</h4>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                      </div>
-
+              <?php
+              $no = 1;
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                // var_dump($no);
+                // die();
+                $supir = $row['supir'] == NULL ? '-' : $row['supir'];
+                $helper1 = $row['helper1'] == NULL ? '-' : $row['helper1'];
+                $helper2 = $row['helper2'] == NULL ? '-' : $row['helper2'];
+                $distro1 = $row['distro1'] == NULL ? '-' : $row['distro1'];
+                $distro2 = $row['distro2'] == NULL ? '-' : $row['distro2'];
+                $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
+                $bongkar = $row['bongkar'] == 0 ? 'TIDAK' : 'YA';
+                $total_cup = $row['cup1'] + $row['cup2'] + $row['cup3'];
+                $total_330 = $row['a3301'] + $row['a3302'] + $row['a3303'];
+                $total_500 = $row['a5001'] + $row['a5002'] + $row['a5003'];
+                $total_600 = $row['a6001'] + $row['a6002'] + $row['a6003'];
+                $total_refill = $row['refill1'] + $row['refill2'] + $row['refill3'];
+                $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
+                if ($no == 1){
+                  echo  "<div class='carousel-item active'>";
+                  echo  '<div class="row">';
+                } else if ($no % 4 == 1) {
+                  echo  "<div class='carousel-item'>";
+                  echo  '<div class="row">';
+                }
+              ?>
+                <div class="col-md-3 mb-3">
+                  <div class="card">
+                    <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
+                    <div class="card-body">
+                      <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
+                      <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
+                      <p class="card-text">Muatan :<br>Cup = <?= $total_cup; ?>, A330 = <?= $total_330 ?>, A500 = <?= $total_500 ?>, A600 = <?= $total_600 ?>, Refill = <?= $total_refill ?> </p>
+                      <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
+                      <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
+                      <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary">Ubah</a>
                     </div>
                   </div>
                 </div>
-              </div>
+              <?php
+                if ($no % 4 == 0) {
+                  echo  '</div>';
+                  echo  '</div>';
+                }
+                $no++;
+              }
+              ?>
             </div>
           </div>
         </div>
