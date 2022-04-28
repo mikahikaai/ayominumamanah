@@ -8,18 +8,22 @@ class Database
     function __construct()
     {
         // 1357
+        $online = array("srv158.niagahoster.com", "u1796449_rianseptiadi", "Rtbcvyfhgnpozx1!", "u1796449_ayominumamanah");
+        $offline = array("localhost", "root", "", "ayominumamanah");
 
-        // offline
-        $this->host = 'localhost';
-        $this->username = 'root';
-        $this->password = '';
-        $this->db_name = 'ayominumamanah';
+        $koneksi = 1; // online
 
-        // online
-        // $this->host = 'srv158.niagahoster.com';
-        // $this->username = 'u1796449_rianseptiadi';
-        // $this->password = 'Rtbcvyfhgnpozx1!';
-        // $this->db_name = 'u1796449_ayominumamanah';
+        if ($koneksi == 1) {
+            $this->host = $online[0];
+            $this->username = $online[1];
+            $this->password = $online[2];
+            $this->db_name = $online[3];
+        } else {
+            $this->host = $offline[0];
+            $this->username = $offline[1];
+            $this->password = $offline[2];
+            $this->db_name = $offline[3];
+        }
     }
 
     public function getConnection()
