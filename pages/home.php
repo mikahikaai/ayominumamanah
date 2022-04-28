@@ -87,7 +87,7 @@ if (isset($_SESSION['hasil_update_pw'])) {
                 echo  '<div class="row">';
               }
             ?>
-              <div class="col-md-3 mb-3 d-flex align-item-stretch">
+              <div class="col-md-3 mb-3 d-flex align-items-stretch">
                 <div class="card shadow-sm">
                   <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
                   <div class="card-body">
