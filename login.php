@@ -6,7 +6,7 @@ session_start();
 
 $errorlogin = false;
 if (isset($_SESSION['jabatan'])) {
-    if ($_SESSION['jabatan'] == "ADMINKEU") {
+    if ($_SESSION['jabatan'] == "ADMINKEU" ) {
         echo '<meta http-equiv="refresh" content="0;url=/"/>';
     } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
         echo '<meta http-equiv="refresh" content="0;url=/agung.php"/>';
