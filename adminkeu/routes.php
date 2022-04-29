@@ -74,23 +74,8 @@ if (isset($_GET['page'])) {
             file_exists('pages/karyawan/karyawandelete.php') ? include 'pages/karyawan/karyawandelete.php' : include '../pages/404.php';
             $title = 'Karyawan';
             break;
-        case 'karyawanbagian':
-            file_exists('pages/karyawanbagian.php') ? include 'pages/karyawanbagian.php' : include '../pages/404.php';
-            break;
-        case 'karyawanjabatan':
-            file_exists('pages/karyawanjabatan.php') ? include 'pages/karyawanjabatan.php' : include '../pages/404.php';
-            break;
-        case 'penggajianrekap':
-            file_exists('pages/penggajianrekap.php') ? include 'pages/penggajianrekap.php' : include '../pages/404.php';
-            break;
-        case 'penggajianrekaptahun':
-            file_exists('pages/penggajianrekaptahun.php') ? include 'pages/penggajianrekaptahun.php' : include '../pages/404.php';
-            break;
-        case 'penggajianrekapbulan':
-            file_exists('pages/penggajianrekapbulan.php') ? include 'pages/penggajianrekapbulan.php' : include '../pages/404.php';
-            break;
         case 'ubahpassword':
-            file_exists('pages/ubahpassword.php') ? include 'pages/ubahpassword.php' : include '../pages/404.php';
+            file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
             break;
         case 'spvhome':
             file_exists('pages/spvdist/home.php') ? include 'pages/spvdist/home.php' : include '../pages/404.php';
