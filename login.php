@@ -30,6 +30,7 @@ if (isset($_POST['login'])) {
         $_SESSION['jabatan'] = $row['jabatan'];
         $_SESSION['nama'] = $row['nama'];
         $_SESSION['foto'] = $row['foto'];
+        $_SESSION['login_sukses'] = true;
         if ($_SESSION['jabatan'] == "ADMINKEU") {
             echo '<meta http-equiv="refresh" content="0;url=../"/>';
             die();

@@ -21,10 +21,23 @@ if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
 ?>
     <div id='hasil_update_pw'></div>
-<?php
+  <?php
   }
   unset($_SESSION['hasil_update_pw']);
-} ?>
+}
+
+if (isset($_SESSION['login_sukses'])) {
+  if ($_SESSION['login_sukses']) {
+  ?>
+    <div id='login_sukses'></div>
+<?php
+  }
+  unset($_SESSION['login_sukses']);
+}
+
+
+
+?>
 
 <!-- Main content -->
 <div class="content pt-3">
@@ -84,7 +97,7 @@ if (isset($_SESSION['hasil_update_pw'])) {
                 </div>
               </div>
             <?php
-              if ($no % 4 == 0 OR $no == $num_rows) {
+              if ($no % 4 == 0 or $no == $num_rows) {
                 echo  '</div>';
                 echo  '</div>';
               }
@@ -127,5 +140,39 @@ include_once "partials/scriptdatatables.php";
       confirmButtonText: 'OK'
     })
   }
+
+  if ($('div#login_sukses').length) {
+    let timerInterval
+    let nama = "<?= ucfirst($_SESSION['nama']); ?>"
+    Swal.fire({
+      showConfirmButton: false,
+      width: 'auto',
+      position: 'top-end',
+      html: '<h5>Selamat Datang ' + nama + ' !</h5>',
+      timer: 3000,
+      timerProgressBar: true,
+
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    })
+  };
+
+  // $().ready(function() {
+  //   let timerInterval
+  //   let nama = "<?= ucfirst($_SESSION['nama']); ?>"
+  //   Swal.fire({
+  //     showConfirmButton: false,
+  //     width: 'auto',
+  //     position: 'top-end',
+  //     html: '<h5>Selamat Datang ' + nama + ' !</h5>',
+  //     timer: 3000,
+  //     timerProgressBar: true,
+
+  //     willClose: () => {
+  //       clearInterval(timerInterval)
+  //     }
+  //   })
+  // });
 </script>
 <!-- /.content -->
