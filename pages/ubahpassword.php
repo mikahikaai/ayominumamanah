@@ -85,7 +85,7 @@ if (isset($_POST['button_edit'])) {
                 <button type="submit" name="button_edit" class="btn btn-success btn-sm">
                     <i class="fa fa-save"></i> Simpan
                 </button>
-                <a href="?page=karyawanread" class="btn btn-danger btn-sm mr-1">
+                <a href="?page=home" class="btn btn-danger btn-sm mr-1">
                     <i class="fa fa-times"></i> Batal
                 </a>
             </form>
