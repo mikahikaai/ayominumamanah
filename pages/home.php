@@ -15,6 +15,7 @@ WHERE jam_datang IS NULL
 ORDER BY estimasi_jam_datang DESC; ";
 $stmt = $db->prepare($selectsql);
 $stmt->execute();
+$num_rows = $stmt->rowCount();
 
 if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
@@ -42,7 +43,6 @@ if (isset($_SESSION['hasil_update_pw'])) {
       </div>
       <div class="col-12">
         <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-
           <div class="carousel-inner">
             <?php
             $no = 1;
@@ -84,7 +84,7 @@ if (isset($_SESSION['hasil_update_pw'])) {
                 </div>
               </div>
             <?php
-              if ($no % 4 == 0) {
+              if ($no % 4 == 0 OR $no == $num_rows) {
                 echo  '</div>';
                 echo  '</div>';
               }
@@ -94,9 +94,9 @@ if (isset($_SESSION['hasil_update_pw'])) {
           </div>
         </div>
       </div>
-    </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
 </div>
 
 <?php

@@ -72,9 +72,6 @@ include_once "partials/scripts.php";
     margin: 10px;
     border: 1px solid red;
   }
-   /* .card {
-     height: 500px;
-   } */
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -102,7 +99,6 @@ include_once "partials/scripts.php";
 
     <?php include "partials/control.php"; ?>
     <?php include "partials/footer.php"; ?>
-
   </div>
   <!-- ./wrapper -->
 
