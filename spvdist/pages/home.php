@@ -93,7 +93,7 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
                     <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
                   </div>
-                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Ubah</a>
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Validasi</a>
                 </div>
               </div>
             <?php
@@ -113,7 +113,7 @@ if (isset($_SESSION['login_sukses'])) {
 </div>
 
 <?php
-include_once "partials/scriptdatatables.php";
+include_once "../partials/scriptdatatables.php";
 ?>
 
 <script>
