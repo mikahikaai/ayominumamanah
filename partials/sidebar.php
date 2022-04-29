@@ -1,12 +1,12 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4 min-vh-100 position-fixed">
   <!-- Brand Logo -->
-  <?php 
-    if (isset($_SESSION['jabatan'])){
-      if ($_SESSION['jabatan'] == "ADMINKEU"){
-        $indexurl = "adminkeu" ."/";
-      }
+  <?php
+  if (isset($_SESSION['jabatan'])) {
+    if ($_SESSION['jabatan'] == "ADMINKEU") {
+      $indexurl = "adminkeu" . "/";
     }
+  }
   ?>
   <a href="/<?= $indexurl; ?>" class="brand-link">
     <img src="../dist/img/AdminLTELogo.png" alt="AMDK Amanah" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -18,10 +18,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="../dist/img/<?= file_exists("../dist/img/".$_SESSION['foto']) ? $_SESSION['foto'] : 'avatarm.png';?>" class="img-circle elevation-2" alt="User Image">
+        <img src="../dist/img/<?= file_exists("../dist/img/" . $_SESSION['foto']) ? $_SESSION['foto'] : 'avatarm.png'; ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" target="_Blank" class="d-block"><?= $_SESSION['nama'];?></a>
+        <a href="#" target="_Blank" class="d-block"><?= $_SESSION['nama']; ?></a>
       </div>
     </div>
 
@@ -82,7 +82,39 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
+            <?php
+            if ($_SESSION['jabatan'] == "ADMINKEU") {
+            ?>
+              <li class="nav-item">
+                <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
+                  <p>Armada</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
+                  <p>Karyawan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=distributorread" class="nav-link" id="distributor"><i class="far fa-circle nav-icon"></i>
+                  <p>Distributor</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
+                  <p>Distribusi</p>
+                </a>
+              </li>
+            <?php }
+            else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
+            ?>
+              <li class="nav-item">
+                <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
+                  <p>Distribusi</p>
+                </a>
+              </li>
+            <?php }; ?>
+            <!-- <li class="nav-item">
               <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
                 <p>Armada</p>
               </a>
@@ -101,7 +133,7 @@
               <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                 <p>Distribusi</p>
               </a>
-            </li>
+            </li> -->
           </ul>
         </li>
       </ul>

@@ -149,7 +149,7 @@ include_once "../partials/scriptdatatables.php";
       showConfirmButton: false,
       position: 'top-end',
       html: '<h5>Selamat Datang ' + nama + ' !</h5>',
-      timer: 3000,
+      timer: 2000,
       timerProgressBar: true,
 
       willClose: () => {
