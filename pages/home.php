@@ -25,25 +25,8 @@ if (isset($_SESSION['hasil_update_pw'])) {
   unset($_SESSION['hasil_update_pw']);
 } ?>
 
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Starter Page</h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active">Starter Page</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-
 <!-- Main content -->
-<div class="content">
+<div class="content pt-3">
   <div class="container-fluid">
     <div class="row">
       <div class="col-6">
@@ -87,7 +70,7 @@ if (isset($_SESSION['hasil_update_pw'])) {
                 echo  '<div class="row">';
               }
             ?>
-              <div class="col-md-3 mb-3 d-flex align-items-stretch">
+              <div class="col-md-3 mb-3">
                 <div class="card shadow-sm">
                   <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
                   <div class="card-body">
@@ -96,8 +79,8 @@ if (isset($_SESSION['hasil_update_pw'])) {
                     <p class="card-text">Muatan :<br>Cup = <?= $total_cup; ?>, A330 = <?= $total_330 ?>, A500 = <?= $total_500 ?>, A600 = <?= $total_600 ?>, Refill = <?= $total_refill ?> </p>
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
                     <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
-                    <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary mt-auto">Ubah</a>
                   </div>
+                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Ubah</a>
                 </div>
               </div>
             <?php
@@ -121,6 +104,21 @@ include_once "partials/scriptdatatables.php";
 ?>
 
 <script>
+  // Get cards
+  var cards = $('.card-body');
+  var maxHeight = 0;
+
+  // Loop all cards and check height, if bigger than max then save it
+  for (var i = 0; i < cards.length; i++) {
+    if (maxHeight < $(cards[i]).outerHeight()) {
+      maxHeight = $(cards[i]).outerHeight();
+    }
+  }
+  // Set ALL card bodies to this height
+  for (var i = 0; i < cards.length; i++) {
+    $(cards[i]).height(maxHeight);
+  }
+
   if ($('div#hasil_update_pw').length) {
     Swal.fire({
       title: 'Updated!',
