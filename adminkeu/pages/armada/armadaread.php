@@ -1,4 +1,4 @@
-<?php include_once "partials/cssdatatables.php" ?>
+<?php include_once "../partials/cssdatatables.php" ?>
 
 <?php
 if (isset($_SESSION['hasil'])) {
@@ -120,7 +120,7 @@ if (isset($_SESSION['hasil'])) {
 </div>
 <!-- /.content -->
 <?php
-include_once "partials/scriptdatatables.php";
+include_once "../partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {

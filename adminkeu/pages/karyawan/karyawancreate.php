@@ -324,7 +324,7 @@ if ($stmt->rowCount() > 0) {
 </div>
 
 <?php
-include_once "partials/scriptdatatables.php";
+include_once "../partials/scriptdatatables.php";
 ?>
 
 <script>
@@ -383,7 +383,7 @@ include_once "partials/scriptdatatables.php";
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: "pages/upload.php",
+                    url: "../pages/upload.php",
                     data: {
                         image: base64data
                     },

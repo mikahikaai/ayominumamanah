@@ -1,8 +1,15 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4 min-vh-100 position-fixed">
   <!-- Brand Logo -->
-  <a href="/" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AMDK Amanah" class="brand-image img-circle elevation-3" style="opacity: .8">
+  <?php 
+    if (isset($_SESSION['jabatan'])){
+      if ($_SESSION['jabatan'] == "ADMINKEU"){
+        $indexurl = "adminkeu" ."/";
+      }
+    }
+  ?>
+  <a href="/<?= $indexurl; ?>" class="brand-link">
+    <img src="../dist/img/AdminLTELogo.png" alt="AMDK Amanah" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">AMDK Amanah</span>
   </a>
 
@@ -11,7 +18,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="dist/img/<?= file_exists("dist/img/".$_SESSION['foto']) ? $_SESSION['foto'] : 'avatarm.png';?>" class="img-circle elevation-2" alt="User Image">
+        <img src="../dist/img/<?= file_exists("../dist/img/".$_SESSION['foto']) ? $_SESSION['foto'] : 'avatarm.png';?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <a href="#" target="_Blank" class="d-block"><?= $_SESSION['nama'];?></a>

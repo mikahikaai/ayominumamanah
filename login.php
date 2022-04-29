@@ -7,9 +7,9 @@ session_start();
 $errorlogin = false;
 if (isset($_SESSION['jabatan'])) {
     if ($_SESSION['jabatan'] == "ADMINKEU" ) {
-        echo '<meta http-equiv="refresh" content="0;url=/"/>';
-    } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER"){
-        echo '<meta http-equiv="refresh" content="0;url=/agung.php"/>';
+        echo '<meta http-equiv="refresh" content="0;url=/adminkeu/"/>';
+    } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI"){
+        echo '<meta http-equiv="refresh" content="0;url=/spvdist/"/>';
     }
     die();
 }
@@ -32,10 +32,10 @@ if (isset($_POST['login'])) {
         $_SESSION['foto'] = $row['foto'];
         $_SESSION['login_sukses'] = true;
         if ($_SESSION['jabatan'] == "ADMINKEU") {
-            echo '<meta http-equiv="refresh" content="0;url=../"/>';
+            echo '<meta http-equiv="refresh" content="0;url=/adminkeu/"/>';
             die();
-        } else if ($_SESSION['jabatan'] == "HELPER" or $_SESSION['jabatan'] == "DRIVER") {
-            echo '<meta http-equiv="refresh" content="0;url=../agung.php"/>';
+        } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
+            echo '<meta http-equiv="refresh" content="0;url=/spvdist"/>';
             die();
         }
     } else {
