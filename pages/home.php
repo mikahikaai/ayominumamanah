@@ -145,8 +145,8 @@ include_once "partials/scriptdatatables.php";
     let timerInterval
     let nama = "<?= ucfirst($_SESSION['nama']); ?>"
     Swal.fire({
-      showConfirmButton: false,
       width: 'auto',
+      showConfirmButton: false,
       position: 'top-end',
       html: '<h5>Selamat Datang ' + nama + ' !</h5>',
       timer: 3000,

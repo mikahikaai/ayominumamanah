@@ -383,7 +383,7 @@ include_once "partials/scriptdatatables.php";
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: "upload.php",
+                    url: "pages/upload.php",
                     data: {
                         image: base64data
                     },
