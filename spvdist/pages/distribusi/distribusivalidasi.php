@@ -7,7 +7,7 @@ if (isset($_POST['button_validasi'])) {
     $stmt_update = $db->prepare($updatesql);
     $jam_datang_format = date_create_from_format('d/m/Y H.i.s', $_POST['jam_datang']);
     $jam_datang = $jam_datang_format->format('Y-m-d H:i:s');
-    $tgl_validasi = date('d-m-Y H:i:s');
+    $tgl_validasi = date('Y-m-d H:i:s');
     $stmt_update->bindParam(1, $jam_datang);
     $stmt_update->bindParam(2, $_POST['keterangan']);
     $stmt_update->bindParam(3, $tgl_validasi);

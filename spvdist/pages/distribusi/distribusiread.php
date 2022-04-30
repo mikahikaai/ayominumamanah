@@ -103,11 +103,12 @@ if (isset($_SESSION['hasil'])) {
                     $database = new Database;
                     $db = $database->getConnection();
 
-                    $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+                    $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, v.nama validator, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
                     FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
                     LEFT JOIN karyawan k1 on d.driver = k1.id
                     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
                     LEFT JOIN karyawan k3 on d.helper_2 = k3.id
+                    LEFT JOIN karyawan v on d.validasi_oleh = v.id
                     LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
                     LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
                     LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
@@ -127,7 +128,7 @@ if (isset($_SESSION['hasil'])) {
                         $keterangan = $row['keterangan'] == NULL ? '-' : $row['keterangan'];
                         $jam_datang = $row['jam_datang'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['jam_datang']));
                         $tgl_validasi = $row['tgl_validasi'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['tgl_validasi']));
-                        $validasi_oleh = $row['validasi_oleh'] == NULL ? '-' : $row['validasi_oleh'];
+                        $validasi_oleh = $row['validator'] == NULL ? '-' : $row['validator'];
                         $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
                         switch ($row['status']) {
                             case '0':
@@ -170,11 +171,11 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $status ?></td>
                             <td>
                                 <?php if ($row['status'] == 0){ ?>
-                                    <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1" id="deletedistribusi">
+                                    <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1">
                                         <i class="fa fa-edit"></i> Validasi
                                     </a>
                                 <?php } else if ($row['status'] == 1) { ?>
-                                    <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="deletedistribusi">
+                                    <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
                                         <i class="fa fa-trash"></i> Batalkan Validasi
                                     </a>
                                 <?php } ?>
@@ -192,9 +193,10 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
     $(function() {
-        $('a#deletedistribusi').click(function(e) {
+        $('a#distribusibatalvalidasi').click(function(e) {
             e.preventDefault();
             var urlToRedirect = e.currentTarget.getAttribute('href');
+            console.log(urlToRedirect);
             //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
             Swal.fire({
                 title: 'Batalkan validasi?',
@@ -208,7 +210,7 @@ include_once "../partials/scriptdatatables.php";
                 if (result.isConfirmed) {
                     window.location = urlToRedirect;
                 }
-            })
+            });
         });
         if ($('div#hasil_delete').length) {
             Swal.fire({
