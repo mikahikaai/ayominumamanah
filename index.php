@@ -4,13 +4,13 @@ if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
 } else {
-  if ($_SESSION['jabatan'] == "ADMINKEU" ) {
+  if ($_SESSION['jabatan'] == "ADMINKEU") {
     echo '<meta http-equiv="refresh" content="0;url=adminkeu/"/>';
     die();
-  } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI" ) {
+  } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
     echo '<meta http-equiv="refresh" content="0;url=spvdist/"/>';
     die();
-  } 
+  }
 }
 
 $host = $_SERVER['REQUEST_URI'];

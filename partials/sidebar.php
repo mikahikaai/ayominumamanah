@@ -105,8 +105,7 @@
                   <p>Distribusi</p>
                 </a>
               </li>
-            <?php }
-            else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
+            <?php } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
             ?>
               <li class="nav-item">
                 <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>

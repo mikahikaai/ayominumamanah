@@ -10,4 +10,3 @@ $_SESSION['foto_upload'] = uniqid() . '.png';
 $file = $folderPath . $_SESSION['foto_upload'];
 file_put_contents($file, $image_base64);
 echo json_encode(["image uploaded successfully."]);
-?>

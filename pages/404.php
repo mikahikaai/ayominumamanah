@@ -32,14 +32,14 @@
               <input type="text" name="search" class="form-control" placeholder="Search">
               <button type="submit" name="submit" class="btn btn-warning"><i class="fas fa-search"></i>
 
-              <div class="input-group-append">
-                </button>
-              </div>
+                <div class="input-group-append">
+              </button>
             </div>
-            <!-- /.input-group -->
-          </form>
         </div>
-        <!-- /.error-content -->
+        <!-- /.input-group -->
+        </form>
+      </div>
+      <!-- /.error-content -->
       </div>
       <!-- /.error-page -->
     </section>

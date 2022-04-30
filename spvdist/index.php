@@ -4,11 +4,11 @@ if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
 } else {
-  if ($_SESSION['jabatan'] != "SPVDISTRIBUSI" ) {
+  if ($_SESSION['jabatan'] != "SPVDISTRIBUSI") {
     echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
     echo '<meta http-equiv="refresh" content="2;url=/"/>';
     die();
-  } 
+  }
 }
 
 $host = $_SERVER['REQUEST_URI'];
@@ -78,7 +78,7 @@ include_once "../partials/scripts.php";
 <body class="hold-transition sidebar-mini">
   <?php
 
-  if ($host == "/"."spvdist"."/") {
+  if ($host == "/" . "spvdist" . "/") {
   ?>
     <div class="preloader">
       <div class="loading">
