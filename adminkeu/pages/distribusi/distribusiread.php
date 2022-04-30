@@ -111,7 +111,7 @@ if (isset($_SESSION['hasil'])) {
                     LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
                     LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
                     LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-                    ORDER BY d.no_perjalanan asc; ";
+                    ORDER BY tanggal DESC; ";
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 

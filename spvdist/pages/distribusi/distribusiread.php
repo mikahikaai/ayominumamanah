@@ -111,7 +111,7 @@ if (isset($_SESSION['hasil'])) {
                     LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
                     LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
                     LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-                    ORDER BY d.no_perjalanan asc; ";
+                    ORDER BY tanggal DESC; ";
                     $stmt = $db->prepare($selectsql);
                     $stmt->execute();
 
@@ -169,12 +169,15 @@ if (isset($_SESSION['hasil'])) {
                             <td><?= $validasi_oleh ?></td>
                             <td><?= $status ?></td>
                             <td>
-                                <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
-                                    <i class="fa fa-edit"></i> Ubah
-                                </a>
-                                <a href="?page=distribusidelete&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" id="deletedistribusi">
-                                    <i class="fa fa-trash"></i> Hapus
-                                </a>
+                                <?php if ($row['status'] == 0){ ?>
+                                    <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1" id="deletedistribusi">
+                                        <i class="fa fa-edit"></i> Validasi
+                                    </a>
+                                <?php } else if ($row['status'] == 1) { ?>
+                                    <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="deletedistribusi">
+                                        <i class="fa fa-trash"></i> Batalkan Validasi
+                                    </a>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -194,14 +197,13 @@ include_once "../partials/scriptdatatables.php";
             var urlToRedirect = e.currentTarget.getAttribute('href');
             //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
             Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Data yang dihapus tidak dapat kembali!",
+                title: 'Batalkan validasi?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                cancelButtonText: 'Batal',
-                confirmButtonText: 'Hapus'
+                cancelButtonText: 'Tidak',
+                confirmButtonText: 'Ya'
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location = urlToRedirect;
