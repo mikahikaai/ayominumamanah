@@ -11,7 +11,7 @@ class Database
     $online = array("srv158.niagahoster.com", "u1796449_rianseptiadi", "Rtbcvyfhgnpozx1!", "u1796449_ayominumamanah");
     $offline = array("localhost", "root", "", "ayominumamanah");
 
-    $koneksi = 0; // online
+    $koneksi = 1; // online
 
     if ($koneksi == 1) {
       $this->host = $online[0];
