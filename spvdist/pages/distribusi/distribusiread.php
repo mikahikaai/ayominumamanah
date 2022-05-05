@@ -63,12 +63,9 @@ if (isset($_SESSION['hasil'])) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Data Distribusi</h3>
-      <a href="?page=distribusicreate" class="btn btn-success btn-sm float-right">
-        <i class="fa fa-plus-circle"></i> Tambah Data
-      </a>
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; table-layout: fixed;">
+      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white;">
         <thead>
           <tr>
             <th>No.</th>
@@ -93,7 +90,7 @@ if (isset($_SESSION['hasil'])) {
             <th>Jam Datang</th>
             <th>Keterangan</th>
             <th>Tanggal Validasi</th>
-            <th>Divalidasi Oleh</th>
+            <th>Validator</th>
             <th>Status</th>
             <th style="display: flex;">Opsi</th>
           </tr>
@@ -133,6 +130,7 @@ if (isset($_SESSION['hasil'])) {
             switch ($row['status']) {
               case '0':
                 $status = 'Belum Divalidasi';
+                break;
               case '1':
                 $status = 'Divalidasi';
                 break;
@@ -168,14 +166,19 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $keterangan ?></td>
               <td><?= $tgl_validasi ?></td>
               <td><?= $validasi_oleh ?></td>
-              <td><?= $status ?></td>
+              <td>
+                <?php
+                if ($row['status'] == '1') { ?>
+                  <span class="text-success"><i class="fa fa-check"></i> Tervalidasi</span>
+                <?php } ?>
+              </td>
               <td>
                 <?php if ($row['status'] == 0) { ?>
-                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1">
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>&no_jalan=<?= $row['no_perjalanan']; ?>" class="btn btn-primary d-block btn-sm mr-1">
                     <i class="fa fa-edit"></i> Validasi
                   </a>
                 <?php } else if ($row['status'] == 1) { ?>
-                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
+                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>&no_jalan=<?= $row['no_perjalanan']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
                     <i class="fa fa-trash"></i> Batalkan Validasi
                   </a>
                 <?php } ?>

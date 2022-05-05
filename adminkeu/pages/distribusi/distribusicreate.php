@@ -31,7 +31,7 @@ if ($stmt->rowCount() > 0) {
 
   if (isset($_POST['button_create'])) {
     // <hitung jumlah tim pengirim yang berangkat>
-    $array_tim_pengirim = array($_POST['driver'], $_POST['helper_1'], $_POST['helper_2']);
+    $array_tim_pengirim = array($_POST['driver'] ?? null, $_POST['helper_1'] ?? null, $_POST['helper_2'] ?? null);
     $jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
     // <akhir hitung jumlah tim pengirim yang berangkat>
 
@@ -148,6 +148,9 @@ if ($stmt->rowCount() > 0) {
     $no_perjalanan_new = "NJ/" . date('Y/') . date('m/') . $no_perjalanan;
     // akhir generate nomor perjalanan
 
+    // var_dump($array_tim_pengirim);
+    // die();
+
     // insert data distribusi ke db
     $insertsql = "INSERT INTO distribusi (no_perjalanan, id_plat, driver, helper_1, helper_2, nama_pel_1, nama_pel_2, nama_pel_3, bongkar, cup1, a3301, a5001, a6001, refill1, cup2, a3302, a5002, a6002, refill2, cup3, a3303, a5003, a6003, refill3,
         jam_berangkat, estimasi_jam_datang) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -182,13 +185,26 @@ if ($stmt->rowCount() > 0) {
     $stmt_insert->bindParam(24, $_POST['refill3']);
     $stmt_insert->bindParam(25, $jam_berangkat);
     $stmt_insert->bindParam(26, $estimasi_datang);
-    if ($stmt_insert->execute()) {
+    $stmt_insert->execute();
+    $sukses = true;
+
+
+    for ($i = 0; $i < 3; $i++) {
+      $insert_insentif = "INSERT INTO insentif (no_perjalanan, id_pengirim) VALUES (?,?)";
+      $stmt_insert_insentif = $db->prepare($insert_insentif);
+      $stmt_insert_insentif->bindParam(1, $no_perjalanan_new);
+      $stmt_insert_insentif->bindParam(2, $array_tim_pengirim[$i]);
+      $stmt_insert_insentif->execute();
+    }
+
+    if ($sukses) {
       $_SESSION['hasil_create'] = true;
       $_SESSION['pesan'] = "Berhasil Menambah Data";
     } else {
       $_SESSION['hasil_create'] = false;
       $_SESSION['pesan'] = "Gagal Menambah Data";
     }
+
     echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
     // akhir insert data distribusi ke db
   }

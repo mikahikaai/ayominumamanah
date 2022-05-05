@@ -16,7 +16,7 @@ $stmt_karyawan = $db->prepare($select_karyawan);
 
 if (isset($_POST['button_edit'])) {
   // <hitung jumlah tim pengirim yang berangkat>
-  $array_tim_pengirim = array($_POST['driver'], $_POST['helper_1'], $_POST['helper_2']);
+  $array_tim_pengirim = array($_POST['driver'] == '' ? null : $_POST['driver'], $_POST['helper_1'] == '' ? null : $_POST['helper_1'], $_POST['helper_2'] == '' ? null : $_POST['helper_2']);
   $jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
   // <akhir hitung jumlah tim pengirim yang berangkat>
 
@@ -157,6 +157,23 @@ if (isset($_POST['button_edit'])) {
     $_SESSION['hasil_update'] = false;
     $_SESSION['pesan'] = "Gagal Mengubah Data";
   }
+  for ($i = 0; $i < 3; $i++) {
+    $select_id_insentif = "SELECT * FROM insentif WHERE no_perjalanan=? LIMIT $i,1";
+    $stmt_select_id_insentif = $db->prepare($select_id_insentif);
+    $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
+    $stmt_select_id_insentif->execute();
+
+    $row_select_id_insentif = $stmt_select_id_insentif->fetch(PDO::FETCH_ASSOC);
+    $id_insentif = $row_select_id_insentif['id'];
+
+    $update_insentif = "UPDATE insentif SET ontime=0, bongkar=0, id_pengirim=? WHERE id=?";
+    $stmt_update_insentif = $db->prepare($update_insentif);
+    $stmt_update_insentif->bindParam(1, $array_tim_pengirim[$i]);
+    $stmt_update_insentif->bindParam(2, $id_insentif);
+    $stmt_update_insentif->execute();
+  }
+
+
   echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
 }
 
@@ -200,6 +217,7 @@ if (isset($_GET['id'])) {
     </div>
     <div class="card-body">
       <form action="" method="post">
+        <input type="hidden" name="no_perjalanan" value="<?= $row['no_perjalanan'];?>">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">Tujuan 1</h4>

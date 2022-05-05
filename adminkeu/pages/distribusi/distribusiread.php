@@ -68,7 +68,7 @@ if (isset($_SESSION['hasil'])) {
       </a>
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; table-layout: fixed;">
+      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; ">
         <thead>
           <tr>
             <th>No.</th>
@@ -93,9 +93,9 @@ if (isset($_SESSION['hasil'])) {
             <th>Jam Datang</th>
             <th>Keterangan</th>
             <th>Tanggal Validasi</th>
-            <th>Divalidasi Oleh</th>
+            <th>Validator</th>
             <th>Status</th>
-            <th style="display: flex;">Opsi</th>
+            <th class="d-block">Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -169,7 +169,12 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $keterangan ?></td>
               <td><?= $tgl_validasi ?></td>
               <td><?= $validasi_oleh ?></td>
-              <td><?= $status ?></td>
+              <td>
+                <?php
+                if ($row['status'] == '1') { ?>
+                  <span class="text-success"><i class="fa fa-check"></i> Tervalidasi</span>
+                <?php } ?>
+              </td>
               <td>
                 <?php if ($row['status'] == '0') { ?>
                   <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
@@ -179,12 +184,13 @@ if (isset($_SESSION['hasil'])) {
                     <i class="fa fa-trash"></i> Hapus
                   </a>
                 <?php } else if ($row['status'] == '1') { ?>
-                  <a href="#" class="btn btn-primary btn-sm mr-1 disabled" role="button" aria-disabled="true" id="distribusidisable">
+                  <a href="#" class="btn btn-secondary btn-sm mr-1 disabled" role="button" aria-disabled="true" id="distribusidisable">
                     <i class="fa fa-edit"></i> Ubah
                   </a>
-                  <a href="#" class="btn btn-danger btn-sm mr-1 disabled" role="button" aria-disabled="true" id="distribusidisable">
+                  <a href="#" class="btn btn-secondary btn-sm mr-1 disabled" role="button" aria-disabled="true" id="distribusidisable">
                     <i class="fa fa-trash"></i> Hapus
                   </a>
+
                 <?php }; ?>
 
               </td>
