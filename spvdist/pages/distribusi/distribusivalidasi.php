@@ -50,6 +50,8 @@ if (isset($_POST['button_validasi'])) {
 	$array_tim_pengirim = array($_POST['driver'], $_POST['helper_1'], $_POST['helper_2']);
 	$jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
 
+  $array_upah_tim_pengirim = array($_POST['usupir'], $_POST['uhelper1'], $_POST['uhelper2']);
+
 	for ($i = 0; $i < $jumlah_tim_pengirim; $i++) {
 		$hitungInsentifOntime = hitungInsentifOntime($jarak_max, $kateg);
 		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
@@ -59,6 +61,20 @@ if (isset($_POST['button_validasi'])) {
 		$stmt_insert_insentif->bindParam(2, $hitungInsentifBongkar);
 		$stmt_insert_insentif->bindParam(3, $_POST['no_perjalanan']);
 		$stmt_insert_insentif->execute();
+
+    $select_id_upah = "SELECT * FROM upah WHERE no_perjalanan=? LIMIT $i,1";
+    $stmt_select_id_upah = $db->prepare($select_id_upah);
+    $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
+    $stmt_select_id_upah->execute();
+    $row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC);
+    $id_upah = $row_select_id_upah['id'];
+
+    $hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i]);
+    $insert_upah = "UPDATE upah SET upah= ? WHERE id=?";
+		$stmt_insert_upah = $db->prepare($insert_upah);
+		$stmt_insert_upah->bindParam(1, $hitungUpah);
+		$stmt_insert_upah->bindParam(2, $id_upah);
+		$stmt_insert_upah->execute();
 	}
 	$sukses = true;
 
@@ -73,7 +89,7 @@ if (isset($_POST['button_validasi'])) {
 }
 
 if (isset($_GET['id'])) {
-	$selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+	$selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir, k2.nama helper1, k2.upah_borongan uhelper1, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
     FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
     LEFT JOIN karyawan k1 on d.driver = k1.id
     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
@@ -217,7 +233,7 @@ if (isset($_GET['id'])) {
 						<div class="form-group">
 							<label for="nama_pel_3">Distributor</label>
 							<input type="text" name="nama_pel_3" class="form-control" value="<?= $row['distro3'] ?>" readonly>
-							<input type="number" name="jarak3" class="form-control" value="<?= $row['jdistro3'] ?>" readonly>
+							<input type="hidden" name="jarak3" class="form-control" value="<?= $row['jdistro3'] ?>" readonly>
 						</div>
 						<div class="row">
 							<div class="col-md">
@@ -269,14 +285,17 @@ if (isset($_GET['id'])) {
 								<div class="col-md-4">
 									<label for="driver">Supir</label>
 									<input type="text" name="driver" class="form-control" value="<?= $row['supir']; ?>" readonly>
+									<input type="hidden" name="usupir" class="form-control" value="<?= $row['usupir']; ?>" readonly>
 								</div>
 								<div class="col-md-4">
 									<label for="helper_1">Helper 1</label>
 									<input type="text" name="helper_1" class="form-control" value="<?= $row['helper1']; ?>" readonly>
+                  <input type="hidden" name="uhelper1" class="form-control" value="<?= $row['uhelper1']; ?>" readonly>
 								</div>
 								<div class="col-md-4">
 									<label for="helper_2">Helper 2</label>
 									<input type="text" name="helper_2" class="form-control" value="<?= $row['helper2']; ?>" readonly>
+                  <input type="hidden" name="uhelper2" class="form-control" value="<?= $row['uhelper2']; ?>" readonly>
 								</div>
 							</div>
 						</div>
@@ -286,11 +305,11 @@ if (isset($_GET['id'])) {
 					<div class="row">
 						<div class="col-md-4">
 							<label for="jam_berangkat">Jam Keberangkatan</label>
-							<input type="text" name="jam_berangkat" class="form-control" value="<?= $row['jam_berangkat']; ?>" readonly>
+							<input type="text" name="jam_berangkat" class="form-control" value="<?= date('d-m-Y H:i:s', strtotime($row['jam_berangkat'])); ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="estimasi_jam_datang">Estimasi Kedatangan</label>
-							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= $row['estimasi_jam_datang']; ?>" readonly>
+							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="jam_datang">Jam Kedatangan (WAJIB DIISI)</label>

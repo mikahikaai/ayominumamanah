@@ -162,7 +162,6 @@ if (isset($_POST['button_edit'])) {
     $stmt_select_id_insentif = $db->prepare($select_id_insentif);
     $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
     $stmt_select_id_insentif->execute();
-
     $row_select_id_insentif = $stmt_select_id_insentif->fetch(PDO::FETCH_ASSOC);
     $id_insentif = $row_select_id_insentif['id'];
 
@@ -171,6 +170,19 @@ if (isset($_POST['button_edit'])) {
     $stmt_update_insentif->bindParam(1, $array_tim_pengirim[$i]);
     $stmt_update_insentif->bindParam(2, $id_insentif);
     $stmt_update_insentif->execute();
+
+    $select_id_upah = "SELECT * FROM upah WHERE no_perjalanan=? LIMIT $i,1";
+    $stmt_select_id_upah = $db->prepare($select_id_upah);
+    $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
+    $stmt_select_id_upah->execute();
+    $row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC);
+    $id_upah = $row_select_id_upah['id'];
+
+    $update_upah = "UPDATE upah SET upah= 0, id_pengirim=? WHERE id=?";
+		$stmt_update_upah = $db->prepare($update_upah);
+		$stmt_update_upah->bindParam(1, $array_tim_pengirim[$i]);
+		$stmt_update_upah->bindParam(2, $id_upah);
+		$stmt_update_upah->execute();
   }
 
 

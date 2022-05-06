@@ -19,8 +19,16 @@ if (isset($_GET['no_jalan'])) {
   $update_insentif = "UPDATE insentif SET bongkar=0, ontime=0, terbayar='0' WHERE no_perjalanan=?";
   $stmt_update_insentif = $db->prepare($update_insentif);
   $stmt_update_insentif->bindParam(1, $_GET['no_jalan']);
+  $stmt_update_insentif->execute();
 
-  if ($stmt_update_insentif->execute()) {
+  $update_upah = "UPDATE upah SET upah='0', terbayar='0' WHERE no_perjalanan=?";
+  $stmt_update_upah = $db->prepare($update_upah);
+  $stmt_update_upah->bindParam(1, $_GET['no_jalan']);
+  $stmt_update_upah->execute();
+
+  $sukses = true;
+
+  if ($sukses) {
     $_SESSION['hasil_batal'] = true;
     $_SESSION['pesan'] = "Berhasil Menghapus Data";
   } else {

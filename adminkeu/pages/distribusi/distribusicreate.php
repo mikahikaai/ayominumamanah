@@ -10,7 +10,7 @@ $select_armada = "SELECT * FROM armada WHERE status_keaktifan = 'AKTIF' ORDER BY
 $stmt_armada = $db->prepare($select_armada);
 // $stmt_armada->execute();
 
-$select_karyawan = "SELECT * FROM karyawan WHERE status_keaktifan = 'AKTIF' ORDER BY nama ASC";
+$select_karyawan = "SELECT * FROM karyawan WHERE status_keaktifan = 'AKTIF' AND (jabatan = 'HELPER' OR jabatan = 'DRIVER') ORDER BY nama ASC";
 $stmt_karyawan = $db->prepare($select_karyawan);
 // $stmt_karyawan->execute();
 
@@ -195,6 +195,12 @@ if ($stmt->rowCount() > 0) {
       $stmt_insert_insentif->bindParam(1, $no_perjalanan_new);
       $stmt_insert_insentif->bindParam(2, $array_tim_pengirim[$i]);
       $stmt_insert_insentif->execute();
+
+      $insert_upah = "INSERT INTO upah (no_perjalanan, id_pengirim) VALUES (?,?)";
+      $stmt_insert_upah = $db->prepare($insert_upah);
+      $stmt_insert_upah->bindParam(1, $no_perjalanan_new);
+      $stmt_insert_upah->bindParam(2, $array_tim_pengirim[$i]);
+      $stmt_insert_upah->execute();
     }
 
     if ($sukses) {
@@ -464,7 +470,7 @@ if ($stmt->rowCount() > 0) {
           <label for="jam_berangkat">Jam Keberangkatan</label>
           <div class="row">
             <div class="col-md-4">
-              <input id='datetimepicker1' type='text' class='form-control' data-td-target='#datetimepicker1' placeholder="dd/mm/yyyy hh:mm" name="jam_berangkat" require readonly>
+              <input id='datetimepicker1' type='text' class='form-control' data-td-target='#datetimepicker1' placeholder="dd/mm/yyyy hh:mm" name="jam_berangkat" required>
             </div>
             <div class="col-md d-flex align-items-center">
               <div class="form-check">
@@ -487,4 +493,9 @@ if ($stmt->rowCount() > 0) {
     </div>
   </div>
 </div>
+<script>
+  $("#datetimepicker1").keydown(function(event) {
+    return false;
+  });
+</script>
 <!-- /.content -->
