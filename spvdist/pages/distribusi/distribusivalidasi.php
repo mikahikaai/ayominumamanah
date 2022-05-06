@@ -52,6 +52,12 @@ if (isset($_POST['button_validasi'])) {
 
   $array_upah_tim_pengirim = array($_POST['usupir'], $_POST['uhelper1'], $_POST['uhelper2']);
 
+  // $durasi = date_diff(date_create($_POST['jam_berangkat2']), date_create($jam_datang))->h;
+  $durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat']))/3600, 1);
+  // var_dump($durasi);
+  // die();
+  // ->format('%d Hari %h Jam %i Menit %s Detik');
+
 	for ($i = 0; $i < $jumlah_tim_pengirim; $i++) {
 		$hitungInsentifOntime = hitungInsentifOntime($jarak_max, $kateg);
 		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
@@ -69,7 +75,7 @@ if (isset($_POST['button_validasi'])) {
     $row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC);
     $id_upah = $row_select_id_upah['id'];
 
-    $hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i]);
+    $hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i], $durasi);
     $insert_upah = "UPDATE upah SET upah= ? WHERE id=?";
 		$stmt_insert_upah = $db->prepare($insert_upah);
 		$stmt_insert_upah->bindParam(1, $hitungUpah);
@@ -306,6 +312,7 @@ if (isset($_GET['id'])) {
 						<div class="col-md-4">
 							<label for="jam_berangkat">Jam Keberangkatan</label>
 							<input type="text" name="jam_berangkat" class="form-control" value="<?= date('d-m-Y H:i:s', strtotime($row['jam_berangkat'])); ?>" readonly>
+							<input type="hidden" name="jam_berangkat2" class="form-control" value="<?= $row['jam_berangkat'];?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="estimasi_jam_datang">Estimasi Kedatangan</label>

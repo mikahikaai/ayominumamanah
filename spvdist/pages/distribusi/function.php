@@ -1,13 +1,16 @@
 <?php
 
-function hitungUpah($jarak, $upah)
+function hitungUpah($jarak, $upah, $jam)
 {
   $KONSTANTA_LUAR_KOTA = 110;
   $upah_kirim = ($jarak / $KONSTANTA_LUAR_KOTA) * $upah;
   if ($upah_kirim >= $upah){
     $upah_kirim = $upah;
   }
-  return $upah;
+  if ($jam >= 24){
+    $upah_kirim = $upah_kirim * ($jam/24);
+  }
+  return $upah_kirim;
 }
 
 function hitungInsentifBongkar($cup, $a330, $a500, $a600, $refill)
