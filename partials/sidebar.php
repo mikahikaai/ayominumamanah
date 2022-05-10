@@ -21,8 +21,10 @@
         <?php
         // var_dump(file_exists("../dist/img/" . "NULL"));
         // die();
+        // var_dump($_SESSION['foto']);
+        // die();
         ?>
-        <img src="../dist/img/<?= file_exists("../dist/img/" . $_SESSION['foto'] === NULL ? 'null' : $_SESSION['foto']) ? $_SESSION['foto'] : 'avatarm.png'; ?>" class="img-circle elevation-2" alt="User Image">
+        <img src="../dist/img/<?= file_exists("../dist/img/" . ($_SESSION['foto'] == NULL ? 'null' : $_SESSION['foto'])) ? $_SESSION['foto'] : 'avatarm.png'; ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <a href="#" target="_Blank" class="d-block"><?= $_SESSION['nama']; ?></a>
