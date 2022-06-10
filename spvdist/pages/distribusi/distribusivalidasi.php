@@ -59,7 +59,12 @@ if (isset($_POST['button_validasi'])) {
   // ->format('%d Hari %h Jam %i Menit %s Detik');
 
 	for ($i = 0; $i < $jumlah_tim_pengirim; $i++) {
-		$hitungInsentifOntime = hitungInsentifOntime($jarak_max, $kateg);
+    $ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang']), '+15 Minutes');
+    // var_dump(date_create($_POST['jam_datang']));
+    // var_dump(date_modify(date_create($_POST['estimasi_jam_datang']), '+15 Minutes'));
+    // var_dump($ontime);
+    // die();
+		$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
 		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
 		$insert_insentif = "UPDATE insentif SET ontime= ?, bongkar=? WHERE no_perjalanan=?";
 		$stmt_insert_insentif = $db->prepare($insert_insentif);
@@ -311,12 +316,12 @@ if (isset($_GET['id'])) {
 					<div class="row">
 						<div class="col-md-4">
 							<label for="jam_berangkat">Jam Keberangkatan</label>
-							<input type="text" name="jam_berangkat" class="form-control" value="<?= date('d-m-Y H:i:s', strtotime($row['jam_berangkat'])); ?>" readonly>
+							<input type="text" name="jam_berangkat" class="form-control" value="<?= date('d/m/Y H:i:s', strtotime($row['jam_berangkat'])); ?>" readonly>
 							<input type="hidden" name="jam_berangkat2" class="form-control" value="<?= $row['jam_berangkat'];?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="estimasi_jam_datang">Estimasi Kedatangan</label>
-							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?>" readonly>
+							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= date('d/m/Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="jam_datang">Jam Kedatangan (WAJIB DIISI)</label>
