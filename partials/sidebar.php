@@ -5,6 +5,8 @@
   if (isset($_SESSION['jabatan'])) {
     if ($_SESSION['jabatan'] == "ADMINKEU") {
       $indexurl = "adminkeu" . "/";
+    } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI"){
+      $indexurl = "spvdist" . "/";
     }
   }
   ?>
