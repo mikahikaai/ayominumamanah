@@ -4,7 +4,7 @@ if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
 } else {
-  if ($_SESSION['jabatan'] != "SPVDISTRIBUSI") {
+  if ($_SESSION['jabatan'] != "DRIVER" && $_SESSION['jabatan'] != "HELPER") {
     echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
     echo '<meta http-equiv="refresh" content="2;url=/login.php"/>';
     die();
@@ -78,7 +78,7 @@ include_once "../partials/scripts.php";
 <body class="hold-transition sidebar-mini">
   <?php
 
-  if ($host == "/" . "spvdist" . "/") {
+  if ($host == "/" . "adminkeu" . "/") {
   ?>
     <div class="preloader">
       <div class="loading">
@@ -180,10 +180,10 @@ include_once "../partials/scripts.php";
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
-    } else if (title == "Armada") {
-      $("a#armada").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Upah") {
+      $("a#rekapupah").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
     } else if (title == "Karyawan") {
       $("a#karyawan").addClass("active");
       $("li#master_data").addClass("menu-open");

@@ -10,6 +10,8 @@ if (isset($_SESSION['jabatan'])) {
     echo '<meta http-equiv="refresh" content="0;url=/adminkeu/"/>';
   } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
     echo '<meta http-equiv="refresh" content="0;url=/spvdist/"/>';
+  } else if ($_SESSION['jabatan'] == "DRIVER" OR $_SESSION['jabatan'] == "HELPER") {
+    echo '<meta http-equiv="refresh" content="0;url=/karyawan/"/>';
   }
   die();
 }

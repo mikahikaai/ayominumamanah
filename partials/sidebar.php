@@ -5,7 +5,7 @@
   if (isset($_SESSION['jabatan'])) {
     if ($_SESSION['jabatan'] == "ADMINKEU") {
       $indexurl = "adminkeu" . "/";
-    } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI"){
+    } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
       $indexurl = "spvdist" . "/";
     }
   }
@@ -58,8 +58,8 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item" id="penggajian">
+          <a href="#" class="nav-link" id="link_penggajian">
             <i class="nav-icon fas fa-money-bill"></i>
             <p>
               Penggajian
@@ -68,31 +68,38 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="?page=penggajianrekap" class="nav-link">
+              <a href="?page=pengajuanupah" class="nav-link" id="pengajuan">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Rekap Gaji</p>
+                <p>Pengajuan Upah</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="?page=rekapupah" class="nav-link" id="rekapupah">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Riwayat Gaji</p>
+                <p>Rekap Upah</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="?page=rekapinsentif" class="nav-link" id="rekapinsentif">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Rekap Insentif</p>
               </a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" id='master_data'>
-          <a href="#" class="nav-link" id='link_master_data'>
-            <i class="fas fa-th nav-icon"></i>
-            <p>
-              Master Data
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <?php
-            if ($_SESSION['jabatan'] == "ADMINKEU") {
-            ?>
+
+        <?php
+        if ($_SESSION['jabatan'] == "ADMINKEU") {
+        ?>
+          <li class="nav-item" id='master_data'>
+            <a href="#" class="nav-link" id='link_master_data'>
+              <i class="fas fa-th nav-icon"></i>
+              <p>
+                Master Data
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
                   <p>Armada</p>
@@ -141,8 +148,8 @@
                 <p>Distribusi</p>
               </a>
             </li> -->
-          </ul>
-        </li>
+            </ul>
+          </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
