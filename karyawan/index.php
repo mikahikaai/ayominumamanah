@@ -176,6 +176,22 @@ include_once "../partials/scripts.php";
         }
       }
     });
+    $('#datetimepicker3').tempusDominus({
+      localization: {
+        locale: 'id',
+        dayViewHeaderFormat: {
+          month: 'long',
+          year: 'numeric'
+        }
+      },
+      display: {
+        components: {
+          calendar: true,
+          date: true,
+          clock: false,
+        }
+      }
+    });
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {

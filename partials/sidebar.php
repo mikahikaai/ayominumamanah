@@ -7,6 +7,8 @@
       $indexurl = "adminkeu" . "/";
     } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
       $indexurl = "spvdist" . "/";
+    } else if ($_SESSION['jabatan'] == "DRIVER" || $_SESSION['jabatan'] == "HELPER") {
+      $indexurl = "karyawan" . "/";
     }
   }
   ?>
@@ -74,7 +76,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=rekapupah" class="nav-link" id="rekapupah">
+              <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Rekap Upah</p>
               </a>
