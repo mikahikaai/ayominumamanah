@@ -82,7 +82,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?page=rekapinsentif" class="nav-link" id="rekapinsentif">
+              <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Rekap Insentif</p>
               </a>

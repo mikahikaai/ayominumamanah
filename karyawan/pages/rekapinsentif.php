@@ -4,12 +4,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Rekapitulasi Upah</h1>
+        <h1 class="m-0">Rekapitulasi Insentif</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Rekap Upah</li>
+          <li class="breadcrumb-item active">Rekap Insentif</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -21,7 +21,7 @@
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Rekap Gaji</h3>
+      <h3 class="card-title">Data Rekap Insentif</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -34,36 +34,40 @@
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
             <th>Nama</th>
-            <th>Upah</th>
+            <th>Ontime</th>
+            <th>Bongkar</th>
             <th>Terbayar</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $tgl_rekap_awal = $_SESSION['tgl_rekap_awal']->format('Y-m-d H:i:s');
-          $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir']->format('Y-m-d H:i:s');
+          $tgl_rekap_insentif_awal = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
+          $tgl_rekap_insentif_akhir = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT u.*, d.*, d.id id_distribusi FROM upah u INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
+          $selectSql = "SELECT i.*, d.*, d.id id_distribusi, i.bongkar bongkar2 FROM insentif i INNER JOIN distribusi d on i.no_perjalanan = d.no_perjalanan WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
           $stmt = $db->prepare($selectSql);
           $stmt->bindParam(1, $_SESSION['id']);
-          $stmt->bindParam(2, $tgl_rekap_awal);
-          $stmt->bindParam(3, $tgl_rekap_akhir);
+          $stmt->bindParam(2, $tgl_rekap_insentif_awal);
+          $stmt->bindParam(3, $tgl_rekap_insentif_akhir);
           $stmt->execute();
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // var_dump($row['bongkar']);
+            // die();
           ?>
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><a href="?page=detailinsentifdistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $_SESSION['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.'); ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.'); ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {

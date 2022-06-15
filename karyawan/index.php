@@ -200,10 +200,10 @@ include_once "../partials/scripts.php";
       $("a#rekapupah").addClass("active");
       $("li#penggajian").addClass("menu-open");
       $("a#link_penggajian").addClass("active");
-    } else if (title == "Karyawan") {
-      $("a#karyawan").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Insentif") {
+      $("a#rekapinsentif").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
     } else if (title == "Distributor") {
       $("a#distributor").addClass("active");
       $("li#master_data").addClass("menu-open");

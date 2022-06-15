@@ -30,6 +30,14 @@ if (isset($_GET['page'])) {
       file_exists('pages/rekapinsentif.php') ? include 'pages/rekapinsentif.php' : include '../pages/404.php';
       $title = 'Rekap Insentif';
       break;
+    case 'rangerekapinsentif':
+      file_exists('pages/rangerekapinsentif.php') ? include 'pages/rangerekapinsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Insentif';
+      break;
+    case 'detailinsentifdistribusi':
+      file_exists('pages/detailinsentifdistribusi.php') ? include 'pages/detailinsentifdistribusi.php' : include '../pages/404.php';
+      $title = 'Detail Distribusi';
+      break;
     case 'distributordelete':
       file_exists('pages/distributor/distributordelete.php') ? include 'pages/distributor/distributordelete.php' : include '../pages/404.php';
       $title = 'Distributor';
