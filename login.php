@@ -12,6 +12,8 @@ if (isset($_SESSION['jabatan'])) {
     echo '<meta http-equiv="refresh" content="0;url=/spvdist/"/>';
   } else if ($_SESSION['jabatan'] == "DRIVER" OR $_SESSION['jabatan'] == "HELPER") {
     echo '<meta http-equiv="refresh" content="0;url=/karyawan/"/>';
+  } else if ($_SESSION['jabatan'] == "MGRDISTRIBUSI") {
+    echo '<meta http-equiv="refresh" content="0;url=/mgrdist/"/>';
   }
   die();
 }
@@ -41,6 +43,9 @@ if (isset($_POST['login'])) {
       die();
     } else if ($_SESSION['jabatan'] == "DRIVER" || $_SESSION['jabatan'] == "HELPER") {
       echo '<meta http-equiv="refresh" content="0;url=/karyawan"/>';
+      die();
+    } else if ($_SESSION['jabatan'] == "MGRDISTRIBUSI") {
+      echo '<meta http-equiv="refresh" content="0;url=/mgrdist"/>';
       die();
     }
   } else {

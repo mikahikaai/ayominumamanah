@@ -4,19 +4,15 @@ if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   die();
 } else {
-  if ($_SESSION['jabatan'] == "ADMINKEU") {
-    echo '<meta http-equiv="refresh" content="0;url=adminkeu/"/>';
-    die();
-  } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
-    echo '<meta http-equiv="refresh" content="0;url=spvdist/"/>';
-    die();
-  } else if ($_SESSION['jabatan'] == "MGRDISTRIBUSI") {
-    echo '<meta http-equiv="refresh" content="0;url=mgrdist/"/>';
+  if ($_SESSION['jabatan'] != "MGRDISTRIBUSI") {
+    echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
+    echo '<meta http-equiv="refresh" content="2;url=/login.php"/>';
     die();
   }
 }
 
 $host = $_SERVER['REQUEST_URI'];
+// var_dump($host);
 // die();
 ?>
 <!DOCTYPE html>
@@ -27,10 +23,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html lang="en">
 
 <?php
-include "database/database.php";
+include "../database/database.php";
 $title = '';
-include "partials/head.php";
-include_once "partials/scripts.php";
+include "../partials/head.php";
+include_once "../partials/scripts.php";
 ?>
 <style>
   .preloader {
@@ -82,19 +78,19 @@ include_once "partials/scripts.php";
 <body class="hold-transition sidebar-mini">
   <?php
 
-  if ($host == '/') {
+  if ($host == "/" . "adminkeu" . "/") {
   ?>
     <div class="preloader">
       <div class="loading">
-        <img src="./images/hampirsampaicompressed.gif"><br>
+        <img src="../images/hampirsampaicompressed.gif"><br>
         <p id="preloader">. . .Hampir sampai. . .</p>
       </div>
     </div>
   <?php } ?>
 
   <div class="wrapper">
-    <?php include "partials/nav.php"; ?>
-    <?php include "partials/sidebar.php"; ?>
+    <?php include "../partials/nav.php"; ?>
+    <?php include "../partials/sidebar.php"; ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -102,15 +98,15 @@ include_once "partials/scripts.php";
     </div>
     <!-- /.content-wrapper -->
 
-    <?php include "partials/control.php"; ?>
-    <?php include "partials/footer.php"; ?>
+    <?php include "../partials/control.php"; ?>
+    <?php include "../partials/footer.php"; ?>
   </div>
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
 </body>
 
-<script src="plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
+<script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
 
 <script>
   $("title").html("Amanah | <?= $title ?>");
@@ -180,22 +176,38 @@ include_once "partials/scripts.php";
         }
       }
     });
+    $('#datetimepicker3').tempusDominus({
+      localization: {
+        locale: 'id',
+        dayViewHeaderFormat: {
+          month: 'long',
+          year: 'numeric'
+        }
+      },
+      display: {
+        components: {
+          calendar: true,
+          date: true,
+          clock: false,
+        }
+      }
+    });
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
-    } else if (title == "Armada") {
-      $("a#armada").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
-    } else if (title == "Karyawan") {
-      $("a#karyawan").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
-    } else if (title == "Distributor") {
-      $("a#distributor").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Upah") {
+      $("a#rekapupah").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
+    } else if (title == "Rekap Insentif") {
+      $("a#rekapinsentif").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
+    } else if (title == "Pengajuan Upah") {
+      $("a#pengajuan").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
     } else if (title == "Distribusi") {
       $("a#distribusi").addClass("active");
       $("li#master_data").addClass("menu-open");
