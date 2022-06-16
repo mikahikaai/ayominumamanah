@@ -101,7 +101,8 @@ if (isset($_SESSION['hasil'])) {
           $db = $database->getConnection();
 
           $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, v.nama validator, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
-                    FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
+                    FROM distribusi d
+                    INNER JOIN armada a on d.id_plat = a.id
                     LEFT JOIN karyawan k1 on d.driver = k1.id
                     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
                     LEFT JOIN karyawan k3 on d.helper_2 = k3.id
@@ -181,6 +182,10 @@ if (isset($_SESSION['hasil'])) {
                   <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>&no_jalan=<?= $row['no_perjalanan']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
                     <i class="fa fa-trash"></i> Batalkan Validasi
                   </a>
+                <?php } else if ($row['terbayar'] == 2) { ?>
+                  <button class="btn btn-secondary d-block btn-sm mr-1 disabled">
+                    <i class="fa fa-trash"></i> Batalkan Validasi
+                  </button>
                 <?php } ?>
               </td>
             </tr>
