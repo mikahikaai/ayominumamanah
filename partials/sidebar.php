@@ -60,39 +60,39 @@
             </p>
           </a>
         </li>
-        <li class="nav-item" id="penggajian">
-          <a href="#" class="nav-link" id="link_penggajian">
-            <i class="nav-icon fas fa-money-bill"></i>
-            <p>
-              Penggajian
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="?page=pengajuanupah" class="nav-link" id="pengajuan">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Pengajuan Upah</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Rekap Upah</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Rekap Insentif</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-
         <?php
-        if ($_SESSION['jabatan'] == "ADMINKEU") {
+        if ($_SESSION['jabatan'] == 'DRIVER' || $_SESSION['jabatan'] == 'HELPER') {
         ?>
+          <li class="nav-item" id="penggajian">
+            <a href="#" class="nav-link" id="link_penggajian">
+              <i class="nav-icon fas fa-money-bill"></i>
+              <p>
+                Penggajian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="?page=pengajuanupah" class="nav-link" id="pengajuan">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pengajuan Upah</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Upah</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Insentif</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        <?php }; ?>
           <li class="nav-item" id='master_data'>
             <a href="#" class="nav-link" id='link_master_data'>
               <i class="fas fa-th nav-icon"></i>
@@ -102,33 +102,36 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
-                  <p>Armada</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
-                  <p>Karyawan</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="?page=distributorread" class="nav-link" id="distributor"><i class="far fa-circle nav-icon"></i>
-                  <p>Distributor</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
-                  <p>Distribusi</p>
-                </a>
-              </li>
-            <?php } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
-            ?>
-              <li class="nav-item">
-                <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
-                  <p>Distribusi</p>
-                </a>
-              </li>
+              <?php
+              if ($_SESSION['jabatan'] == "ADMINKEU") {
+              ?>
+                <li class="nav-item">
+                  <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
+                    <p>Armada</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
+                    <p>Karyawan</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="?page=distributorread" class="nav-link" id="distributor"><i class="far fa-circle nav-icon"></i>
+                    <p>Distributor</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
+                    <p>Distribusi</p>
+                  </a>
+                </li>
+              <?php } else if ($_SESSION['jabatan'] != "ADMINKEU") {
+              ?>
+                <li class="nav-item">
+                  <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
+                    <p>Distribusi</p>
+                  </a>
+                </li>
             <?php }; ?>
             <!-- <li class="nav-item">
               <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>

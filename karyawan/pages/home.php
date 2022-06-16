@@ -11,31 +11,13 @@ LEFT JOIN karyawan k3 on d.helper_2 = k3.id
 LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
 LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
 LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-WHERE jam_datang IS NULL
-ORDER BY estimasi_jam_datang DESC; ";
+WHERE jam_datang IS NOT NULL AND driver = ?
+ORDER BY jam_datang DESC
+LIMIT 12; ";
 $stmt = $db->prepare($selectsql);
+$stmt->bindParam(1, $_SESSION['id']);
 $stmt->execute();
 $num_rows = $stmt->rowCount();
-
-if (isset($_SESSION['hasil_update_pw'])) {
-  if ($_SESSION['hasil_update_pw']) {
-?>
-    <div id='hasil_update_pw'></div>
-  <?php
-  }
-  unset($_SESSION['hasil_update_pw']);
-}
-
-if (isset($_SESSION['login_sukses'])) {
-  if ($_SESSION['login_sukses']) {
-  ?>
-    <div id='login_sukses'></div>
-<?php
-  }
-  unset($_SESSION['login_sukses']);
-}
-
-
 
 ?>
 
@@ -44,7 +26,7 @@ if (isset($_SESSION['login_sukses'])) {
   <div class="container-fluid">
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-3">Dalam Perjalanan </h3>
+        <h3 class="mb-3">12 Riwayat Perjalanan Terakhir </h3>
       </div>
       <div class="col-6 text-right">
         <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
@@ -74,7 +56,7 @@ if (isset($_SESSION['login_sukses'])) {
               $total_500 = $row['a5001'] + $row['a5002'] + $row['a5003'];
               $total_600 = $row['a6001'] + $row['a6002'] + $row['a6003'];
               $total_refill = $row['refill1'] + $row['refill2'] + $row['refill3'];
-              $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
+              $lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
               if ($no == 1) {
                 echo  "<div class='carousel-item active'>";
                 echo  '<div class="row">';
@@ -90,10 +72,10 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
                     <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
                     <p class="card-text">Muatan :<br>Cup = <?= $total_cup; ?>, A330 = <?= $total_330 ?>, A500 = <?= $total_500 ?>, A600 = <?= $total_600 ?>, Refill = <?= $total_refill ?> </p>
-                    <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
-                    <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
+                    <p class="card-text">Jam Berangkat : <br> <?= date('d-m-Y H:i:s', strtotime($row['jam_berangkat'])); ?></p>
+                    <p class="card-text">Jam Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['jam_datang'])); ?> </p>
+                    <p class="card-text">Lama Perjalanan :<br> <?= $lama_perjalanan; ?> </p>
                   </div>
-                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Ubah</a>
                 </div>
               </div>
             <?php

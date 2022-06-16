@@ -14,6 +14,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/pengajuanupah.php') ? include 'pages/pengajuanupah.php' : include '../pages/404.php';
       $title = 'Pengajuan Upah';
       break;
+    case 'detailpengajuanupahdistribusi':
+      file_exists('pages/detailpengajuanupahdistribusi.php') ? include 'pages/detailpengajuanupahdistribusi.php' : include '../pages/404.php';
+      $title = 'Detail Distribusi';
+      break;
     case 'rekapupah':
       file_exists('pages/rekapupah.php') ? include 'pages/rekapupah.php' : include '../pages/404.php';
       $title = 'Rekap Upah';
@@ -38,41 +42,9 @@ if (isset($_GET['page'])) {
       file_exists('pages/detailinsentifdistribusi.php') ? include 'pages/detailinsentifdistribusi.php' : include '../pages/404.php';
       $title = 'Detail Distribusi';
       break;
-    case 'distributordelete':
-      file_exists('pages/distributor/distributordelete.php') ? include 'pages/distributor/distributordelete.php' : include '../pages/404.php';
-      $title = 'Distributor';
-      break;
     case 'distribusiread':
-      file_exists('pages/distribusi/distribusiread.php') ? include 'pages/distribusi/distribusiread.php' : include '../pages/404.php';
+      file_exists('pages/distribusiread.php') ? include 'pages/distribusiread.php' : include '../pages/404.php';
       $title = 'Distribusi';
-      break;
-    case 'distribusicreate':
-      file_exists('pages/distribusi/distribusicreate.php') ? include 'pages/distribusi/distribusicreate.php' : include '../pages/404.php';
-      $title = 'Distribusi';
-      break;
-    case 'distribusiupdate':
-      file_exists('pages/distribusi/distribusiupdate.php') ? include 'pages/distribusi/distribusiupdate.php' : include '../pages/404.php';
-      $title = 'Distribusi';
-      break;
-    case 'distribusidelete':
-      file_exists('pages/distribusi/distribusidelete.php') ? include 'pages/distribusi/distribusidelete.php' : include '../pages/404.php';
-      $title = 'Distribusi';
-      break;
-    case 'armadaread':
-      file_exists('pages/armada/armadaread.php') ? include 'pages/armada/armadaread.php' : include '../pages/404.php';
-      $title = 'Armada';
-      break;
-    case 'armadacreate':
-      file_exists('pages/armada/armadacreate.php') ? include 'pages/armada/armadacreate.php' : include '../pages/404.php';
-      $title = 'Armada';
-      break;
-    case 'armadaupdate':
-      file_exists('pages/armada/armadaupdate.php') ? include 'pages/armada/armadaupdate.php' : include '../pages/404.php';
-      $title = 'Armada';
-      break;
-    case 'armadadelete':
-      file_exists('pages/armada/armadadelete.php') ? include 'pages/armada/armadadelete.php' : include '../pages/404.php';
-      $title = 'Armada';
       break;
     case 'karyawanread':
       file_exists('pages/karyawan/karyawanread.php') ? include 'pages/karyawan/karyawanread.php' : include '../pages/404.php';
