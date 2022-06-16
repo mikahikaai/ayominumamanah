@@ -92,6 +92,43 @@
               </li>
             </ul>
           </li>
+        <?php } else if ($_SESSION['jabatan'] == 'MGRDISTRIBUSI'){
+          ?>
+          <li class="nav-item" id="pengajuanupah">
+            <a href="#" class="nav-link" id="link_pengajuanupah">
+              <i class="nav-icon fas fa-money-bill"></i>
+              <p>
+                Penggajian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="?page=pengajuanupah" class="nav-link" id="verifupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Verifikasi Upah</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=pengajuaninsentif" class="nav-link" id="verifinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Verifikasi Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapupah" class="nav-link" id="rekapinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Upah</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Insentif</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         <?php }; ?>
           <li class="nav-item" id='master_data'>
             <a href="#" class="nav-link" id='link_master_data'>

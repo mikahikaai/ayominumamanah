@@ -1,14 +1,25 @@
 <?php include_once "../partials/cssdatatables.php" ?>
-
 <?php
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE upah SET terbayar = '1' WHERE id_pengirim = ? AND terbayar = '0' AND upah != '0' ";
-  $stmt_update = $db->prepare($update_ajukan);
-  $stmt_update->bindParam(1, $_SESSION['id']);
+if (isset($_GET['idk'])) {
+  $selectSql = "SELECT u.*, d.*, k.*, k.id id_karyawan, d.id id_distribusi FROM upah u
+  INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan
+  INNER JOIN karyawan k on u.id_pengirim = k.id
+  WHERE u.id_pengirim = ?";
+  $stmt = $db->prepare($selectSql);
+  $stmt->bindParam(1, $_GET['idk']);
+  $stmt->execute();
+}
+
+if (isset($_POST['verif'])){
+  $updateSql = "UPDATE upah SET terbayar='2' WHERE id_pengirim=? AND terbayar='1'";
+  $stmt_update = $db->prepare($updateSql);
+  $stmt_update->bindParam(1, $_GET['idk']);
   $stmt_update->execute();
+
+  echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
 }
 ?>
 
@@ -21,7 +32,7 @@ if (isset($_POST['ajukan'])) {
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Pengajuan Upah</li>
+          <li class="breadcrumb-item active">Detail Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -33,7 +44,7 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Upah Belum Terbayar</h3>
+      <h3 class="card-title">Data Detail Upah Belum Terbayar</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -43,51 +54,32 @@ if (isset($_POST['ajukan'])) {
         <thead>
           <tr>
             <th>No.</th>
-            <th>Tanggal Pengajuan</th>
+            <th>Tanggal & Jam Berangkat</th>
+            <th>No Perjalanan</th>
             <th>Nama</th>
             <th>Upah</th>
-            <th>Terbayar</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT u.*, d.*, k.*, sum(upah) total_upah, k.id id_karyawan FROM upah u
-          INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan
-          INNER JOIN karyawan k on u.id_pengirim = k.id
-          WHERE u.terbayar='1' GROUP BY k.nama";
-          // var_dump($tgl_rekap_awal);
-          // var_dump($tgl_rekap_akhir);
-          // die();
-          $stmt = $db->prepare($selectSql);
-          $stmt->execute();
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tgl_pengajuan'] ?></td>
-              <td><a href="?page=detailpengajuan&idk=<?= $row['id_karyawan'] ?>"><?= $row['nama'] ?></a></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
-              <td>
-                <?php
-                if ($row['terbayar'] == '0') {
-                  echo 'Belum';
-                } else if ($row['terbayar'] == '1')  {
-                  echo 'Mengajukan';
-                } else {
-                  echo 'sudah';
-                }
-
-                ?>
-              </td>
+              <td><?= $row['tanggal'] ?></td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&idk=<?= $row['id_karyawan'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['nama'] ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
-      <!-- <form action="" method="post">
-        <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
-      </form> -->
+      <form action="" method="post">
+        <button type="submit" name="verif" class="btn btn-md float-right btn-success mt-2">Verifikasi</button>
+      </form>
+      <a href="?page=pengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
     </div>
   </div>
 </div>

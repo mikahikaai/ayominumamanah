@@ -204,10 +204,10 @@ include_once "../partials/scripts.php";
       $("a#rekapinsentif").addClass("active");
       $("li#penggajian").addClass("menu-open");
       $("a#link_penggajian").addClass("active");
-    } else if (title == "Pengajuan Upah") {
-      $("a#pengajuan").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+    } else if (title == "Verifikasi Upah") {
+      $("a#verifupah").addClass("active");
+      $("li#pengajuanupah").addClass("menu-open");
+      $("a#link_pengajuanupah").addClass("active");
     } else if (title == "Distribusi") {
       $("a#distribusi").addClass("active");
       $("li#master_data").addClass("menu-open");

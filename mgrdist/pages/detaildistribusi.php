@@ -219,7 +219,7 @@ if (isset($_GET['id'])) {
             </label>
           </div>
         </div>
-        <a href="?page=rekapupah" class="btn btn-danger btn-sm float-right">
+        <a href="?page=detailpengajuan&idk=<?= $_GET['idk'] ?>" class="btn btn-danger btn-sm float-right">
           <i class="fa fa-arrow-left"></i> Kembali
         </a>
       </form>

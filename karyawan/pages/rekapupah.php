@@ -45,7 +45,7 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT u.*, d.*, d.id id_distribusi FROM upah u INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
+          $selectSql = "SELECT u.*, d.*, d.id id_distribusi FROM upah u INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
