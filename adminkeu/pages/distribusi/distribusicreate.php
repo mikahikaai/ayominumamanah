@@ -31,9 +31,12 @@ if ($stmt->rowCount() > 0) {
 
   if (isset($_POST['button_create'])) {
     // <hitung jumlah tim pengirim yang berangkat>
-    $array_tim_pengirim = array($_POST['driver'] ?? null, $_POST['helper_1'] ?? null, $_POST['helper_2'] ?? null);
+    $array_tim_pengirim = array($_POST['driver'], !empty($_POST['helper_1']) ? $_POST['helper_1'] : NULL , !empty($_POST['helper_2']) ? $_POST['helper_2'] : NULL);
     $jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
     // <akhir hitung jumlah tim pengirim yang berangkat>
+
+    // var_dump($array_tim_pengirim[2]);
+    // die();
 
     // <hitung jumlah distributor yang diantar>
     $array_distributor = array($_POST['nama_pel_1'], $_POST['nama_pel_2'], $_POST['nama_pel_3']);
@@ -189,18 +192,19 @@ if ($stmt->rowCount() > 0) {
     $sukses = true;
 
 
-    for ($i = 0; $i < 3; $i++) {
-      $insert_insentif = "INSERT INTO insentif (no_perjalanan, id_pengirim) VALUES (?,?)";
-      $stmt_insert_insentif = $db->prepare($insert_insentif);
-      $stmt_insert_insentif->bindParam(1, $no_perjalanan_new);
-      $stmt_insert_insentif->bindParam(2, $array_tim_pengirim[$i]);
-      $stmt_insert_insentif->execute();
 
+    for ($i = 0; $i < 3; $i++) {
       $insert_upah = "INSERT INTO upah (no_perjalanan, id_pengirim) VALUES (?,?)";
       $stmt_insert_upah = $db->prepare($insert_upah);
       $stmt_insert_upah->bindParam(1, $no_perjalanan_new);
       $stmt_insert_upah->bindParam(2, $array_tim_pengirim[$i]);
       $stmt_insert_upah->execute();
+
+      $insert_insentif = "INSERT INTO insentif (no_perjalanan, id_pengirim) VALUES (?,?)";
+      $stmt_insert_insentif = $db->prepare($insert_insentif);
+      $stmt_insert_insentif->bindParam(1, $no_perjalanan_new);
+      $stmt_insert_insentif->bindParam(2, $array_tim_pengirim[$i]);
+      $stmt_insert_insentif->execute();
     }
 
     if ($sukses) {

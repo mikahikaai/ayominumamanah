@@ -38,7 +38,7 @@ if (isset($_POST['button_validasi'])) {
 	$updatesql = "UPDATE distribusi SET jam_datang=?, keterangan=?, tgl_validasi=?, validasi_oleh=?, status='1' WHERE id=? ";
 	$stmt_update = $db->prepare($updatesql);
 	$jam_datang_format = date_create_from_format('d/m/Y H.i.s', $_POST['jam_datang']);
-	$jam_datang = $jam_datang_format->format('Y-m-d H:i:s');
+	$jam_datang = $jam_datang_format->format('Y/m/d H:i:s');
 	$tgl_validasi = date('Y-m-d H:i:s');
 	$stmt_update->bindParam(1, $jam_datang);
 	$stmt_update->bindParam(2, $_POST['keterangan']);
@@ -48,29 +48,46 @@ if (isset($_POST['button_validasi'])) {
 	$stmt_update->execute();
 
 	$array_tim_pengirim = array($_POST['driver'], $_POST['helper_1'], $_POST['helper_2']);
+	// var_dump($array_tim_pengirim[0]);
+	// var_dump($array_tim_pengirim[1]);
+	// var_dump($array_tim_pengirim[2]);
+  // die();
 	$jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
 
-  $array_upah_tim_pengirim = array($_POST['usupir'], $_POST['uhelper1'], $_POST['uhelper2']);
+  $array_upah_tim_pengirim = array(!empty($_POST['usupir']) ? $_POST['usupir'] : 0 , !empty($_POST['uhelper1']) ? $_POST['uhelper1'] : 0, !empty($_POST['uhelper2']) ? $_POST['uhelper2'] : 0);
 
   // $durasi = date_diff(date_create($_POST['jam_berangkat2']), date_create($jam_datang))->h;
-  $durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat']))/3600, 1);
-  // var_dump($durasi);
+  $durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat2']))/3600, 1);
+  // var_dump($_POST['jam_datang']);
+  // var_dump(strtotime($jam_datang));
+  // var_dump(strtotime($_POST['jam_berangkat2']));
   // die();
   // ->format('%d Hari %h Jam %i Menit %s Detik');
 
-	for ($i = 0; $i < $jumlah_tim_pengirim; $i++) {
-    $ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang']), '+15 Minutes');
+	for ($i = 0; $i < 3; $i++) {
+    $ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang2']), '+15 Minutes');
     // var_dump(date_create($_POST['jam_datang']));
     // var_dump(date_modify(date_create($_POST['estimasi_jam_datang']), '+15 Minutes'));
     // var_dump($ontime);
     // die();
 		$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
 		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
-		$insert_insentif = "UPDATE insentif SET ontime= ?, bongkar=? WHERE no_perjalanan=?";
+    if (empty($array_tim_pengirim[$i])){
+      $hitungInsentifOntime = 0;
+      $hitungInsentifBongkar = 0;
+    }
+    $select_id_insentif = "SELECT * FROM insentif WHERE no_perjalanan=? LIMIT $i,1";
+    $stmt_select_id_insentif = $db->prepare($select_id_insentif);
+    $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
+    $stmt_select_id_insentif->execute();
+    $row_select_id_insentif = $stmt_select_id_insentif->fetch(PDO::FETCH_ASSOC);
+    $id_insentif = $row_select_id_insentif['id'];
+
+		$insert_insentif = "UPDATE insentif SET ontime= ?, bongkar=? WHERE id=?";
 		$stmt_insert_insentif = $db->prepare($insert_insentif);
 		$stmt_insert_insentif->bindParam(1, $hitungInsentifOntime);
 		$stmt_insert_insentif->bindParam(2, $hitungInsentifBongkar);
-		$stmt_insert_insentif->bindParam(3, $_POST['no_perjalanan']);
+		$stmt_insert_insentif->bindParam(3, $id_insentif);
 		$stmt_insert_insentif->execute();
 
     $select_id_upah = "SELECT * FROM upah WHERE no_perjalanan=? LIMIT $i,1";
@@ -322,6 +339,7 @@ if (isset($_GET['id'])) {
 						<div class="col-md-4">
 							<label for="estimasi_jam_datang">Estimasi Kedatangan</label>
 							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= date('d/m/Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?>" readonly>
+              <input type="hidden" name="estimasi_jam_datang2" class="form-control" value="<?= $row['estimasi_jam_datang'];?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="jam_datang">Jam Kedatangan (WAJIB DIISI)</label>

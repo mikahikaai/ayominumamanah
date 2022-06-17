@@ -65,7 +65,7 @@ if (isset($_SESSION['hasil'])) {
       <h3 class="card-title">Data Distribusi</h3>
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white;">
+      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap; background-color: white; table-layout: fixed;">
         <thead>
           <tr>
             <th>No.</th>
