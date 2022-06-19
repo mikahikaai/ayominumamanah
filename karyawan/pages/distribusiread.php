@@ -67,10 +67,12 @@
                     LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
                     LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
                     LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-                    WHERE d.driver = ?
+                    WHERE d.driver = ? OR d.helper_1 = ? OR d.helper_2 = ?
                     ORDER BY tanggal DESC; ";
           $stmt = $db->prepare($selectsql);
           $stmt->bindParam(1, $_SESSION['id']);
+          $stmt->bindParam(2, $_SESSION['id']);
+          $stmt->bindParam(3, $_SESSION['id']);
           $stmt->execute();
 
           $no = 1;

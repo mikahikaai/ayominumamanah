@@ -76,7 +76,7 @@ if (isset($_POST['button_validasi'])) {
       $hitungInsentifOntime = 0;
       $hitungInsentifBongkar = 0;
     }
-    $select_id_insentif = "SELECT * FROM insentif WHERE no_perjalanan=? LIMIT $i,1";
+    $select_id_insentif = "SELECT * FROM insentif WHERE id_distribusi=? LIMIT $i,1";
     $stmt_select_id_insentif = $db->prepare($select_id_insentif);
     $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
     $stmt_select_id_insentif->execute();
@@ -90,7 +90,7 @@ if (isset($_POST['button_validasi'])) {
 		$stmt_insert_insentif->bindParam(3, $id_insentif);
 		$stmt_insert_insentif->execute();
 
-    $select_id_upah = "SELECT * FROM upah WHERE no_perjalanan=? LIMIT $i,1";
+    $select_id_upah = "SELECT * FROM upah WHERE id_distribusi=? LIMIT $i,1";
     $stmt_select_id_upah = $db->prepare($select_id_upah);
     $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
     $stmt_select_id_upah->execute();
@@ -117,7 +117,7 @@ if (isset($_POST['button_validasi'])) {
 }
 
 if (isset($_GET['id'])) {
-	$selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir, k2.nama helper1, k2.upah_borongan uhelper1, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+	$selectsql = "SELECT a.*, d.*, d.id id_distribusi, k1.nama as supir, k1.upah_borongan usupir, k2.nama helper1, k2.upah_borongan uhelper1, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
     FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
     LEFT JOIN karyawan k1 on d.driver = k1.id
     LEFT JOIN karyawan k2 on d.helper_1 = k2.id
@@ -164,7 +164,7 @@ if (isset($_GET['id'])) {
 		</div>
 		<div class="card-body">
 			<form action="" method="post">
-				<input type="hidden" value="<?= $row['no_perjalanan']; ?>" name="no_perjalanan">
+				<input type="hidden" value="<?= $row['id_distribusi']; ?>" name="no_perjalanan">
 				<div class="card">
 					<div class="card-header">
 						<h4 class="card-title">Tujuan 1</h4>

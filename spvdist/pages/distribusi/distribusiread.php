@@ -175,11 +175,11 @@ if (isset($_SESSION['hasil'])) {
               </td>
               <td>
                 <?php if ($row['status'] == 0) { ?>
-                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>&no_jalan=<?= $row['no_perjalanan']; ?>" class="btn btn-primary d-block btn-sm mr-1">
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1">
                     <i class="fa fa-edit"></i> Validasi
                   </a>
                 <?php } else if ($row['status'] == 1) { ?>
-                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>&no_jalan=<?= $row['no_perjalanan']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
+                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
                     <i class="fa fa-trash"></i> Batalkan Validasi
                   </a>
                 <?php } else if ($row['terbayar'] == 2) { ?>

@@ -5,7 +5,7 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE upah SET terbayar = '1' WHERE id_pengirim = ? AND terbayar = '0' AND upah != '0' ";
+  $update_ajukan = "UPDATE upah SET terbayar = '2' WHERE id_pengirim = ? AND terbayar = '0' AND upah != '0' ";
   $stmt_update = $db->prepare($update_ajukan);
   $stmt_update->bindParam(1, $_SESSION['id']);
   $stmt_update->execute();
@@ -46,15 +46,15 @@ if (isset($_POST['ajukan'])) {
             <th>Tanggal Pengajuan</th>
             <th>Nama</th>
             <th>Upah</th>
-            <th>Terbayar</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT u.*, d.*, k.*, sum(upah) total_upah, k.id id_karyawan FROM upah u
-          INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan
+          $selectSql = "SELECT p.*, u.*,k.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          INNER JOIN upah u on p.id_upah = u.id
           INNER JOIN karyawan k on u.id_pengirim = k.id
-          WHERE u.terbayar='1' GROUP BY k.nama";
+          INNER JOIN distribusi d on u.id_distribusi = d.id";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
@@ -67,7 +67,7 @@ if (isset($_POST['ajukan'])) {
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tgl_pengajuan'] ?></td>
-              <td><a href="?page=detailpengajuan&idk=<?= $row['id_karyawan'] ?>"><?= $row['nama'] ?></a></td>
+              <td><a href="?page=detailpengajuan&idk=<?= $row['id_pengirim'] ?>"><?= $row['nama'] ?></a></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
@@ -76,7 +76,7 @@ if (isset($_POST['ajukan'])) {
                 } else if ($row['terbayar'] == '1')  {
                   echo 'Mengajukan';
                 } else {
-                  echo 'sudah';
+                  echo 'Terverifikasi';
                 }
 
                 ?>

@@ -196,10 +196,10 @@ include_once "../partials/scripts.php";
     var title = '<?= $title; ?>';
     if (title == "Home") {
       $("a#home").addClass("active");
-    } else if (title == "Rekap Upah") {
-      $("a#rekapupah").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+    } else if (title == "Pengajuan Upah") {
+      $("a#verifupah").addClass("active");
+      $("li#pengajuanupah").addClass("menu-open");
+      $("a#link_pengajuanupah").addClass("active");
     } else if (title == "Rekap Insentif") {
       $("a#rekapinsentif").addClass("active");
       $("li#penggajian").addClass("menu-open");

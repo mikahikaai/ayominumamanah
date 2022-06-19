@@ -14,7 +14,7 @@ if (isset($_POST['ajukan'])) {
     $no_pengajuan_upah = str_pad('1', 4, '0', STR_PAD_LEFT);
   } else {
     $row_no_pengajuan_upah = $stmt_no_pengajuan_upah->fetch(PDO::FETCH_ASSOC);
-    $no_pengajuan_upah = $row_no_pengajuan_upah['no_pengajuan_upah'];
+    $no_pengajuan_upah = $row_no_pengajuan_upah['no_pengajuan'];
 
     $no_pengajuan_upah = str_pad(number_format(substr($no_pengajuan_upah, -4)) + 1, 4, '0', STR_PAD_LEFT);
   }
@@ -22,21 +22,24 @@ if (isset($_POST['ajukan'])) {
 
   //ambil ID upah
 
-  $select_id_upah = "SELECT id WHERE id_pengirim=? AND terbayar='0' AND upah<>'0'";
+  $select_id_upah = "SELECT id FROM upah WHERE id_pengirim=? AND terbayar='0' AND upah<>'0'";
   $stmt_select_id_upah = $db->prepare($select_id_upah);
   $stmt_select_id_upah->bindParam(1, $_SESSION['id']);
   $stmt_select_id_upah->execute();
-  $jumlah_id_pengajuan = $stmt_select_id_upah->rowCount();
-  $no=0;
+  // $jumlah_id_pengajuan = $stmt_select_id_upah->rowCount();
   while ($row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC)){
-    $insert_ajukan = "INSERT INTO pengajuan_upah (tgl_pengajuan, no_pengajuan, id_upah) VALUES (?,?,?) ";
+    $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah) VALUES (?,?,?) ";
     $tgl_pengajuan = date("Y-m-d");
     $stmt_insert = $db->prepare($insert_ajukan);
     $stmt_insert->bindParam(1, $tgl_pengajuan);
     $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
-    $stmt_insert->bindParam(3, $row_select_id_upah['id'][$no]);
+    $stmt_insert->bindParam(3, $row_select_id_upah['id']);
     $stmt_insert->execute();
-    $no++;
+
+    $update_ajukan = "UPDATE upah SET terbayar='1' WHERE id=?";
+    $stmt_update = $db->prepare($update_ajukan);
+    $stmt_update->bindParam(1, $row_select_id_upah['id']);
+    $stmt_update->execute();
   }
 
 }
@@ -82,7 +85,7 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT u.*, d.*, d.id id_distribusi FROM upah u INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan WHERE u.id_pengirim = ? AND u.terbayar='0' AND tgl_validasi IS NOT NULL";
+          $selectSql = "SELECT u.*, d.* FROM upah u INNER JOIN distribusi d on u.id_distribusi = d.id WHERE u.id_pengirim = ? AND u.terbayar='0' AND tgl_validasi IS NOT NULL";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();

@@ -9,6 +9,8 @@
       $indexurl = "spvdist" . "/";
     } else if ($_SESSION['jabatan'] == "DRIVER" || $_SESSION['jabatan'] == "HELPER") {
       $indexurl = "karyawan" . "/";
+    } else if ($_SESSION['jabatan'] == "MGRDISTRIBUSI") {
+      $indexurl = "mgrdist" . "/";
     }
   }
   ?>
@@ -115,21 +117,44 @@
                   <p>Verifikasi Insentif</p>
                 </a>
               </li>
+            </ul>
+          </li>
+        <?php }; ?>
+        <li class="nav-item" id="pengajuanupah">
+            <a href="#" class="nav-link" id="link_pengajuanupah">
+            <i class="nav-icon fas fa-paperclip"></i>
+              <p>
+                Rekapitulasi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?page=rangerekapupah" class="nav-link" id="rekapinsentif">
+                <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Upah</p>
+                  <p>Rekap Pengajuan Upah</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Insentif</p>
+                  <p>Rekap Pengajuan Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Upah Borongan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Insentif Borongan</p>
                 </a>
               </li>
             </ul>
           </li>
-        <?php }; ?>
           <li class="nav-item" id='master_data'>
             <a href="#" class="nav-link" id='link_master_data'>
               <i class="fas fa-th nav-icon"></i>

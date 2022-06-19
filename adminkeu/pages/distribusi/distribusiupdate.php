@@ -158,7 +158,7 @@ if (isset($_POST['button_edit'])) {
     $_SESSION['pesan'] = "Gagal Mengubah Data";
   }
   for ($i = 0; $i < 3; $i++) {
-    $select_id_insentif = "SELECT * FROM insentif WHERE no_perjalanan=? LIMIT $i,1";
+    $select_id_insentif = "SELECT * FROM insentif WHERE id_distribusi=? LIMIT $i,1";
     $stmt_select_id_insentif = $db->prepare($select_id_insentif);
     $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
     $stmt_select_id_insentif->execute();
@@ -171,7 +171,7 @@ if (isset($_POST['button_edit'])) {
     $stmt_update_insentif->bindParam(2, $id_insentif);
     $stmt_update_insentif->execute();
 
-    $select_id_upah = "SELECT * FROM upah WHERE no_perjalanan=? LIMIT $i,1";
+    $select_id_upah = "SELECT * FROM upah WHERE id_distribusi=? LIMIT $i,1";
     $stmt_select_id_upah = $db->prepare($select_id_upah);
     $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
     $stmt_select_id_upah->execute();
@@ -229,7 +229,7 @@ if (isset($_GET['id'])) {
     </div>
     <div class="card-body">
       <form action="" method="post">
-        <input type="hidden" name="no_perjalanan" value="<?= $row['no_perjalanan'];?>">
+        <input type="hidden" name="no_perjalanan" value="<?= $row['id'];?>">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">Tujuan 1</h4>

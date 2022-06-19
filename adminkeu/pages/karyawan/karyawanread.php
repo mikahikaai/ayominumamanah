@@ -76,7 +76,6 @@ if (isset($_SESSION['hasil'])) {
             <th>No.</th>
             <th>Nama Lengkap</th>
             <th>Username</th>
-            <th>Password</th>
             <th>NIK</th>
             <th>Tempat Lahir</th>
             <th>Tanggal Lahir</th>
@@ -112,7 +111,6 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $no++ ?></td>
               <td><?= $row['nama'] ?></td>
               <td><?= $row['username'] ?></td>
-              <td><?= $row['password'] ?></td>
               <td><?= $row['nik'] ?></td>
               <td><?= $row['tempat_lahir'] ?></td>
               <td><?= date('d-m-Y', strtotime($row['tanggal_lahir'])) ?></td>

@@ -4,8 +4,8 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['idk'])) {
-  $selectSql = "SELECT u.*, d.*, k.*, k.id id_karyawan, d.id id_distribusi FROM upah u
-  INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan
+  $selectSql = "SELECT u.*, d.*, k.* FROM upah u
+  INNER JOIN distribusi d on u.id_distribusi = d.id
   INNER JOIN karyawan k on u.id_pengirim = k.id
   WHERE u.id_pengirim = ?";
   $stmt = $db->prepare($selectSql);
