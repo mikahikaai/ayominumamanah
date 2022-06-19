@@ -50,22 +50,30 @@ if (isset($_GET['page'])) {
       file_exists('pages/detailpengajuan.php') ? include 'pages/detailpengajuan.php' : include '../pages/404.php';
       $title = 'Verifikasi Upah';
       break;
-    case 'karyawanread':
-      file_exists('pages/karyawan/karyawanread.php') ? include 'pages/karyawan/karyawanread.php' : include '../pages/404.php';
-      $title = 'Karyawan';
+    case 'rangerekappengajuanupah':
+      file_exists('pages/rangerekappengajuanupah.php') ? include 'pages/rangerekappengajuanupah.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Upah';
       break;
-    case 'karyawancreate':
-      file_exists('pages/karyawan/karyawancreate.php') ? include 'pages/karyawan/karyawancreate.php' : include '../pages/404.php';
-      $title = 'Karyawan';
+    case 'rekappengajuanupah':
+      file_exists('pages/rekappengajuanupah.php') ? include 'pages/rekappengajuanupah.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Upah';
       break;
-    case 'karyawanupdate':
-      file_exists('pages/karyawan/karyawanupdate.php') ? include 'pages/karyawan/karyawanupdate.php' : include '../pages/404.php';
-      $title = 'Karyawan';
+    case 'rekapdetailpengajuanupah':
+      file_exists('pages/rekapdetailpengajuanupah.php') ? include 'pages/rekapdetailpengajuanupah.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Upah';
       break;
-    case 'karyawandelete':
-      file_exists('pages/karyawan/karyawandelete.php') ? include 'pages/karyawan/karyawandelete.php' : include '../pages/404.php';
-      $title = 'Karyawan';
+    case 'detaildistribusirekappengajuanupah':
+      file_exists('pages/detaildistribusirekappengajuanupah.php') ? include 'pages/detaildistribusirekappengajuanupah.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Upah';
       break;
+      // case 'karyawanupdate':
+      //   file_exists('pages/karyawan/karyawanupdate.php') ? include 'pages/karyawan/karyawanupdate.php' : include '../pages/404.php';
+      //   $title = 'Karyawan';
+      //   break;
+      // case 'karyawandelete':
+      //   file_exists('pages/karyawan/karyawandelete.php') ? include 'pages/karyawan/karyawandelete.php' : include '../pages/404.php';
+      //   $title = 'Karyawan';
+      //   break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
       break;

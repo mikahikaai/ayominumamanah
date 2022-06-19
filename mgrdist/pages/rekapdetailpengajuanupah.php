@@ -13,18 +13,6 @@ if (isset($_GET['no_pengajuan'])) {
   $stmt->bindParam(1, $_GET['no_pengajuan']);
   $stmt->execute();
 }
-
-if (isset($_POST['verif'])){
-  $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE no_pengajuan=?";
-  $tgl_verifikasi = date('Y-m-d');
-  $stmt_update = $db->prepare($updateSql);
-  $stmt_update->bindParam(1, $tgl_verifikasi);
-  $stmt_update->bindParam(2, $_SESSION['id']);
-  $stmt_update->bindParam(3, $_GET['no_pengajuan']);
-  $stmt_update->execute();
-
-  echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
-}
 ?>
 
 <div class="content-header">
@@ -73,17 +61,14 @@ if (isset($_POST['verif'])){
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><a href="?page=detaildistribusirekappengajuanupah&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan'];?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
-      <form action="" method="post">
-        <button type="submit" name="verif" class="btn btn-md float-right btn-success mt-2">Verifikasi</button>
-      </form>
-      <a href="?page=pengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
+      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
     </div>
   </div>
 </div>

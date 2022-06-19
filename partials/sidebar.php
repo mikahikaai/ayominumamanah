@@ -120,8 +120,8 @@
             </ul>
           </li>
         <?php }; ?>
-        <li class="nav-item" id="pengajuanupah">
-            <a href="#" class="nav-link" id="link_pengajuanupah">
+        <li class="nav-item" id="rekapitulasi">
+            <a href="#" class="nav-link" id="link_rekapitulasi">
             <i class="nav-icon fas fa-paperclip"></i>
               <p>
                 Rekapitulasi
@@ -130,13 +130,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
+                <a href="?page=rangerekappengajuanupah" class="nav-link" id="rekappengajuanupah">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Upah</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekappengajuaninsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Insentif</p>
                 </a>

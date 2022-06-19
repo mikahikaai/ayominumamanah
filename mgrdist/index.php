@@ -200,10 +200,10 @@ include_once "../partials/scripts.php";
       $("a#verifupah").addClass("active");
       $("li#pengajuanupah").addClass("menu-open");
       $("a#link_pengajuanupah").addClass("active");
-    } else if (title == "Rekap Insentif") {
-      $("a#rekapinsentif").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+    } else if (title == "Rekap Pengajuan Upah") {
+      $("a#rekappengajuanupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Verifikasi Upah") {
       $("a#verifupah").addClass("active");
       $("li#pengajuanupah").addClass("menu-open");
