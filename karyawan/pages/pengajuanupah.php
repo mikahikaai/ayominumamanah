@@ -5,10 +5,40 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE upah SET terbayar = '1' WHERE id_pengirim = ? AND terbayar = '0' AND upah != '0' ";
-  $stmt_update = $db->prepare($update_ajukan);
-  $stmt_update->bindParam(1, $_SESSION['id']);
-  $stmt_update->execute();
+
+  //buat no_pengajuan
+  $select_no_pengajuan_upah = "SELECT no_pengajuan FROM pengajuan_upah_borongan WHERE MONTH(tgl_pengajuan) = MONTH(NOW()) and YEAR(tgl_pengajuan) = YEAR(NOW()) ORDER BY no_pengajuan DESC LIMIT 1";
+  $stmt_no_pengajuan_upah = $db->prepare($select_no_pengajuan_upah);
+  $stmt_no_pengajuan_upah->execute();
+  if ($stmt_no_pengajuan_upah->rowCount() == 0) {
+    $no_pengajuan_upah = str_pad('1', 4, '0', STR_PAD_LEFT);
+  } else {
+    $row_no_pengajuan_upah = $stmt_no_pengajuan_upah->fetch(PDO::FETCH_ASSOC);
+    $no_pengajuan_upah = $row_no_pengajuan_upah['no_pengajuan_upah'];
+
+    $no_pengajuan_upah = str_pad(number_format(substr($no_pengajuan_upah, -4)) + 1, 4, '0', STR_PAD_LEFT);
+  }
+  $no_pengajuan_upah_new = "PJU/" . date('Y/') . date('m/') . $no_pengajuan_upah;
+
+  //ambil ID upah
+
+  $select_id_upah = "SELECT id WHERE id_pengirim=? AND terbayar='0' AND upah<>'0'";
+  $stmt_select_id_upah = $db->prepare($select_id_upah);
+  $stmt_select_id_upah->bindParam(1, $_SESSION['id']);
+  $stmt_select_id_upah->execute();
+  $jumlah_id_pengajuan = $stmt_select_id_upah->rowCount();
+  $no=0;
+  while ($row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC)){
+    $insert_ajukan = "INSERT INTO pengajuan_upah (tgl_pengajuan, no_pengajuan, id_upah) VALUES (?,?,?) ";
+    $tgl_pengajuan = date("Y-m-d");
+    $stmt_insert = $db->prepare($insert_ajukan);
+    $stmt_insert->bindParam(1, $tgl_pengajuan);
+    $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
+    $stmt_insert->bindParam(3, $row_select_id_upah['id'][$no]);
+    $stmt_insert->execute();
+    $no++;
+  }
+
 }
 ?>
 
