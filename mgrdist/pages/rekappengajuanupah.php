@@ -48,22 +48,33 @@ $db = $database->getConnection();
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
           INNER JOIN upah u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2'";
+          WHERE p.terbayar='2' AND u.id_pengirim=?";
           $stmt = $db->prepare($selectSql);
+          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
           $stmt->execute();
-
+          if ($stmt->rowCount() > 0) {
+            $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          INNER JOIN upah u on p.id_upah = u.id
+          LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
+          LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          WHERE p.terbayar='2' AND u.id_pengirim=?";
+            $stmt = $db->prepare($selectSql);
+            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
+            $stmt->execute();
+          }
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tgl_pengajuan'] ?></td>
-              <td><a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan'];?>"><?= $row['no_pengajuan'] ?></a></td>
+              <td><a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_pengajuan'] ?></a></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td><?= $row['tgl_verifikasi'] ?></td>

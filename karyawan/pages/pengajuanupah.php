@@ -22,24 +22,19 @@ if (isset($_POST['ajukan'])) {
 
   //ambil ID upah
 
-  $select_id_upah = "SELECT id FROM upah WHERE id_pengirim=? AND terbayar='0' AND upah<>'0'";
+  $select_id_upah = "SELECT u.id id_upah_belum_terbayar FROM upah u LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah WHERE id_pengirim=? AND p.terbayar IS NULL AND u.upah<>'0'";
   $stmt_select_id_upah = $db->prepare($select_id_upah);
   $stmt_select_id_upah->bindParam(1, $_SESSION['id']);
   $stmt_select_id_upah->execute();
   // $jumlah_id_pengajuan = $stmt_select_id_upah->rowCount();
   while ($row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC)){
-    $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah) VALUES (?,?,?) ";
+    $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, terbayar) VALUES (?,?,?,'1') ";
     $tgl_pengajuan = date("Y-m-d");
     $stmt_insert = $db->prepare($insert_ajukan);
     $stmt_insert->bindParam(1, $tgl_pengajuan);
     $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
-    $stmt_insert->bindParam(3, $row_select_id_upah['id']);
+    $stmt_insert->bindParam(3, $row_select_id_upah['id_upah_belum_terbayar']);
     $stmt_insert->execute();
-
-    $update_ajukan = "UPDATE upah SET terbayar='1' WHERE id=?";
-    $stmt_update = $db->prepare($update_ajukan);
-    $stmt_update->bindParam(1, $row_select_id_upah['id']);
-    $stmt_update->execute();
   }
 
 }
@@ -85,7 +80,8 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT u.*, d.* FROM upah u INNER JOIN distribusi d on u.id_distribusi = d.id WHERE u.id_pengirim = ? AND u.terbayar='0' AND tgl_validasi IS NOT NULL";
+          $selectSql = "SELECT * FROM upah u LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah
+          INNER JOIN distribusi d ON u.id_distribusi = d.id WHERE u.id_pengirim = ? AND no_pengajuan IS NULL";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
@@ -104,7 +100,7 @@ if (isset($_POST['ajukan'])) {
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
-                if ($row['terbayar'] == '0') {
+                if ($row['terbayar'] == NULL) {
                   echo 'Belum';
                 } else {
                   echo 'Sudah';

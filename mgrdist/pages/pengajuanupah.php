@@ -66,7 +66,7 @@ if (isset($_POST['ajukan'])) {
           INNER JOIN upah u on p.id_upah = u.id
           INNER JOIN karyawan k on u.id_pengirim = k.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='1'";
+          WHERE p.terbayar='1' GROUP BY no_pengajuan";
             $stmt = $db->prepare($selectSql);
             $stmt->execute();
           }
