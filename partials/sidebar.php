@@ -119,7 +119,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=pengajuaninsentif" class="nav-link" id="verifinsentif">
+                <a href="?page=rangepengajuaninsentif" class="nav-link" id="verifinsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Verifikasi Insentif</p>
                 </a>
@@ -179,6 +179,64 @@
           </li>
         <?php } else if ($_SESSION['jabatan'] == "ADMINKEU") {
         ?>
+          <li class="nav-item" id="pengajuaninsentif">
+            <a href="#" class="nav-link" id="link_pengajuaninsentif">
+              <i class="nav-icon fas fa-money-bill"></i>
+              <p>
+                Penggajian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <!-- <li class="nav-item">
+                <a href="?page=pengajuanupah" class="nav-link" id="verifupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Verifikasi Upah</p>
+                </a>
+              </li> -->
+              <li class="nav-item">
+                <a href="?page=rangepengajuaninsentif" class="nav-link" id="pengajuaninsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pengajuan Insentif</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="rekapitulasi">
+            <a href="#" class="nav-link" id="link_rekapitulasi">
+              <i class="nav-icon fas fa-paperclip"></i>
+              <p>
+                Rekapitulasi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="?page=rangerekappengajuanupah" class="nav-link" id="rekappengajuanupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Pengajuan Upah</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekappengajuaninsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Pengajuan Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Upah Borongan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Insentif Borongan</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item" id='master_data'>
             <a href="#" class="nav-link" id='link_master_data'>
               <i class="fas fa-th nav-icon"></i>

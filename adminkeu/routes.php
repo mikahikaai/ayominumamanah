@@ -74,6 +74,14 @@ if (isset($_GET['page'])) {
       file_exists('pages/karyawan/karyawandelete.php') ? include 'pages/karyawan/karyawandelete.php' : include '../pages/404.php';
       $title = 'Karyawan';
       break;
+    case 'rangepengajuaninsentif':
+      file_exists('pages/rangepengajuaninsentif.php') ? include 'pages/rangepengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Pengajuan Insentif';
+      break;
+    case 'pengajuaninsentif':
+      file_exists('pages/pengajuaninsentif.php') ? include 'pages/pengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Pengajuan Insentif';
+      break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
       break;

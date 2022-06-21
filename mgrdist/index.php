@@ -200,6 +200,10 @@ include_once "../partials/scripts.php";
       $("a#verifupah").addClass("active");
       $("li#pengajuanupah").addClass("menu-open");
       $("a#link_pengajuanupah").addClass("active");
+    }  else if (title == "Pengajuan Insentif") {
+      $("a#verifinsentif").addClass("active");
+      $("li#pengajuanupah").addClass("menu-open");
+      $("a#link_pengajuanupah").addClass("active");
     } else if (title == "Rekap Pengajuan Upah") {
       $("a#rekappengajuanupah").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
