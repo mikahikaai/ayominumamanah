@@ -63,7 +63,8 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND u.id_pengirim=?";
+          WHERE p.terbayar='2' AND u.id_pengirim=?
+          GROUP BY no_pengajuan";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->execute();

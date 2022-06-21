@@ -4,7 +4,7 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
+  $selectSql = "SELECT d.*, u.*, p.*, k.*, p.id id_pengajuan_upah FROM pengajuan_upah_borongan p
   INNER JOIN upah u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
@@ -14,15 +14,17 @@ if (isset($_GET['no_pengajuan'])) {
   $stmt->execute();
 }
 
-if (isset($_POST['verif'])){
-  $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE no_pengajuan=?";
-  $tgl_verifikasi = date('Y-m-d');
-  $stmt_update = $db->prepare($updateSql);
-  $stmt_update->bindParam(1, $tgl_verifikasi);
-  $stmt_update->bindParam(2, $_SESSION['id']);
-  $stmt_update->bindParam(3, $_GET['no_pengajuan']);
-  $stmt_update->execute();
-
+if (isset($_POST['verif'])) {
+  $checkbox_id_pengajuan_upah = $_POST['cid'];
+  for ($i = 0; $i < sizeof($checkbox_id_pengajuan_upah); $i++) {
+    $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE id=?";
+    $tgl_verifikasi = date('Y-m-d');
+    $stmt_update = $db->prepare($updateSql);
+    $stmt_update->bindParam(1, $tgl_verifikasi);
+    $stmt_update->bindParam(2, $_SESSION['id']);
+    $stmt_update->bindParam(3, $checkbox_id_pengajuan_upah[$i]);
+    $stmt_update->execute();
+  }
   echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
 }
 ?>
@@ -53,39 +55,41 @@ if (isset($_POST['verif'])){
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
     </div>
-    <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Tanggal & Jam Berangkat</th>
-            <th>No Perjalanan</th>
-            <th>Nama</th>
-            <th>Upah</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-
-          $no = 1;
-          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-          ?>
+    <form action="" method="post">
+      <div class="card-body">
+        <table id="mytable" class="table table-bordered table-hover">
+          <thead>
             <tr>
-              <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <th><input type="checkbox" name="selectAll" id="selectAll"></th>
+              <th>No.</th>
+              <th>Tanggal & Jam Berangkat</th>
+              <th>No Perjalanan</th>
+              <th>Nama</th>
+              <th>Upah</th>
             </tr>
-          <?php } ?>
-        </tbody>
-      </table>
-      <form action="" method="post">
+          </thead>
+          <tbody>
+            <?php
+
+            $no = 1;
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+              <tr>
+                <td><input type="checkbox" name="cid[]" value="<?= $row['id_pengajuan_upah']; ?>"></td>
+                <td><?= $no++ ?></td>
+                <td><?= $row['tanggal'] ?></td>
+                <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_perjalanan'] ?></a></td>
+                <td><?= $row['nama'] ?></td>
+                <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
         <button type="submit" name="verif" class="btn btn-md float-right btn-success mt-2">Verifikasi</button>
-      </form>
-      <a href="?page=pengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
-    </div>
+    </form>
+    <a href="?page=pengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
   </div>
+</div>
 </div>
 <!-- /.content -->
 <?php
@@ -93,7 +97,14 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
+    $('#selectAll').click(function(e) {
+      $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+    });
     $('#mytable').DataTable({
+      "columnDefs": [{
+        "orderable": false,
+        "targets": [0]
+      }, ],
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,

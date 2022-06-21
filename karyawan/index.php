@@ -208,10 +208,10 @@ include_once "../partials/scripts.php";
       $("a#pengajuan").addClass("active");
       $("li#penggajian").addClass("menu-open");
       $("a#link_penggajian").addClass("active");
-    } else if (title == "Distribusi") {
-      $("a#distribusi").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Pengajuan Upah") {
+      $("a#rekappengajuan").addClass("active");
+      $("li#penggajian").addClass("menu-open");
+      $("a#link_penggajian").addClass("active");
     }
   });
 </script>

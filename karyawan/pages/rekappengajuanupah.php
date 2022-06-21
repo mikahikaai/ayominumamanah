@@ -80,49 +80,57 @@ if (isset($_POST['ajukan'])) {
         <table id="mytable" class="table table-bordered table-hover">
           <thead>
             <tr>
-              <th><input type="checkbox" name="selectall" id="selectAll"></th>
               <th>No.</th>
-              <th>Tanggal & Jam Berangkat</th>
-              <th>No Perjalanan</th>
-              <th>Nama</th>
-              <th>Upah</th>
-              <th>Terbayar</th>
+              <th>Tanggal Pengajuan</th>
+              <th>No Pengajuan</th>
+              <th>Total Upah</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-
             <?php
-            $selectSql = "SELECT *, u.id id_upah FROM upah u LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah
-          INNER JOIN distribusi d ON u.id_distribusi = d.id WHERE u.id_pengirim = ? AND no_pengajuan IS NULL";
+            $selectSql = "SELECT * FROM upah u
+          INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
+          WHERE p.terbayar='1'";
             // var_dump($tgl_rekap_awal);
             // var_dump($tgl_rekap_akhir);
             // die();
             $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $_SESSION['id']);
             $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+              $selectSql = "SELECT p.*, u.*,k.*, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          INNER JOIN upah u on p.id_upah = u.id
+          INNER JOIN karyawan k on u.id_pengirim = k.id
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          WHERE u.id_pengirim = ?
+          GROUP BY no_pengajuan ORDER BY no_pengajuan DESC";
+              $stmt = $db->prepare($selectSql);
+              $stmt->bindParam(1, $_SESSION['id']);
+              $stmt->execute();
+            }
 
             $no = 1;
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             ?>
               <tr>
-                <td><input type="checkbox" name="cid[]" value="<?= $row['id_upah'] ?>"></td>
                 <td><?= $no++ ?></td>
-                <td><?= $row['tanggal'] ?></td>
-                <td><a href="?page=detailpengajuanupahdistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-                <td><?= $_SESSION['nama'] ?></td>
-                <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+                <td><?= $row['tgl_pengajuan'] ?></td>
+                <td><a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan'];?>"><?= $row['no_pengajuan']; ?></a></td>
+                <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
                 <td>
                   <?php
-                  if ($row['terbayar'] == NULL) {
+                  if ($row['terbayar'] == '0') {
                     echo 'Belum';
-                  } else {
-                    echo 'Sudah';
+                  } else if ($row['terbayar'] == '1') {
+                    echo 'Mengajukan';
+                  } else if ($row['terbayar'] == '2') {
+                    echo 'Terverifikasi';
                   }
-
                   ?>
                 </td>
               </tr>
             <?php } ?>
+          </tbody>
           </tbody>
         </table>
         <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
@@ -135,16 +143,8 @@ if (isset($_POST['ajukan'])) {
 include_once "../partials/scriptdatatables.php";
 ?>
 <script>
-  $('#selectAll').click(function(e) {
-    $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
-  });
-
   $(function() {
     $('#mytable').DataTable({
-      "columnDefs": [{
-        "orderable": false,
-        "targets": [0]
-      }, ],
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,
