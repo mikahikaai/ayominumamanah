@@ -78,7 +78,7 @@ include_once "../partials/scripts.php";
 <body class="hold-transition sidebar-mini">
   <?php
 
-  if ($host == "/" . "adminkeu" . "/") {
+  if ($host == "/" . "karyawan" . "/") {
   ?>
     <div class="preloader">
       <div class="loading">
