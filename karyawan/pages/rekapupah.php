@@ -36,6 +36,7 @@
             <th>Nama</th>
             <th>Upah</th>
             <th>Terbayar</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -64,7 +65,7 @@
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['no_perjalanan'] ?></td>
               <td><?= $_SESSION['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
@@ -76,6 +77,10 @@
                 }
 
                 ?>
+              </td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-sm btn-primary">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
               </td>
             </tr>
           <?php } ?>
@@ -91,11 +96,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#mytable_wrapper .col-md-6:eq(0)');
+    $('#mytable').DataTable()
   });
 </script>

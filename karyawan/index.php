@@ -198,20 +198,24 @@ include_once "../partials/scripts.php";
       $("a#home").addClass("active");
     } else if (title == "Rekap Upah") {
       $("a#rekapupah").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Rekap Insentif") {
       $("a#rekapinsentif").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Pengajuan Upah") {
       $("a#pengajuan").addClass("active");
       $("li#penggajian").addClass("menu-open");
       $("a#link_penggajian").addClass("active");
     } else if (title == "Rekap Pengajuan Upah") {
-      $("a#rekappengajuan").addClass("active");
-      $("li#penggajian").addClass("menu-open");
-      $("a#link_penggajian").addClass("active");
+      $("a#rekappengajuanupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Distribusi") {
+      $("a#distribusi").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
     }
   });
 </script>

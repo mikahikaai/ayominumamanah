@@ -51,6 +51,7 @@ if (isset($_GET['no_pengajuan'])) {
             <th>No Perjalanan</th>
             <th>Nama</th>
             <th>Upah</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -62,9 +63,14 @@ if (isset($_GET['no_pengajuan'])) {
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['no_perjalanan'] ?></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <td>
+                <a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
+              </td>
             </tr>
           <?php } ?>
         </tbody>
@@ -86,11 +92,7 @@ include_once "../partials/scriptdatatables.php";
       "columnDefs": [{
         "orderable": false,
         "targets": [0]
-      }, ],
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#mytable_wrapper .col-md-6:eq(0)');
+      }, ]
+    });
   });
 </script>

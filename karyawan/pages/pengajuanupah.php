@@ -36,15 +36,17 @@ if (isset($_POST['ajukan'])) {
   //   $stmt_insert->bindParam(3, $row_select_id_upah['id_upah_belum_terbayar']);
   //   $stmt_insert->execute();
   // }
-  $checkbox_id_upah = $_POST['cid'];
-  for ($i = 0; $i < sizeof($checkbox_id_upah); $i++) {
-    $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, terbayar) VALUES (?,?,?,'1') ";
-    $tgl_pengajuan = date("Y-m-d");
-    $stmt_insert = $db->prepare($insert_ajukan);
-    $stmt_insert->bindParam(1, $tgl_pengajuan);
-    $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
-    $stmt_insert->bindParam(3, $checkbox_id_upah[$i]);
-    $stmt_insert->execute();
+  if (!empty($_POST['cid'])) {
+    $checkbox_id_upah = $_POST['cid'];
+    for ($i = 0; $i < sizeof($checkbox_id_upah); $i++) {
+      $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, terbayar) VALUES (?,?,?,'1') ";
+      $tgl_pengajuan = date("Y-m-d");
+      $stmt_insert = $db->prepare($insert_ajukan);
+      $stmt_insert->bindParam(1, $tgl_pengajuan);
+      $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
+      $stmt_insert->bindParam(3, $checkbox_id_upah[$i]);
+      $stmt_insert->execute();
+    }
   }
 }
 ?>
@@ -87,6 +89,7 @@ if (isset($_POST['ajukan'])) {
               <th>Nama</th>
               <th>Upah</th>
               <th>Terbayar</th>
+              <th>Opsi</th>
             </tr>
           </thead>
           <tbody>
@@ -108,7 +111,7 @@ if (isset($_POST['ajukan'])) {
                 <td><input type="checkbox" name="cid[]" value="<?= $row['id_upah'] ?>"></td>
                 <td><?= $no++ ?></td>
                 <td><?= $row['tanggal'] ?></td>
-                <td><a href="?page=detailpengajuanupahdistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+                <td><?= $row['no_perjalanan'] ?></td>
                 <td><?= $_SESSION['nama'] ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
                 <td>
@@ -121,11 +124,20 @@ if (isset($_POST['ajukan'])) {
 
                   ?>
                 </td>
+                <td>
+                  <a href="?page=detailpengajuanupahdistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-sm btn-primary">
+                  <i class="fa fa-eye"></i> Lihat
+                  </a>
+                </td>
               </tr>
             <?php } ?>
           </tbody>
         </table>
-        <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
+        <?php
+        if ($stmt->rowCount() > 0) {
+        ?>
+          <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
+        <?php } ?>
     </form>
   </div>
 </div>
@@ -144,11 +156,7 @@ include_once "../partials/scriptdatatables.php";
       "columnDefs": [{
         "orderable": false,
         "targets": [0]
-      }, ],
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#mytable_wrapper .col-md-6:eq(0)');
+      }]
+    });
   });
 </script>

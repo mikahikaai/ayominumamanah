@@ -70,8 +70,19 @@
                   <p>Pengajuan Upah</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item" id="rekapitulasi">
+            <a href="#" class="nav-link" id="link_rekapitulasi">
+              <i class="nav-icon fas fa-paperclip"></i>
+              <p>
+                Rekapitulasi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?page=rekappengajuanupah" class="nav-link" id="rekappengajuan">
+                <a href="?page=rekappengajuanupah" class="nav-link" id="rekappengajuanupah">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Upah</p>
                 </a>
