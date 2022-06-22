@@ -61,7 +61,7 @@ if (isset($_POST['ajukan'])) {
           $stmt = $db->prepare($selectSql);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
-            $selectSql = "SELECT p.*, i.*,k.*, d.*, SUM(ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
+            $selectSql = "SELECT p.*, i.*,k.*, k.id id_karyawan, d.*, SUM(ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
             RIGHT JOIN insentif i on p.id_insentif = i.id
             INNER JOIN karyawan k on i.id_pengirim = k.id
             INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -90,7 +90,8 @@ if (isset($_POST['ajukan'])) {
                 ?>
               </td>
               <td>
-                <a href="?page=detailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary">Lihat</a>
+                <a href="?page=detailpengajuaninsentif&idk=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-primary">
+                <i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
