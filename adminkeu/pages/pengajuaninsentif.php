@@ -47,7 +47,7 @@ if (isset($_POST['ajukan'])) {
             <th>Total Ontime</th>
             <th>Total Bongkar</th>
             <th>Status</th>
-            <th>Aksi</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
