@@ -218,7 +218,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=rangerekapinsentif" class="nav-link" id="rekappengajuaninsentif">
+                <a href="?page=rangerekappengajuaninsentif" class="nav-link" id="rekappengajuaninsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Insentif</p>
                 </a>

@@ -217,6 +217,10 @@ include_once "../partials/scripts.php";
       $("a#pengajuaninsentif").addClass("active");
       $("li#pengajuaninsentif").addClass("menu-open");
       $("a#link_pengajuaninsentif").addClass("active");
+    } else if (title == "Rekap Pengajuan Insentif") {
+      $("a#rekappengajuaninsentif").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     }
   });
 </script>
