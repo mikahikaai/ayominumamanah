@@ -219,9 +219,9 @@ if (isset($_GET['id'])) {
             </label>
           </div>
         </div>
-        <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $_GET['no_pengajuan'] ?>" class="btn btn-danger btn-sm float-right">
+        <button type="button" class="btn btn-danger btn-sm float-right" onclick="history.back()">
           <i class="fa fa-arrow-left"></i> Kembali
-        </a>
+        </button>
       </form>
 
     </div>

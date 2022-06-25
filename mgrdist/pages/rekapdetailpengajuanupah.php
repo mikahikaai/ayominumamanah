@@ -61,14 +61,14 @@ if (isset($_GET['no_pengajuan'])) {
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusirekappengajuanupah&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan'];?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><a href="?page=detaildistribusirekappengajuanupah&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
-      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
+      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1" onclick="history.back();">Kembali</a>
     </div>
   </div>
 </div>
