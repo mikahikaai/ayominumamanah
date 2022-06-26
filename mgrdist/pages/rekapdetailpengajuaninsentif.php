@@ -4,10 +4,10 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
-  INNER JOIN upah u ON p.id_upah = u.id
-  INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k ON k.id = u.id_pengirim
+  $selectSql = "SELECT d.*, i.*, p.*, k.* FROM pengajuan_insentif_borongan p
+  INNER JOIN insentif i ON p.id_insentif = i.id
+  INNER JOIN distribusi d ON d.id = i.id_distribusi
+  INNER JOIN karyawan k ON k.id = i.id_pengirim
   WHERE no_pengajuan=?";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
@@ -19,12 +19,12 @@ if (isset($_GET['no_pengajuan'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pengajuan Upah</h1>
+        <h1 class="m-0">Pengajuan Insentif</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Detail Upah</li>
+          <li class="breadcrumb-item active">Detail Insentif</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -36,7 +36,7 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Detail Upah Belum Terbayar</h3>
+      <h3 class="card-title">Data Detail Insentif Belum Terbayar</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -49,7 +49,8 @@ if (isset($_GET['no_pengajuan'])) {
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
             <th>Nama</th>
-            <th>Upah</th>
+            <th>Bongkar</th>
+            <th>Ontime</th>
           </tr>
         </thead>
         <tbody>
@@ -63,12 +64,13 @@ if (isset($_GET['no_pengajuan'])) {
               <td><?= $row['tanggal'] ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
-      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1" onclick="history.back();">Kembali</a>
+      <a href="?page=rekappengajuaninsentif" class="btn btn-md mt-2 btn-danger float-right mr-1" onclick="history.back();">Kembali</a>
     </div>
   </div>
 </div>

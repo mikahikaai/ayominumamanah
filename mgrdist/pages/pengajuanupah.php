@@ -93,7 +93,7 @@ if (isset($_POST['ajukan'])) {
                 ?>
               </td>
               <td>
-                <a href="?page=detailpengajuan&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary">Lihat</a>
+                <a href="?page=detailpengajuan&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>

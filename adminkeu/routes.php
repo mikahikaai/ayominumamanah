@@ -94,6 +94,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/rekappengajuaninsentif.php') ? include 'pages/rekappengajuaninsentif.php' : include '../pages/404.php';
       $title = 'Rekap Pengajuan Insentif';
       break;
+    case 'detaildistribusi':
+      file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
       break;

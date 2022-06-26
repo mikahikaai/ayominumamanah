@@ -22,6 +22,22 @@ if (isset($_GET['page'])) {
       file_exists('pages/rangepengajuaninsentif.php') ? include 'pages/rangepengajuaninsentif.php' : include '../pages/404.php';
       $title = 'Pengajuan Insentif';
       break;
+    case 'rangerekappengajuaninsentif':
+      file_exists('pages/rangerekappengajuaninsentif.php') ? include 'pages/rangerekappengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
+    case 'rekappengajuaninsentif':
+      file_exists('pages/rekappengajuaninsentif.php') ? include 'pages/rekappengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
+    case 'rekapdetailpengajuaninsentif':
+      file_exists('pages/rekapdetailpengajuaninsentif.php') ? include 'pages/rekapdetailpengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
+    case 'detailpengajuaninsentif':
+      file_exists('pages/detailpengajuaninsentif.php') ? include 'pages/detailpengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Pengajuan Insentif';
+      break;
     case 'detailpengajuanupahdistribusi':
       file_exists('pages/detailpengajuanupahdistribusi.php') ? include 'pages/detailpengajuanupahdistribusi.php' : include '../pages/404.php';
       $title = 'Detail Distribusi';

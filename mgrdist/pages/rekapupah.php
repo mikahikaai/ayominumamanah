@@ -45,14 +45,19 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT u.*, d.*, d.id id_distribusi FROM upah u INNER JOIN distribusi d on u.no_perjalanan = d.no_perjalanan WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
+          $selectSql = "SELECT u.*, d.*, p.*, k.*, d.id id_distribusi FROM upah u
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
+          INNER JOIN karyawan k ON k.id = u.id_pengirim
+          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar=?";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
           $stmt = $db->prepare($selectSql);
-          $stmt->bindParam(1, $_SESSION['id']);
+          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
           $stmt->bindParam(2, $tgl_rekap_awal);
           $stmt->bindParam(3, $tgl_rekap_akhir);
+          $stmt->bindParam(4, $_SESSION['terbayar']);
           $stmt->execute();
 
           $no = 1;
@@ -62,14 +67,16 @@
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $_SESSION['nama'] ?></td>
+              <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
-                } else {
-                  echo 'Sudah';
+                } else if ($row['terbayar'] == '1') {
+                  echo 'Mengajukan';
+                } else if ($row['terbayar'] == '2') {
+                  echo 'Terverifikasi';
                 }
 
                 ?>

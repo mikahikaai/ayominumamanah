@@ -216,6 +216,14 @@ include_once "../partials/scripts.php";
       $("a#distribusi").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Pengajuan Insentif") {
+      $("a#rekappengajuaninsentif").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Upah") {
+      $("a#rekapupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     }
   });
 </script>

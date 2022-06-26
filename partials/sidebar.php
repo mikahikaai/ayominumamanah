@@ -119,7 +119,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=rangepengajuaninsentif" class="nav-link" id="verifinsentif">
+                <a href="?page=pengajuaninsentif" class="nav-link" id="verifinsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Verifikasi Insentif</p>
                 </a>
@@ -142,7 +142,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=rangerekapinsentif" class="nav-link" id="rekappengajuaninsentif">
+                <a href="?page=rangerekappengajuaninsentif" class="nav-link" id="rekappengajuaninsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Insentif</p>
                 </a>

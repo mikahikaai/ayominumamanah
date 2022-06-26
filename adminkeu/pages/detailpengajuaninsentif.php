@@ -95,7 +95,7 @@ if (isset($_POST['ajukan'])) {
                 <td><input type="checkbox" name="cid[]" value="<?= $row['id_insentif']; ?>"></td>
                 <td><?= $no++ ?></td>
                 <td><?= $row['tanggal'] ?></td>
-                <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_perjalanan'] ?></a></td>
+                <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
                 <td><?= $row['nama'] ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>

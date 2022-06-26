@@ -219,9 +219,7 @@ if (isset($_GET['id'])) {
             </label>
           </div>
         </div>
-        <a href="?page=pengajuanupah" class="btn btn-danger btn-sm float-right">
-          <i class="fa fa-arrow-left"></i> Kembali
-        </a>
+        <button type="button" class="btn btn-md btn-danger float-right" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
       </form>
 
     </div>
