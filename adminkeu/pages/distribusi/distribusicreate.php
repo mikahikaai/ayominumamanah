@@ -194,17 +194,12 @@ if ($stmt->rowCount() > 0) {
 
     $last_id = $db->lastInsertId();
     for ($i = 0; $i < 3; $i++) {
-      $insert_upah = "INSERT INTO upah (id_distribusi, id_pengirim) VALUES (?,?)";
+      $insert_upah = "INSERT INTO gaji (id_distribusi, id_pengirim) VALUES (?,?)";
       $stmt_insert_upah = $db->prepare($insert_upah);
       $stmt_insert_upah->bindParam(1, $last_id);
       $stmt_insert_upah->bindParam(2, $array_tim_pengirim[$i]);
       $stmt_insert_upah->execute();
 
-      $insert_insentif = "INSERT INTO insentif (id_distribusi, id_pengirim) VALUES (?,?)";
-      $stmt_insert_insentif = $db->prepare($insert_insentif);
-      $stmt_insert_insentif->bindParam(1, $last_id);
-      $stmt_insert_insentif->bindParam(2, $array_tim_pengirim[$i]);
-      $stmt_insert_insentif->execute();
     }
 
     if ($sukses) {

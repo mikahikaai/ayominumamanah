@@ -158,32 +158,19 @@ if (isset($_POST['button_edit'])) {
     $_SESSION['pesan'] = "Gagal Mengubah Data";
   }
   for ($i = 0; $i < 3; $i++) {
-    $select_id_insentif = "SELECT * FROM insentif WHERE id_distribusi=? LIMIT $i,1";
-    $stmt_select_id_insentif = $db->prepare($select_id_insentif);
-    $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
-    $stmt_select_id_insentif->execute();
-    $row_select_id_insentif = $stmt_select_id_insentif->fetch(PDO::FETCH_ASSOC);
-    $id_insentif = $row_select_id_insentif['id'];
+    $select_id_gaji = "SELECT * FROM gaji WHERE id_distribusi=? LIMIT $i,1";
+    $stmt_select_id_gaji = $db->prepare($select_id_gaji);
+    $stmt_select_id_gaji->bindParam(1, $_POST['no_perjalanan']);
+    $stmt_select_id_gaji->execute();
+    $row_select_id_gaji = $stmt_select_id_gaji->fetch(PDO::FETCH_ASSOC);
+    $id_gaji = $row_select_id_gaji['id'];
 
-    $update_insentif = "UPDATE insentif SET ontime=0, bongkar=0, id_pengirim=? WHERE id=?";
-    $stmt_update_insentif = $db->prepare($update_insentif);
-    $stmt_update_insentif->bindParam(1, $array_tim_pengirim[$i]);
-    $stmt_update_insentif->bindParam(2, $id_insentif);
-    $stmt_update_insentif->execute();
-
-    $select_id_upah = "SELECT * FROM upah WHERE id_distribusi=? LIMIT $i,1";
-    $stmt_select_id_upah = $db->prepare($select_id_upah);
-    $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
-    $stmt_select_id_upah->execute();
-    $row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC);
-    $id_upah = $row_select_id_upah['id'];
-
-    $update_upah = "UPDATE upah SET upah= 0, id_pengirim=? WHERE id=?";
-		$stmt_update_upah = $db->prepare($update_upah);
-		$stmt_update_upah->bindParam(1, $array_tim_pengirim[$i]);
-		$stmt_update_upah->bindParam(2, $id_upah);
-		$stmt_update_upah->execute();
-  }
+    $update_gaji = "UPDATE gaji SET ontime=0, bongkar=0, id_pengirim=? WHERE id=?";
+    $stmt_update_gaji = $db->prepare($update_gaji);
+    $stmt_update_gaji->bindParam(1, $array_tim_pengirim[$i]);
+    $stmt_update_gaji->bindParam(2, $id_gaji);
+    $stmt_update_gaji->execute();
+    }
 
 
   echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
