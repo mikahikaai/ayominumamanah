@@ -4,12 +4,6 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE pengajuan_upah_borongan SET terbayar = '2' WHERE terbayar='1' AND  ";
-  $stmt_update = $db->prepare($update_ajukan);
-  $stmt_update->bindParam(1, $_SESSION['id']);
-  $stmt_update->execute();
-}
 ?>
 
 <div class="content-header">
@@ -53,7 +47,7 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT * FROM upah u
+          $selectSql = "SELECT * FROM gaji u
           INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
           WHERE p.terbayar='1'";
           // var_dump($tgl_rekap_awal);
@@ -63,7 +57,7 @@ if (isset($_POST['ajukan'])) {
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, u.*,k.*, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
-          INNER JOIN upah u on p.id_upah = u.id
+          INNER JOIN gaji u on p.id_upah = u.id
           INNER JOIN karyawan k on u.id_pengirim = k.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE p.terbayar='1' GROUP BY no_pengajuan";

@@ -5,7 +5,7 @@ $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.*, p.id id_pengajuan_upah FROM pengajuan_upah_borongan p
-  INNER JOIN upah u ON p.id_upah = u.id
+  INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
   WHERE no_pengajuan=?";
@@ -15,17 +15,19 @@ if (isset($_GET['no_pengajuan'])) {
 }
 
 if (isset($_POST['verif'])) {
-  $checkbox_id_pengajuan_upah = $_POST['cid'];
-  for ($i = 0; $i < sizeof($checkbox_id_pengajuan_upah); $i++) {
-    $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE id=?";
-    $tgl_verifikasi = date('Y-m-d');
-    $stmt_update = $db->prepare($updateSql);
-    $stmt_update->bindParam(1, $tgl_verifikasi);
-    $stmt_update->bindParam(2, $_SESSION['id']);
-    $stmt_update->bindParam(3, $checkbox_id_pengajuan_upah[$i]);
-    $stmt_update->execute();
+  if (!empty($_POST['cid'])) {
+    $checkbox_id_pengajuan_upah = $_POST['cid'];
+    for ($i = 0; $i < sizeof($checkbox_id_pengajuan_upah); $i++) {
+      $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE id=?";
+      $tgl_verifikasi = date('Y-m-d');
+      $stmt_update = $db->prepare($updateSql);
+      $stmt_update->bindParam(1, $tgl_verifikasi);
+      $stmt_update->bindParam(2, $_SESSION['id']);
+      $stmt_update->bindParam(3, $checkbox_id_pengajuan_upah[$i]);
+      $stmt_update->execute();
+    }
+    echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
   }
-  echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
 }
 ?>
 
@@ -85,9 +87,9 @@ if (isset($_POST['verif'])) {
             <?php } ?>
           </tbody>
         </table>
-        <button type="submit" name="verif" class="btn btn-md float-right btn-success mt-2">Verifikasi</button>
+        <button type="submit" name="verif" class="btn btn-sm float-right btn-success mt-2"><i class="fa fa-check"></i> Verifikasi</button>
     </form>
-    <a href="?page=pengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
+    <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
   </div>
 </div>
 </div>

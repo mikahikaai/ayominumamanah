@@ -52,7 +52,7 @@ if (isset($_GET['page'])) {
       break;
     case 'detaildistribusi':
       file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
-      $title = 'Detail Distribusi';
+      $title = 'Distribusi';
       break;
     case 'rekapinsentif':
       file_exists('pages/rekapinsentif.php') ? include 'pages/rekapinsentif.php' : include '../pages/404.php';

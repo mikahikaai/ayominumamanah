@@ -5,7 +5,7 @@ $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k.*, p.id id_pengajuan_insentif FROM pengajuan_insentif_borongan p
-  INNER JOIN insentif i ON p.id_insentif = i.id
+  INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
   WHERE no_pengajuan=? AND terbayar='1'";
@@ -87,9 +87,9 @@ if (isset($_POST['verif'])) {
             <?php } ?>
           </tbody>
         </table>
-        <button type="submit" name="verif" class="btn btn-md float-right btn-success mt-2">Verifikasi</button>
+        <button type="submit" name="verif" class="btn btn-sm float-right btn-success mt-2"><i class="fa fa-check"></i> Verifikasi</button>
     </form>
-    <a href="?page=pengajuaninsentif" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
+    <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
   </div>
 </div>
 </div>

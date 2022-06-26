@@ -53,7 +53,7 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT * FROM insentif i
+          $selectSql = "SELECT * FROM gaji i
           INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
           WHERE p.terbayar='1'";
           // var_dump($tgl_rekap_awal);
@@ -63,7 +63,7 @@ if (isset($_POST['ajukan'])) {
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, i.*,k.*, d.*, SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
-          INNER JOIN insentif i on p.id_insentif = i.id
+          INNER JOIN gaji i on p.id_insentif = i.id
           INNER JOIN karyawan k on i.id_pengirim = k.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
           WHERE p.terbayar='1' GROUP BY no_pengajuan";
