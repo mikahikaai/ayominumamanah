@@ -37,6 +37,7 @@
             <th>Ontime</th>
             <th>Bongkar</th>
             <th>Terbayar</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +47,10 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT i.*, d.*, d.id id_distribusi, i.bongkar bongkar2 FROM insentif i INNER JOIN distribusi d on i.no_perjalanan = d.no_perjalanan WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
+          $selectSql = "SELECT i.*, d.*, p.*, d.id id_distribusi, i.bongkar bongkar2 FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id 
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
+          WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
@@ -64,7 +68,7 @@
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detailinsentifdistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['no_perjalanan'] ?></td>
               <td><?= $_SESSION['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.'); ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.'); ?></td>
@@ -78,6 +82,7 @@
 
                 ?>
               </td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a></td>
             </tr>
           <?php } ?>
         </tbody>

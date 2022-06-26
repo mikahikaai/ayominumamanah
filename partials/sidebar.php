@@ -101,6 +101,22 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item" id='master_data'>
+            <a href="#" class="nav-link" id='link_master_data'>
+              <i class="fas fa-th nav-icon"></i>
+              <p>
+                Master Data
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
+                  <p>Distribusi</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         <?php } else if ($_SESSION['jabatan'] == 'MGRDISTRIBUSI') {
         ?>
           <li class="nav-item" id="pengajuanupah">

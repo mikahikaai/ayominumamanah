@@ -47,7 +47,7 @@ $db = $database->getConnection();
           </thead>
           <tbody>
             <?php
-            $selectSql = "SELECT * FROM upah u
+            $selectSql = "SELECT * FROM gaji u
           INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
           WHERE p.terbayar='1'";
             // var_dump($tgl_rekap_awal);
@@ -57,7 +57,7 @@ $db = $database->getConnection();
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
               $selectSql = "SELECT p.*, u.*,k.*, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
-          INNER JOIN upah u on p.id_upah = u.id
+          INNER JOIN gaji u on p.id_upah = u.id
           INNER JOIN karyawan k on u.id_pengirim = k.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE u.id_pengirim = ?

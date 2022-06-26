@@ -5,7 +5,7 @@ $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.*, p.id id_pengajuan_upah FROM pengajuan_upah_borongan p
-  INNER JOIN upah u ON p.id_upah = u.id
+  INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
   WHERE no_pengajuan=?";
@@ -67,7 +67,7 @@ if (isset($_GET['no_pengajuan'])) {
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary">
+                <a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-sm btn-primary">
                   <i class="fa fa-eye"></i> Lihat
                 </a>
               </td>
@@ -75,7 +75,7 @@ if (isset($_GET['no_pengajuan'])) {
           <?php } ?>
         </tbody>
       </table>
-      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1">Kembali</a>
+      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
     </div>
   </div>
 </div>

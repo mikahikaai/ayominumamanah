@@ -46,7 +46,7 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT u.*, d.*, p.*, d.id id_distribusi FROM upah u
+          $selectSql = "SELECT u.*, d.*, p.*, d.id id_distribusi FROM gaji u
           INNER JOIN distribusi d on u.id_distribusi = d.id
           INNER JOIN pengajuan_upah_borongan p on u.id = p.id_upah
           WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND p.terbayar='2'";
