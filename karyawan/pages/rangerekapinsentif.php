@@ -51,20 +51,6 @@ if (isset($_POST['button_show'])) {
           <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_rekap_insentif_akhir" required>
         </div>
       </div>
-      <div class="row mb-2 mt-2 align-items-center">
-        <div class="col-md-2">
-          <label for="terbayar">Status Terbayar</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="terbayar">:</label>
-        </div>
-        <div class="col-md-2">
-          <select name="terbayar" id="insentif_terbayar" class="form-control">
-            <option value="0">Belum</option>
-            <option value="1">Sudah</option>
-          </select>
-        </div>
-      </div>
       <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">
         <i class="fa fa-eye"></i> Tampilkan
       </button>
