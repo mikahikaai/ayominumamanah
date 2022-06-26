@@ -7,15 +7,10 @@ if (isset($_GET['id'])) {
   $stmt->bindParam(1, $_GET['id']);
   $stmt->execute();
 
-  $update_insentif = "UPDATE insentif SET bongkar=0, ontime=0, terbayar='0' WHERE id_distribusi=?";
-  $stmt_update_insentif = $db->prepare($update_insentif);
-  $stmt_update_insentif->bindParam(1, $_GET['id']);
-  $stmt_update_insentif->execute();
-
-  $update_upah = "UPDATE upah SET upah='0', terbayar='0' WHERE id_distribusi=?";
-  $stmt_update_upah = $db->prepare($update_upah);
-  $stmt_update_upah->bindParam(1, $_GET['id']);
-  $stmt_update_upah->execute();
+  $update_gaji = "UPDATE gaji SET bongkar=0, ontime=0, upah=0 WHERE id_distribusi=?";
+  $stmt_update_gaji = $db->prepare($update_gaji);
+  $stmt_update_gaji->bindParam(1, $_GET['id']);
+  $stmt_update_gaji->execute();
 
   $sukses = true;
 

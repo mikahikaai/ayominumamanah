@@ -47,63 +47,45 @@ if (isset($_POST['button_validasi'])) {
 	$stmt_update->bindParam(5, $_GET['id']);
 	$stmt_update->execute();
 
-	$array_tim_pengirim = array($_POST['driver'], $_POST['helper_1'], $_POST['helper_2']);
+	$array_tim_pengirim = array($_POST['driver'], !empty($_POST['helper_1']) ? $_POST['helper_1'] : NULL, !empty($_POST['helper_2']) ? $_POST['helper_2'] : NULL);
 	// var_dump($array_tim_pengirim[0]);
 	// var_dump($array_tim_pengirim[1]);
 	// var_dump($array_tim_pengirim[2]);
-  // die();
+	// die();
 	$jumlah_tim_pengirim = count(array_filter($array_tim_pengirim)) ?? 0;
 
-  $array_upah_tim_pengirim = array(!empty($_POST['usupir']) ? $_POST['usupir'] : 0 , !empty($_POST['uhelper1']) ? $_POST['uhelper1'] : 0, !empty($_POST['uhelper2']) ? $_POST['uhelper2'] : 0);
+	$array_upah_tim_pengirim = array(!empty($_POST['usupir']) ? $_POST['usupir'] : 0, !empty($_POST['uhelper1']) ? $_POST['uhelper1'] : 0, !empty($_POST['uhelper2']) ? $_POST['uhelper2'] : 0);
 
-  // $durasi = date_diff(date_create($_POST['jam_berangkat2']), date_create($jam_datang))->h;
-  $durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat2']))/3600, 1);
-  // var_dump($_POST['jam_datang']);
-  // var_dump(strtotime($jam_datang));
-  // var_dump(strtotime($_POST['jam_berangkat2']));
-  // die();
-  // ->format('%d Hari %h Jam %i Menit %s Detik');
+	$durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat2'])) / 3600, 1);
 
-	for ($i = 0; $i < 3; $i++) {
-    $ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang2']), '+15 Minutes');
-    // var_dump(date_create($_POST['jam_datang']));
-    // var_dump(date_modify(date_create($_POST['estimasi_jam_datang']), '+15 Minutes'));
-    // var_dump($ontime);
-    // die();
-		$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
-		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
-    if (empty($array_tim_pengirim[$i])){
-      $hitungInsentifOntime = 0;
-      $hitungInsentifBongkar = 0;
-    }
-    $select_id_insentif = "SELECT * FROM insentif WHERE id_distribusi=? LIMIT $i,1";
-    $stmt_select_id_insentif = $db->prepare($select_id_insentif);
-    $stmt_select_id_insentif->bindParam(1, $_POST['no_perjalanan']);
-    $stmt_select_id_insentif->execute();
-    $row_select_id_insentif = $stmt_select_id_insentif->fetch(PDO::FETCH_ASSOC);
-    $id_insentif = $row_select_id_insentif['id'];
+for ($i = 0; $i < 3; $i++) {
+	$ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang2']), '+15 Minutes');
+	$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
+	$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
+	$hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i], $durasi);
+		if (empty($array_tim_pengirim[$i])) {
+			$hitungInsentifOntime = 0;
+			$hitungInsentifBongkar = 0;
+		}
 
-		$insert_insentif = "UPDATE insentif SET ontime= ?, bongkar=? WHERE id=?";
-		$stmt_insert_insentif = $db->prepare($insert_insentif);
-		$stmt_insert_insentif->bindParam(1, $hitungInsentifOntime);
-		$stmt_insert_insentif->bindParam(2, $hitungInsentifBongkar);
-		$stmt_insert_insentif->bindParam(3, $id_insentif);
-		$stmt_insert_insentif->execute();
+		$select_id_gaji = "SELECT * FROM gaji WHERE id_distribusi=? LIMIT $i,1";
+		$stmt_select_id_gaji = $db->prepare($select_id_gaji);
+		$stmt_select_id_gaji->bindParam(1, $_POST['no_perjalanan']);
+		$stmt_select_id_gaji->execute();
+		$row_select_id_gaji = $stmt_select_id_gaji->fetch(PDO::FETCH_ASSOC);
+		$id_gaji = $row_select_id_gaji['id'];
 
-    $select_id_upah = "SELECT * FROM upah WHERE id_distribusi=? LIMIT $i,1";
-    $stmt_select_id_upah = $db->prepare($select_id_upah);
-    $stmt_select_id_upah->bindParam(1, $_POST['no_perjalanan']);
-    $stmt_select_id_upah->execute();
-    $row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC);
-    $id_upah = $row_select_id_upah['id'];
+		$insert_gaji = "UPDATE gaji SET ontime= ?, bongkar=?, upah=? WHERE id=?";
+		$stmt_insert_gaji = $db->prepare($insert_gaji);
+		$stmt_insert_gaji->bindParam(1, $hitungInsentifOntime);
+		$stmt_insert_gaji->bindParam(2, $hitungInsentifBongkar);
+		$stmt_insert_gaji->bindParam(3, $hitungUpah);
+		$stmt_insert_gaji->bindParam(4, $id_gaji);
+		$stmt_insert_gaji->execute();
 
-    $hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i], $durasi);
-    $insert_upah = "UPDATE upah SET upah= ? WHERE id=?";
-		$stmt_insert_upah = $db->prepare($insert_upah);
-		$stmt_insert_upah->bindParam(1, $hitungUpah);
-		$stmt_insert_upah->bindParam(2, $id_upah);
-		$stmt_insert_upah->execute();
+		
 	}
+
 	$sukses = true;
 
 	if ($sukses) {
@@ -318,12 +300,12 @@ if (isset($_GET['id'])) {
 								<div class="col-md-4">
 									<label for="helper_1">Helper 1</label>
 									<input type="text" name="helper_1" class="form-control" value="<?= $row['helper1']; ?>" readonly>
-                  <input type="hidden" name="uhelper1" class="form-control" value="<?= $row['uhelper1']; ?>" readonly>
+									<input type="hidden" name="uhelper1" class="form-control" value="<?= $row['uhelper1']; ?>" readonly>
 								</div>
 								<div class="col-md-4">
 									<label for="helper_2">Helper 2</label>
 									<input type="text" name="helper_2" class="form-control" value="<?= $row['helper2']; ?>" readonly>
-                  <input type="hidden" name="uhelper2" class="form-control" value="<?= $row['uhelper2']; ?>" readonly>
+									<input type="hidden" name="uhelper2" class="form-control" value="<?= $row['uhelper2']; ?>" readonly>
 								</div>
 							</div>
 						</div>
@@ -334,12 +316,12 @@ if (isset($_GET['id'])) {
 						<div class="col-md-4">
 							<label for="jam_berangkat">Jam Keberangkatan</label>
 							<input type="text" name="jam_berangkat" class="form-control" value="<?= date('d/m/Y H:i:s', strtotime($row['jam_berangkat'])); ?>" readonly>
-							<input type="hidden" name="jam_berangkat2" class="form-control" value="<?= $row['jam_berangkat'];?>" readonly>
+							<input type="hidden" name="jam_berangkat2" class="form-control" value="<?= $row['jam_berangkat']; ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="estimasi_jam_datang">Estimasi Kedatangan</label>
 							<input type="text" name="estimasi_jam_datang" class="form-control" value="<?= date('d/m/Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?>" readonly>
-              <input type="hidden" name="estimasi_jam_datang2" class="form-control" value="<?= $row['estimasi_jam_datang'];?>" readonly>
+							<input type="hidden" name="estimasi_jam_datang2" class="form-control" value="<?= $row['estimasi_jam_datang']; ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label for="jam_datang">Jam Kedatangan (WAJIB DIISI)</label>
