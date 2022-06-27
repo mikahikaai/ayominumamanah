@@ -25,16 +25,16 @@ https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-domin
 
 
   <style>
+    
     .hover {
       background-color: #ECECEC;
     }
-
 
     table.dataTable tbody tr:nth-child(even) {
       background-color: #f2fbfc;
     }
 
-    table.dataTable th {
+    table.dataTable th,tfoot {
       color: white;
       background-color: #6C757D;
     }

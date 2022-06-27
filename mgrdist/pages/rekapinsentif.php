@@ -59,7 +59,7 @@
           $stmt->bindParam(2, $tgl_rekap_insentif_awal);
           $stmt->bindParam(3, $tgl_rekap_insentif_akhir);
           $stmt->execute();
-          
+
           // var_dump($_SESSION['id_karyawan_rekap_insentif']);
           // die();
 
@@ -88,6 +88,14 @@
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
 
     </div>
@@ -100,10 +108,42 @@ include_once "../partials/scriptdatatables.php";
 <script>
   $(function() {
     $('#mytable').DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#mytable_wrapper .col-md-6:eq(0)');
+      paging: true,
+      autoWidth: true,
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
+        };
+
+        // Total over all pages
+        nb_cols = api.columns().nodes().length;
+        var j = 4;
+        while (j < nb_cols && j != 6) {
+          total = api
+            .column(j)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+            $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+            j++
+        }
+        // Total over this page
+        // pageTotal = api
+        //   .column(4, {
+        //     page: 'current'
+        //   })
+        //   .data()
+        //   .reduce(function(a, b) {
+        //     return intVal(a) + intVal(b);
+        //   }, 0);
+
+        // Update footer
+        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+      },
+    });
   });
 </script>
