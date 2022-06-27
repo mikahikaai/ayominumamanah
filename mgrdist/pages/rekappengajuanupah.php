@@ -44,12 +44,13 @@ $db = $database->getConnection();
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
             <th>Status</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php
           $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
-          INNER JOIN upah u on p.id_upah = u.id
+          INNER JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
@@ -59,12 +60,12 @@ $db = $database->getConnection();
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
-          INNER JOIN upah u on p.id_upah = u.id
+          INNER JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE p.terbayar='2' AND u.id_pengirim=?
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC";
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->execute();
@@ -75,7 +76,7 @@ $db = $database->getConnection();
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tgl_pengajuan'] ?></td>
-              <td><a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_pengajuan'] ?></a></td>
+              <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td><?= $row['tgl_verifikasi'] ?></td>
@@ -91,6 +92,9 @@ $db = $database->getConnection();
                 }
 
                 ?>
+              </td>
+              <td>
+              <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a></td>
               </td>
             </tr>
           <?php } ?>

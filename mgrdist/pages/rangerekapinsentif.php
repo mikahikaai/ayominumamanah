@@ -1,10 +1,13 @@
-<?php include_once "../partials/cssdatatables.php" ?>
-
 <?php
+include_once "../partials/cssdatatables.php";
+
+$database = new Database;
+$db = $database->getConnection();
+
 if (isset($_POST['button_show'])) {
   $_SESSION['tgl_rekap_insentif_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_awal']);
   $_SESSION['tgl_rekap_insentif_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_akhir'])->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
-
+  $_SESSION['id_karyawan_rekap_insentif'] = $_POST['id_karyawan_rekap_insentif'];
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
 
@@ -18,14 +21,21 @@ if (isset($_POST['button_show'])) {
     <form action="" method="POST">
       <div class="row mb-2 mt-2 align-items-center">
         <div class="col-md-2">
-          <label for="nama">Nama Karyawan</label>
+          <label for="id_karyawan_rekap_insentif">Nama Karyawan</label>
         </div>
         <div class="col-md-1 d-flex justify-content-end">
-          <label for="nama">:</label>
+          <label for="id_karyawan_rekap_insentif">:</label>
         </div>
         <div class="col-md-2">
-          <select name="nama" id="nama_karyawan" class="form-control">
-            <option value=""><?= $_SESSION['nama']; ?></option>
+          <select name="id_karyawan_rekap_insentif" id="nama_karyawan" class="form-control">
+            <?php
+            $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
+            $stmt_select_karyawan = $db->prepare($select_karyawan);
+            $stmt_select_karyawan->execute();
+            while ($row_select_karyawan = $stmt_select_karyawan->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+              <option value="<?= $row_select_karyawan['id']; ?>"><?= $row_select_karyawan['nama']; ?></option>
+            <?php } ?>
           </select>
         </div>
       </div>
@@ -49,20 +59,6 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="col-md-2">
           <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_rekap_insentif_akhir" required>
-        </div>
-      </div>
-      <div class="row mb-2 mt-2 align-items-center">
-        <div class="col-md-2">
-          <label for="terbayar">Status Terbayar</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="terbayar">:</label>
-        </div>
-        <div class="col-md-2">
-          <select name="terbayar" id="insentif_terbayar" class="form-control">
-            <option value="0">Belum</option>
-            <option value="1">Sudah</option>
-          </select>
         </div>
       </div>
       <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">

@@ -44,12 +44,13 @@ $db = $database->getConnection();
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
             <th>Status</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php
           $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-          INNER JOIN insentif i on p.id_insentif = i.id
+          INNER JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -59,7 +60,7 @@ $db = $database->getConnection();
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
-          INNER JOIN insentif i on p.id_insentif = i.id
+          INNER JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -75,7 +76,7 @@ $db = $database->getConnection();
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tgl_pengajuan'] ?></td>
-              <td><a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>"><?= $row['no_pengajuan'] ?></a></td>
+              <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_insentif'], 0, ',', '.') ?></td>
               <td><?= $row['tgl_verifikasi'] ?></td>
@@ -91,6 +92,9 @@ $db = $database->getConnection();
                 }
 
                 ?>
+              </td>
+              <td>
+              <a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>

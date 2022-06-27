@@ -45,11 +45,11 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT u.*, d.*, p.*, k.*, d.id id_distribusi FROM upah u
+          $selectSql = "SELECT u.*, d.*, p.*, k.*, d.id id_distribusi FROM gaji u
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar=?";
+          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
@@ -57,7 +57,6 @@
           $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
           $stmt->bindParam(2, $tgl_rekap_awal);
           $stmt->bindParam(3, $tgl_rekap_akhir);
-          $stmt->bindParam(4, $_SESSION['terbayar']);
           $stmt->execute();
 
           $no = 1;
@@ -95,11 +94,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#mytable_wrapper .col-md-6:eq(0)');
+    $('#mytable').DataTable();
   });
 </script>

@@ -46,15 +46,22 @@
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectSql = "SELECT i.*, d.*, d.id id_distribusi, i.bongkar bongkar2 FROM insentif i INNER JOIN distribusi d on i.id_distribusi = d.no_perjalanan WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?)";
+          $selectSql = "SELECT i.*, d.*, p.*, k.*, d.id id_distribusi, i.bongkar bongkar2 FROM gaji i
+          INNER JOIN distribusi d ON i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
+          INNER JOIN karyawan k ON k.id = i.id_pengirim
+          WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
           // var_dump($tgl_rekap_awal);
           // var_dump($tgl_rekap_akhir);
           // die();
           $stmt = $db->prepare($selectSql);
-          $stmt->bindParam(1, $_SESSION['id']);
+          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
           $stmt->bindParam(2, $tgl_rekap_insentif_awal);
           $stmt->bindParam(3, $tgl_rekap_insentif_akhir);
           $stmt->execute();
+          
+          // var_dump($_SESSION['id_karyawan_rekap_insentif']);
+          // die();
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -64,8 +71,8 @@
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detailinsentifdistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $_SESSION['nama'] ?></td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.'); ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.'); ?></td>
               <td>

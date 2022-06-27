@@ -200,7 +200,7 @@ include_once "../partials/scripts.php";
       $("a#verifupah").addClass("active");
       $("li#pengajuanupah").addClass("menu-open");
       $("a#link_pengajuanupah").addClass("active");
-    }  else if (title == "Pengajuan Insentif") {
+    } else if (title == "Pengajuan Insentif") {
       $("a#verifinsentif").addClass("active");
       $("li#pengajuanupah").addClass("menu-open");
       $("a#link_pengajuanupah").addClass("active");
@@ -222,6 +222,10 @@ include_once "../partials/scripts.php";
       $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Rekap Upah") {
       $("a#rekapupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Insentif") {
+      $("a#rekapinsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
     }

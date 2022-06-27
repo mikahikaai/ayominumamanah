@@ -5,7 +5,7 @@ $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
-  INNER JOIN upah u ON p.id_upah = u.id
+  INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
   WHERE no_pengajuan=?";
@@ -68,7 +68,7 @@ if (isset($_GET['no_pengajuan'])) {
           <?php } ?>
         </tbody>
       </table>
-      <a href="?page=rekappengajuanupah" class="btn btn-md mt-2 btn-danger float-right mr-1" onclick="history.back();">Kembali</a>
+      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
   </div>
 </div>
