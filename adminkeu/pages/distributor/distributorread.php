@@ -171,24 +171,7 @@ include_once "../partials/scriptdatatables.php";
         confirmButtonText: 'OK'
       })
     }
-    $(document).on({
-      mouseenter: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").addClass("hover");
-          });
-        });
-      },
-      mouseleave: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").removeClass("hover");
-          });
-        });
-      }
-    }, ".dataTables_wrapper tr");
+    
     $('#mytable').DataTable({
       pagingType: "full_numbers",
       stateSave: true,

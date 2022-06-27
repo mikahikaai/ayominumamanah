@@ -34,9 +34,14 @@ https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-domin
       background-color: #f2fbfc;
     }
 
-    table.dataTable th,tfoot {
+    table.dataTable th {
       color: white;
       background-color: #6C757D;
+    }
+
+    table.dataTable tfoot {
+      color: white;
+      background-color: #A5A8AD;
     }
   </style>
 </head>

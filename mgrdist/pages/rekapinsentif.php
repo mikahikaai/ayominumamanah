@@ -27,7 +27,7 @@
       </a> -->
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover">
+      <table id="mytable" class="table table-bordered">
         <thead>
           <tr>
             <th>No.</th>
@@ -128,8 +128,8 @@ include_once "../partials/scriptdatatables.php";
             .reduce(function(a, b) {
               return intVal(a) + intVal(b);
             }, 0);
-            $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-            j++
+          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+          j++
         }
         // Total over this page
         // pageTotal = api
@@ -146,4 +146,5 @@ include_once "../partials/scriptdatatables.php";
       },
     });
   });
+  
 </script>
