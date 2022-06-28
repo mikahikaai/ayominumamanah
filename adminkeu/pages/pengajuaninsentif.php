@@ -52,7 +52,7 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT * FROM insentif i
+          $selectSql = "SELECT * FROM gaji i
           LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
           WHERE p.terbayar is NULL";
           // var_dump($tgl_rekap_awal);
@@ -62,7 +62,7 @@ if (isset($_POST['ajukan'])) {
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, i.*,k.*, k.id id_karyawan, d.*, SUM(ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
-            RIGHT JOIN insentif i on p.id_insentif = i.id
+            RIGHT JOIN gaji i on p.id_insentif = i.id
             INNER JOIN karyawan k on i.id_pengirim = k.id
             INNER JOIN distribusi d on i.id_distribusi = d.id
             WHERE p.terbayar IS NULL GROUP BY k.nama ORDER BY k.nama ASC";
@@ -80,8 +80,8 @@ if (isset($_POST['ajukan'])) {
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td>
                 <?php
-                if ($row['terbayar'] == '0') {
-                  echo 'Belum';
+                if ($row['terbayar'] == NULL) {
+                  echo 'Belum Mengajukan';
                 } else if ($row['terbayar'] == '1') {
                   echo 'Mengajukan';
                 } else if ($row['terbayar'] == '2') {

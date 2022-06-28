@@ -221,6 +221,18 @@ include_once "../partials/scripts.php";
       $("a#rekappengajuaninsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Pengajuan Upah") {
+      $("a#rekappengajuanupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Upah") {
+      $("a#rekapupah").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Insentif") {
+      $("a#rekapinsentif").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     }
   });
 </script>

@@ -10,12 +10,12 @@ $db = $database->getConnection();
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Rekap Pengajuan Insentif</h1>
+        <h1 class="m-0">Rekap Pengajuan Upah</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Rekap Pengajuan Insentif</li>
+          <li class="breadcrumb-item active">Rekap Pengajuan Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -27,7 +27,7 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Insentif Sudah Terbayar</h3>
+      <h3 class="card-title">Data Upah Sudah Terbayar</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -40,7 +40,7 @@ $db = $database->getConnection();
             <th>Tanggal Pengajuan</th>
             <th>No. Pengajuan</th>
             <th>Nama Karyawan</th>
-            <th>Total Insentif</th>
+            <th>Total Upah</th>
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
             <th>Status</th>
@@ -49,25 +49,25 @@ $db = $database->getConnection();
         </thead>
         <tbody>
           <?php
-          $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
-          LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
+          $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+          INNER JOIN gaji u on p.id_upah = u.id
+          LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE i.id_pengirim=?";
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          WHERE p.terbayar='2' AND u.id_pengirim=?";
           $stmt = $db->prepare($selectSql);
-          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
+          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
-            $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
-          LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
+            $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          INNER JOIN gaji u on p.id_upah = u.id
+          LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE i.id_pengirim=?
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC";
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          WHERE p.terbayar='2' AND u.id_pengirim=?
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
             $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
+            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->execute();
           }
           $no = 1;
@@ -78,7 +78,7 @@ $db = $database->getConnection();
               <td><?= $row['tgl_pengajuan'] ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_insentif'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td><?= $row['tgl_verifikasi'] ?></td>
               <td><?= $row['nama_verifikator'] ?></td>
               <td>
@@ -94,7 +94,7 @@ $db = $database->getConnection();
                 ?>
               </td>
               <td>
-              <a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+              <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a></td>
               </td>
             </tr>
           <?php } ?>

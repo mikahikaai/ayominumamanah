@@ -219,7 +219,7 @@ if (isset($_GET['id'])) {
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-md btn-danger float-right" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
+        <button type="button" class="btn btn-sm btn-danger float-right" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
       </form>
 
     </div>
