@@ -51,7 +51,6 @@ if (isset($_GET['no_pengajuan'])) {
             <th>No Perjalanan</th>
             <th>Nama</th>
             <th>Upah</th>
-            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -63,17 +62,18 @@ if (isset($_GET['no_pengajuan'])) {
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><?= $row['no_perjalanan'] ?></td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
-              <td>
-                <a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-sm btn-primary">
-                  <i class="fa fa-eye"></i> Lihat
-                </a>
-              </td>
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
+          </tr>
+        </tfoot>
       </table>
       <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
     </div>
@@ -89,6 +89,40 @@ include_once "../partials/scriptdatatables.php";
       $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
     });
     $('#mytable').DataTable({
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
+        };
+
+        // Total over all pages
+        nb_cols = api.columns().nodes().length;
+        var j = 4;
+        while (j < nb_cols && j != 5) {
+          total = api
+            .column(j)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+          j++
+        }
+        // Total over this page
+        // pageTotal = api
+        //   .column(4, {
+        //     page: 'current'
+        //   })
+        //   .data()
+        //   .reduce(function(a, b) {
+        //     return intVal(a) + intVal(b);
+        //   }, 0);
+
+        // Update footer
+        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+      },
       "columnDefs": [{
         "orderable": false,
         "targets": [0]

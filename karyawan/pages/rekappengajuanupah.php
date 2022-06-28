@@ -41,6 +41,8 @@ $db = $database->getConnection();
               <th>Tanggal Pengajuan</th>
               <th>No Pengajuan</th>
               <th>Total Upah</th>
+              <th>Tanggal Verifikasi</th>
+              <th>Nama Verifikator</th>
               <th>Status</th>
               <th>Opsi</th>
             </tr>
@@ -56,9 +58,10 @@ $db = $database->getConnection();
             $stmt = $db->prepare($selectSql);
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT p.*, u.*,k.*, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
+              $selectSql = "SELECT p.*, u.*,k1.nama nama_pengirim, k2.nama nama_verifikator, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
           INNER JOIN gaji u on p.id_upah = u.id
-          INNER JOIN karyawan k on u.id_pengirim = k.id
+          INNER JOIN karyawan k1 on u.id_pengirim = k1.id
+          INNER JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE u.id_pengirim = ?
           GROUP BY no_pengajuan ORDER BY no_pengajuan DESC";
@@ -75,6 +78,8 @@ $db = $database->getConnection();
                 <td><?= $row['tgl_pengajuan'] ?></td>
                 <td><?= $row['no_pengajuan']; ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
+                <td><?= $row['tgl_verifikasi'] ?></td>
+                <td><?= $row['nama_verifikator'] ?></td>
                 <td>
                   <?php
                   if ($row['terbayar'] == '0') {

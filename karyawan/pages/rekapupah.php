@@ -36,7 +36,6 @@
             <th>Nama</th>
             <th>Upah</th>
             <th>Terbayar</th>
-            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -65,26 +64,31 @@
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['tanggal'] ?></td>
-              <td><?= $row['no_perjalanan'] ?></td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $_SESSION['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
-                } else {
-                  echo 'Sudah';
+                } else if ($row['terbayar'] == '1') {
+                  echo 'Mengajukan';
+                } else if ($row['terbayar'] == '2') {
+                  echo 'Terverifikasi';
                 }
 
                 ?>
               </td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>" class="btn btn-sm btn-primary">
-                  <i class="fa fa-eye"></i> Lihat
-                </a>
-              </td>
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
 
     </div>
@@ -96,6 +100,41 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable()
+    $('#mytable').DataTable({
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
+        };
+
+        // Total over all pages
+        nb_cols = api.columns().nodes().length;
+        var j = 4;
+        while (j < nb_cols && j != 5) {
+          total = api
+            .column(j)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+          j++
+        }
+        // Total over this page
+        // pageTotal = api
+        //   .column(4, {
+        //     page: 'current'
+        //   })
+        //   .data()
+        //   .reduce(function(a, b) {
+        //     return intVal(a) + intVal(b);
+        //   }, 0);
+
+        // Update footer
+        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+      }
+    });
   });
 </script>
