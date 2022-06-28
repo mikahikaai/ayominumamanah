@@ -108,8 +108,6 @@ include_once "../partials/scriptdatatables.php";
 <script>
   $(function() {
     $('#mytable').DataTable({
-      paging: true,
-      autoWidth: true,
       footerCallback: function(row, data, start, end, display) {
         var api = this.api();
 
@@ -143,7 +141,7 @@ include_once "../partials/scriptdatatables.php";
 
         // Update footer
         // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      },
+      }
     });
   });
   
