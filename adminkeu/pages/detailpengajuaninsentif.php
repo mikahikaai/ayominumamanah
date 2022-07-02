@@ -54,6 +54,7 @@ if (isset($_POST['ajukan'])) {
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
+          <li class="breadcrumb-item"><a href="?page=pengajuaninsentif">Pengajuan Insentif</a></li>
           <li class="breadcrumb-item active">Detail Pengajuan Insentif</li>
         </ol>
       </div><!-- /.col -->
