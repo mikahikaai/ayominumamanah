@@ -4,13 +4,29 @@ $database = new Database;
 $db = $database->getConnection();
 session_start();
 
+// var_dump($_SERVER["HTTP_HOST"]);
+// die();
+
+if (isset($_SESSION['suksesreset'])){
+  $suksesreset = true;
+} else {
+  $suksesreset = false;
+}
+
+if (isset($_SESSION['errorakses'])){
+  $errorakses = true;
+} else {
+  $errorakses = false;
+}
+
 $errorlogin = false;
+
 if (isset($_SESSION['jabatan'])) {
   if ($_SESSION['jabatan'] == "ADMINKEU") {
     echo '<meta http-equiv="refresh" content="0;url=/adminkeu/"/>';
   } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
     echo '<meta http-equiv="refresh" content="0;url=/spvdist/"/>';
-  } else if ($_SESSION['jabatan'] == "DRIVER" OR $_SESSION['jabatan'] == "HELPER") {
+  } else if ($_SESSION['jabatan'] == "DRIVER" or $_SESSION['jabatan'] == "HELPER") {
     echo '<meta http-equiv="refresh" content="0;url=/karyawan/"/>';
   } else if ($_SESSION['jabatan'] == "MGRDISTRIBUSI") {
     echo '<meta http-equiv="refresh" content="0;url=/mgrdist/"/>';
@@ -95,6 +111,26 @@ if (isset($_POST['login'])) {
                 Username atau password salah
               </div>
             </div>
+            <div style='display: <?= $suksesreset == true ? "block;" : "none;"; ?>'>
+              <?php
+              unset($_SESSION['suksesreset']);
+              ?>
+              <div class="alert alert-success alert-dismissable">
+                <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
+                <h5><i class="fas fa-check"></i> Sukses</h5>
+                Password berhasil direset
+              </div>
+            </div>
+            <div style='display: <?= $errorakses == true ? "block;" : "none;"; ?>'>
+              <?php
+              unset($_SESSION['errorakses']);
+              ?>
+              <div class="alert alert-danger alert-dismissable">
+                <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
+                <h5><i class="fas fa-check"></i> Gagal</h5>
+                Halaman reset password sudah tidak valid
+              </div>
+            </div>
             <form action="" method="POST" class="signin-form">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Username" name="username" value="<?= $_POST['username'] ?? '' ?>" required>
@@ -114,7 +150,7 @@ if (isset($_POST['login'])) {
                   </label>
                 </div>
                 <div class="w-50 text-md-right">
-                  <a href="#" style="color: #fff">Lupa Password</a>
+                  <a href="/lupa_password.php" style="color: #fff">Lupa Password</a>
                 </div>
               </div>
             </form>

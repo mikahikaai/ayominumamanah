@@ -87,6 +87,7 @@ if (isset($_SESSION['hasil'])) {
             <th>No. Telpon</th>
             <th>Golongan Darah</th>
             <th>SIM</th>
+            <th>Email</th>
             <th>Status Karyawan</th>
             <th>Tanggal Registrasi</th>
             <th>Status Keaktifan</th>
@@ -122,6 +123,7 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['no_telepon'] ?></td>
               <td><?= $row['gol_darah'] ?></td>
               <td><?= $row['sim'] ?></td>
+              <td><?= $row['email'] ?></td>
               <td><?= $row['status_karyawan'] ?></td>
               <td><?= date('d-m-Y', strtotime($row['tanggal_registrasi'])) ?></td>
               <td><?= $row['status_keaktifan'] ?></td>
