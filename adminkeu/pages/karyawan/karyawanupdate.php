@@ -25,7 +25,7 @@ if (isset($_POST['button_edit'])) {
     $password = $_POST['password'] == '' && $_POST['password2'] == '' ? $row['password'] : md5($_POST['password']);
     $updatesql = "UPDATE karyawan SET password=?, nama=?, nik=?, tempat_lahir=?, tanggal_lahir=?, jenis_kelamin=?,
         alamat=?, agama=?, status=?, gol_darah=?, jabatan=?, no_telepon=?, sim=?, status_karyawan=?,
-        status_keaktifan=?, upah_borongan=?  where id=?";
+        status_keaktifan=?, upah_borongan=?, email=?  where id=?";
     $alamat = strtoupper($_POST['alamat']);
     $tempat_lahir = strtoupper($_POST['tempat_lahir']);
     $stmt = $db->prepare($updatesql);
@@ -45,7 +45,8 @@ if (isset($_POST['button_edit'])) {
     $stmt->bindParam(14, $_POST['status_karyawan']);
     $stmt->bindParam(15, $_POST['status_keaktifan']);
     $stmt->bindParam(16, $_POST['upah_borongan']);
-    $stmt->bindParam(17, $_GET['id']);
+    $stmt->bindParam(17, $_POST['email']);
+    $stmt->bindParam(18, $_GET['id']);
     if ($stmt->execute()) {
       $_SESSION['hasil_update'] = true;
       $_SESSION['pesan'] = "Berhasil Mengubah Data";
@@ -119,19 +120,30 @@ if (isset($_POST['button_edit'])) {
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="jenis_kelamin">Jenis Kelamin</label>
-          <select name="jenis_kelamin" class="form-control" required>
-            <option value="">--Pilih Jenis Kelamin--</option>
-            <?php
-            $options = array('LAKI-LAKI', 'PEREMPUAN');
-            foreach ($options as $option) {
-              $selected = $row['jenis_kelamin'] == $option ? 'selected' : '';
-              echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-            }
-            ?>
-          </select>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis_kelamin">Jenis Kelamin</label>
+              <select name="jenis_kelamin" class="form-control" required>
+                <option value="">--Pilih Jenis Kelamin--</option>
+                <?php
+                $options = array('LAKI-LAKI', 'PEREMPUAN');
+                foreach ($options as $option) {
+                  $selected = $row['jenis_kelamin'] == $option ? 'selected' : '';
+                  echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
+                }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email">E-Mail</label>
+              <input type="email" name="email" class="form-control" value="<?= $row['email'] ?>" required>
+            </div>
+          </div>
         </div>
+
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">

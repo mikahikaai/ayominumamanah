@@ -41,7 +41,7 @@ if ($stmt->rowCount() > 0) {
     $tempat_lahir = strtoupper($_POST['tempat_lahir']);
 
     $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
-        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, status_karyawan, upah_borongan, foto) values
+        alamat, agama, status, jabatan, no_telepon, gol_darah, sim, email, status_karyawan, upah_borongan, foto) values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $db->prepare($insertsql);
     $nama_upper = strtoupper($_POST['nama']);
@@ -61,9 +61,10 @@ if ($stmt->rowCount() > 0) {
     $stmt->bindParam(12, $_POST['no_telepon']);
     $stmt->bindParam(13, $_POST['gol_darah']);
     $stmt->bindParam(14, $_POST['sim']);
-    $stmt->bindParam(15, $_POST['status_karyawan']);
-    $stmt->bindParam(16, $_POST['upah_borongan']);
-    $stmt->bindParam(17, $_SESSION['foto_upload']);
+    $stmt->bindParam(15, $_POST['email']);
+    $stmt->bindParam(16, $_POST['status_karyawan']);
+    $stmt->bindParam(17, $_POST['upah_borongan']);
+    $stmt->bindParam(18, $_SESSION['foto_upload']);
 
     if ($stmt->execute()) {
       $_SESSION['hasil_create'] = true;
@@ -122,7 +123,6 @@ if ($stmt->rowCount() > 0) {
               <a href="javascript:void(0);" class="btn btn-success btn-active" id='generate' style="display: none;">Generate</a>
             </div>
           </div>
-
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -138,19 +138,30 @@ if ($stmt->rowCount() > 0) {
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="jenis_kelamin">Jenis Kelamin</label>
-          <select name="jenis_kelamin" class="form-control" required>
-            <option value="">--Pilih Jenis Kelamin--</option>
-            <?php
-            $options = array('LAKI-LAKI', 'PEREMPUAN');
-            foreach ($options as $option) {
-              $selected = $_POST['jenis_kelamin'] == $option ? 'selected' : '';
-              echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
-            }
-            ?>
-          </select>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis_kelamin">Jenis Kelamin</label>
+              <select name="jenis_kelamin" class="form-control" required>
+                <option value="">--Pilih Jenis Kelamin--</option>
+                <?php
+                $options = array('LAKI-LAKI', 'PEREMPUAN');
+                foreach ($options as $option) {
+                  $selected = $_POST['jenis_kelamin'] == $option ? 'selected' : '';
+                  echo "<option value=\"" . $option . "\"" . $selected . ">" . $option . "</option>";
+                }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email">E-Mail</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+          </div>
         </div>
+
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
