@@ -3,6 +3,13 @@
 $database = new Database;
 $db = $database->getConnection();
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../plugins/php-mailer/src/Exception.php';
+require '../plugins/php-mailer/src/PHPMailer.php';
+require '../plugins/php-mailer/src/SMTP.php';
+
 if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k.*, p.id id_pengajuan_insentif FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
@@ -25,6 +32,40 @@ if (isset($_POST['verif'])) {
     $stmt_update->bindParam(3, $checkbox_id_pengajuan_insentif[$i]);
     $stmt_update->execute();
   }
+
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $emailTo = $row["email"]; //email kamu atau email penerima link reset
+
+  $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+  try {
+    //Server settings
+    //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.gmail.com';                     // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = "mikahikaai100@gmail.com";             // SMTP username
+    $mail->Password = 'khjjztrrumnocaav';                         // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 587;                                    // TCP port to connect to
+
+    //Recipients
+    $mail->setFrom("admin@gmail.com", "Admin PKS"); //email pengirim
+    $mail->addAddress($emailTo); // Email penerima
+    $mail->addReplyTo("no-reply@gmail.com");
+
+    //Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = "Pemberitahuan Pengambilan Insentif";
+    $mail->Body    = "<h1>Perhitungan insentif sudah terverifikasi</h1><p> Silahkan ambil insentif Anda diloket pengambilan gaji</p>";
+    //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->send();
+  } catch (Exception $e) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+  }
+
   echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
 }
 ?>
