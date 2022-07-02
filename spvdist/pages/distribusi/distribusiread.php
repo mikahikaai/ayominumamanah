@@ -100,7 +100,7 @@ if (isset($_SESSION['hasil'])) {
           $database = new Database;
           $db = $database->getConnection();
 
-          $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, v.nama validator, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
+          $selectsql = "SELECT a.*, d.*, d.id id_distribusi, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, v.nama validator, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3, (SELECT terbayar FROM gaji u LEFT JOIN pengajuan_upah_borongan pu ON pu.id_upah = u.id WHERE u.id_distribusi = d.id ORDER BY terbayar DESC LIMIT 1) upah_verif, (SELECT terbayar FROM gaji i LEFT JOIN pengajuan_insentif_borongan pi ON pi.id_insentif = i.id WHERE i.id_distribusi = d.id ORDER BY terbayar DESC LIMIT 1) insentif_verif
                     FROM distribusi d
                     INNER JOIN armada a on d.id_plat = a.id
                     LEFT JOIN karyawan k1 on d.driver = k1.id
@@ -113,6 +113,8 @@ if (isset($_SESSION['hasil'])) {
                     ORDER BY tanggal DESC; ";
           $stmt = $db->prepare($selectsql);
           $stmt->execute();
+
+
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -178,15 +180,15 @@ if (isset($_SESSION['hasil'])) {
                   <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1">
                     <i class="fa fa-edit"></i> Validasi
                   </a>
+                <?php } else if ($row['upah_verif'] == 2 OR $row['insentif_verif'] == 2) { ?>
+                  <button class="btn btn-secondary d-block btn-sm mr-1 disabled">
+                    <i class="fa fa-trash"></i> Batalkan Validasi
+                  </button>
                 <?php } else if ($row['status'] == 1) { ?>
                   <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
                     <i class="fa fa-trash"></i> Batalkan Validasi
                   </a>
-                <?php } else if ($row['terbayar'] == 2) { ?>
-                  <button class="btn btn-secondary d-block btn-sm mr-1 disabled">
-                    <i class="fa fa-trash"></i> Batalkan Validasi
-                  </button>
-                <?php } ?>
+                  <?php } ?>
               </td>
             </tr>
           <?php } ?>
