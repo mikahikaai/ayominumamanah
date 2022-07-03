@@ -3,6 +3,8 @@
 $database = new Database;
 $db = $database->getConnection();
 
+include '../plugins/phpqrcode/qrlib.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -24,13 +26,25 @@ if (isset($_GET['no_pengajuan'])) {
 if (isset($_POST['verif'])) {
   if (!empty($_POST['cid'])) {
     $checkbox_id_pengajuan_upah = $_POST['cid'];
+
+    $id_qr_code = uniqid();
+      $text_qrcode = "http://" .$_SERVER['HTTP_HOST'] . "/verify.php?code=$id_qr_code";
+      $tempdir = "../dist/verif/";
+      $namafile = $id_qr_code . ".png";
+      $quality = "H";
+      $ukuran = 10;
+      $padding = 2;
+    
+      QRcode::png($text_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
+
     for ($i = 0; $i < sizeof($checkbox_id_pengajuan_upah); $i++) {
-      $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE id=?";
+      $updateSql = "UPDATE pengajuan_upah_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, qrcode=? WHERE id=?";
       $tgl_verifikasi = date('Y-m-d');
       $stmt_update = $db->prepare($updateSql);
       $stmt_update->bindParam(1, $tgl_verifikasi);
       $stmt_update->bindParam(2, $_SESSION['id']);
-      $stmt_update->bindParam(3, $checkbox_id_pengajuan_upah[$i]);
+      $stmt_update->bindParam(3, $id_qr_code);
+      $stmt_update->bindParam(4, $checkbox_id_pengajuan_upah[$i]);
       $stmt_update->execute();
     }
     
@@ -66,6 +80,7 @@ if (isset($_POST['verif'])) {
       echo 'Message could not be sent.';
       echo 'Mailer Error: ' . $mail->ErrorInfo;
     }
+      
 
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
   }

@@ -3,6 +3,8 @@ include "database/database.php";
 $database = new Database;
 $db = $database->getConnection();
 session_start();
+// var_dump($_SERVER);
+// die();
 
 // var_dump($_SERVER["HTTP_HOST"]);
 // die();

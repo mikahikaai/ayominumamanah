@@ -3,6 +3,8 @@
 $database = new Database;
 $db = $database->getConnection();
 
+include '../plugins/phpqrcode/qrlib.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -23,13 +25,25 @@ if (isset($_GET['no_pengajuan'])) {
 
 if (isset($_POST['verif'])) {
   $checkbox_id_pengajuan_insentif = $_POST['cid'];
+
+  $id_qr_code_insentif = uniqid();
+      $text_qrcode = "http://" .$_SERVER['HTTP_HOST'] . "/verifyinsentif.php?code=$id_qr_code_insentif";
+      $tempdir = "../dist/verif/";
+      $namafile = $id_qr_code_insentif . ".png";
+      $quality = "H";
+      $ukuran = 10;
+      $padding = 2;
+    
+      QRcode::png($text_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
+
   for ($i = 0; $i < sizeof($checkbox_id_pengajuan_insentif); $i++) {
-    $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=? WHERE id=?";
+    $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, qrcode=? WHERE id=?";
     $tgl_verifikasi = date('Y-m-d');
     $stmt_update = $db->prepare($updateSql);
     $stmt_update->bindParam(1, $tgl_verifikasi);
     $stmt_update->bindParam(2, $_SESSION['id']);
-    $stmt_update->bindParam(3, $checkbox_id_pengajuan_insentif[$i]);
+    $stmt_update->bindParam(3, $id_qr_code_insentif);
+    $stmt_update->bindParam(4, $checkbox_id_pengajuan_insentif[$i]);
     $stmt_update->execute();
   }
 
