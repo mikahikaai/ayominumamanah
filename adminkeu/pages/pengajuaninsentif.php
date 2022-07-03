@@ -52,6 +52,9 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
+          $tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
+          $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
+
           $selectSql = "SELECT * FROM gaji i
           LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
           WHERE p.terbayar is NULL";
@@ -65,8 +68,11 @@ if (isset($_POST['ajukan'])) {
             RIGHT JOIN gaji i on p.id_insentif = i.id
             INNER JOIN karyawan k on i.id_pengirim = k.id
             INNER JOIN distribusi d on i.id_distribusi = d.id
-            WHERE p.terbayar IS NULL GROUP BY k.nama ORDER BY k.nama ASC";
+            WHERE p.terbayar IS NULL AND (d.jam_berangkat BETWEEN ? AND ?)
+            GROUP BY k.nama ORDER BY k.nama ASC";
             $stmt = $db->prepare($selectSql);
+            $stmt->bindParam(1, $tgl_pengajuan_insentif_awal);
+            $stmt->bindParam(2, $tgl_pengajuan_insentif_akhir);
             $stmt->execute();
           }
 
@@ -91,7 +97,7 @@ if (isset($_POST['ajukan'])) {
               </td>
               <td>
                 <a href="?page=detailpengajuaninsentif&idk=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-primary">
-                <i class="fa fa-eye"></i> Lihat</a>
+                  <i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
