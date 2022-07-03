@@ -300,6 +300,11 @@
                   <p>Distribusi</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?page=pemakaianarmada" class="nav-link" id="pemakaianarmada"><i class="far fa-circle nav-icon"></i>
+                  <p>Pemakaian Armada</p>
+                </a>
+              </li>
             </ul>
           </li>
         <?php }; ?>
