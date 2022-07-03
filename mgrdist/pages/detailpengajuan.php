@@ -96,7 +96,8 @@ if (isset($_POST['verif'])) {
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Detail Upah</li>
+          <li class="breadcrumb-item"><a href="?page=pengajuanupah">Verifikasi Upah</a></li>
+          <li class="breadcrumb-item active">Detail Pengajuan Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->

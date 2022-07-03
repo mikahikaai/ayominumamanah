@@ -24,7 +24,8 @@ if (isset($_GET['no_pengajuan'])) {
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Detail Insentif</li>
+          <li class="breadcrumb-item"><a href="?page=rekappengajuaninsentif">Rekap Pengajuan Insentif</a></li>
+          <li class="breadcrumb-item active">Rekap Detail Pengajuan Insentif</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->

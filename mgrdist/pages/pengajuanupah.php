@@ -15,7 +15,7 @@ $db = $database->getConnection();
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Pengajuan Upah</li>
+          <li class="breadcrumb-item active">Verifikasi Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
