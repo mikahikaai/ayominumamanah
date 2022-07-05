@@ -104,6 +104,8 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['kecepatan_muatan'] ?></td>
               <td><?= $row['status_keaktifan'] ?></td>
               <td>
+                <a href="?page=armadadetail&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
                 <a href="?page=armadaupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                   <i class="fa fa-edit"></i> Ubah
                 </a>

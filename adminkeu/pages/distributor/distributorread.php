@@ -110,6 +110,9 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['jarak'] ?></td>
               <td><?= $row['status_keaktifan'] ?></td>
               <td>
+                <a href="?page=distributordetail&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
                 <a href="?page=distributorupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                   <i class="fa fa-edit"></i> Ubah
                 </a>

@@ -176,6 +176,9 @@ if (isset($_SESSION['hasil'])) {
                 <?php } ?>
               </td>
               <td>
+                <a href="?page=detaildistribusi&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
                 <?php if ($row['status'] == '0') { ?>
                   <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                     <i class="fa fa-edit"></i> Ubah
@@ -255,7 +258,7 @@ include_once "../partials/scriptdatatables.php";
         confirmButtonText: 'OK'
       })
     }
-    
+
     $('#mytable').DataTable({
       pagingType: "full_numbers",
       stateSave: true,

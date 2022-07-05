@@ -301,8 +301,8 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?page=pemakaianarmada" class="nav-link" id="pemakaianarmada"><i class="far fa-circle nav-icon"></i>
-                  <p>Pemakaian Armada</p>
+                <a href="?page=prestasikaryawan" class="nav-link" id="prestasikaryawan"><i class="far fa-circle nav-icon"></i>
+                  <p>Prestasi Keberangkatan</p>
                 </a>
               </li>
             </ul>

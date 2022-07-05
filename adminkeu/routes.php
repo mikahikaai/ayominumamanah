@@ -26,6 +26,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/distributor/distributordelete.php') ? include 'pages/distributor/distributordelete.php' : include '../pages/404.php';
       $title = 'Distributor';
       break;
+    case 'distributordetail':
+      file_exists('pages/distributor/distributordetail.php') ? include 'pages/distributor/distributordetail.php' : include '../pages/404.php';
+      $title = 'Distributor';
+      break;
     case 'distribusiread':
       file_exists('pages/distribusi/distribusiread.php') ? include 'pages/distribusi/distribusiread.php' : include '../pages/404.php';
       $title = 'Distribusi';
@@ -58,6 +62,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/armada/armadadelete.php') ? include 'pages/armada/armadadelete.php' : include '../pages/404.php';
       $title = 'Armada';
       break;
+    case 'armadadetail':
+      file_exists('pages/armada/armadadetail.php') ? include 'pages/armada/armadadetail.php' : include '../pages/404.php';
+      $title = 'Armada';
+      break;
     case 'karyawanread':
       file_exists('pages/karyawan/karyawanread.php') ? include 'pages/karyawan/karyawanread.php' : include '../pages/404.php';
       $title = 'Karyawan';
@@ -72,6 +80,10 @@ if (isset($_GET['page'])) {
       break;
     case 'karyawandelete':
       file_exists('pages/karyawan/karyawandelete.php') ? include 'pages/karyawan/karyawandelete.php' : include '../pages/404.php';
+      $title = 'Karyawan';
+      break;
+    case 'karyawandetail':
+      file_exists('pages/karyawan/karyawandetail.php') ? include 'pages/karyawan/karyawandetail.php' : include '../pages/404.php';
       $title = 'Karyawan';
       break;
     case 'rangepengajuaninsentif':

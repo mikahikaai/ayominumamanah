@@ -129,6 +129,9 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['status_keaktifan'] ?></td>
               <td><?= number_format($row['upah_borongan'], 0, ",", ".") ?></td>
               <td>
+                <a href="?page=karyawandetail&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
                 <a href="?page=karyawanupdate&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                   <i class="fa fa-edit"></i> Ubah
                 </a>
