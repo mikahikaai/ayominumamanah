@@ -73,68 +73,43 @@ if (isset($_GET['id'])) {
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-danger btn-sm float-right mr-1" onclick="history.back()">
+        <label for="">Map</label>
+        <div id="map" style="height: 800px;"></div>
+        <button type="button" class="btn btn-danger btn-sm float-right mr-1 mt-2" onclick="history.back()">
           <i class="fa fa-arrow-left"></i> Kembali
         </button>
       </form>
-      <!-- <div id="map"></div> -->
     </div>
   </div>
 </div>
-<!-- <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc-mh8f7L4bNcs5uXEYW-sSJY4vBfxEq0&callback=initMap">
-  </script>
-<script type="text/javascript">
-  let map;
-  let infoWindow;
-  let mapOptions;
-  let bounds;
 
-  function initMap() {
-    // infoWindow ini digunakan untuk menampilkan pop-up diatas marker terkait lokasi markernya
-    infoWindow = new google.maps.InfoWindow;
-    //  Variabel berisi properti tipe peta yang bisa diubah-ubah
-    mapOptions = {
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    // Deklarasi untuk melakukan load map Google Maps API
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    // Variabel untuk menyimpan batas kordinat
-    bounds = new google.maps.LatLngBounds();
-    // Pengambilan data dari database MySQL
-    <?php
-    // Sesuaikan dengan database yang sudah Anda buat diawal
-    $query = "SELECT * FROM distributor";
-    $stmtq = $db->prepare($query);
-    $stmtq->execute();
-    while ($rowq = $stmtq->fetch(PDO::FETCH_ASSOC)) {
-      $nama = $row["nama"];
-      $lat  = $row["lt"];
-      $long = $row["lg"];
-      echo "addMarker($lat, $long, '$nama');\n";
-    }
-    ?>
-    // Proses membuat marker 
-    var location;
-    var marker;
+<script>
+  var lt = <?= $row['lt']; ?>;
+  var lg = <?= $row['lg']; ?>;
+  var nama = "<?= $row['nama']; ?>";
 
-    function addMarker(lat, lng, info) {
-      location = new google.maps.LatLng(lat, lng);
-      bounds.extend(location);
-      marker = new google.maps.Marker({
-        map: map,
-        position: location
-      });
-      map.fitBounds(bounds);
-      bindInfoWindow(marker, map, infoWindow, info);
-    }
-    // Proses ini dapat menampilkan informasi lokasi Kota/Kab ketika diklik dari masing-masing markernya
-    function bindInfoWindow(marker, map, infoWindow, html) {
-      google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(html);
-        infoWindow.open(map, marker);
-      });
-    }
+  if (!lt){
+    lt = -3.4960839506671517;
   }
+
+  if (!lg){
+    lg = 114.81016825291921;
+  }
+  var map = L.map('map').setView([lt, lg], 13);
+
+  googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+}).addTo(map);
+
+  map.addControl(new L.Control.Fullscreen());
+
+  map.on("click", function(e) {
+    const markerPlace = document.querySelector(".marker-position");
+    markerPlace.textContent = e.latlng;
+  });
+
+  L.marker([lt, lg]).addTo(map)
+    .bindPopup(nama)
+    .openPopup();
 </script>
-/.content -->

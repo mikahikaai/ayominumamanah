@@ -113,31 +113,20 @@ if (isset($_GET['id'])) {
                 ?>
               </select>
             </div>
-            <!-- <div class="form-group">
-                            <label for="kateg">Kategori Jarak</label>
-                            <input type="text" name="kateg" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= $row['kateg']; ?>" required>
-                        </div> -->
           </div>
         </div>
-        <!-- <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="min_order">Minimal Order</label>
-                            <input type="text" name="min_order" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= $row['min_order']; ?>" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="ongkir">Ongkos Kirim</label>
-                            <input type="text" name="ongkir" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="1" value="<?= $row['ongkir']; ?>" required>
-                        </div>
-                    </div>
-                </div> -->
-
-        <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
+        <label for="">Map</label>
+        <div class="auto-search-wrapper mb-2">
+          <input type="text" autocomplete="off" id="search" class="full-width" placeholder="Ketik nama tempat yang ingin anda cari..." />
+        </div>
+        <div id="map" style="height: 800px;"></div>
+        <div class="marker-position"></div>
+        <input type="hidden" id="lat" name="lat">
+        <input type="hidden" id="lng" name="lng">
+        <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
           <i class="fa fa-times"></i> Batal
         </a>
-        <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1">
+        <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1 mt-2">
           <i class="fa fa-save"></i> Ubah
         </button>
       </form>
@@ -145,3 +134,202 @@ if (isset($_GET['id'])) {
   </div>
 </div>
 <!-- /.content -->
+<script>
+  new Autocomplete("search", {
+    // default selects the first item in
+    // the list of results
+    selectFirst: true,
+
+    // The number of characters entered should start searching
+    howManyCharacters: 2,
+
+    // onSearch
+    onSearch: ({
+      currentValue
+    }) => {
+      // You can also use static files
+      // const api = '../static/search.json'
+      const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=10&q=${encodeURI(currentValue)}`;
+
+      /**
+       * jquery
+       */
+      // return $.ajax({
+      //     url: api,
+      //     method: 'GET',
+      //   })
+      //   .done(function (data) {
+      //     return data
+      //   })
+      //   .fail(function (xhr) {
+      //     console.error(xhr);
+      //   });
+
+      // OR -------------------------------
+
+      /**
+       * axios
+       * If you want to use axios you have to add the
+       * axios library to head html
+       * https://cdnjs.com/libraries/axios
+       */
+      // return axios.get(api)
+      //   .then((response) => {
+      //     return response.data;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+
+      // OR -------------------------------
+
+      /**
+       * Promise
+       */
+      return new Promise((resolve) => {
+        fetch(api)
+          .then((response) => response.json())
+          .then((data) => {
+            resolve(data.features);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      });
+    },
+    // nominatim GeoJSON format parse this part turns json into the list of
+    // records that appears when you type.
+    onResults: ({
+      currentValue,
+      matches,
+      template
+    }) => {
+      const regex = new RegExp(currentValue, "gi");
+
+      // if the result returns 0 we
+      // show the no results element
+      return matches === 0 ?
+        template :
+        matches
+        .map((element) => {
+          return `
+          <li class="loupe">
+            <p>
+              ${element.properties.display_name.replace(
+                regex,
+                (str) => `<b>${str}</b>`
+              )}
+            </p>
+          </li> `;
+        })
+        .join("");
+    },
+
+    // we add an action to enter or click
+    onSubmit: ({
+      object
+    }) => {
+      // remove all layers from the map
+      map.eachLayer(function(layer) {
+        if (!!layer.toGeoJSON) {
+          map.removeLayer(layer);
+        }
+      });
+
+      const {
+        display_name
+      } = object.properties;
+      const [lng, lat] = object.geometry.coordinates;
+
+      const marker = L.marker([lat, lng], {
+        title: display_name,
+      });
+
+      marker.addTo(map).bindPopup(display_name);
+
+      map.setView([lat, lng], 16);
+    },
+
+    // get index and data from li element after
+    // hovering over li with the mouse or using
+    // arrow keys ↓ | ↑
+    onSelectedItem: ({
+      index,
+      element,
+      object
+    }) => {
+      console.log("onSelectedItem:", index, element, object);
+    },
+
+    // the method presents no results element
+    noResults: ({
+        currentValue,
+        template
+      }) =>
+      template(`<li>No results found: "${currentValue}"</li>`),
+  });
+
+  var lat = <?= $row['lt']; ?>;
+  var lng = <?= $row['lg']; ?>;
+  var nama = "<?= $row['nama']; ?>";
+
+  if (!lat) {
+    lat = -3.4960839506671517;
+  }
+
+  if (!lng) {
+    lng = 114.81016825291921;
+  }
+
+  var map = L.map('map').setView([lat, lng], 18);
+
+  googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  }).addTo(map);
+
+  L.marker([lat, lng]).addTo(map)
+    .bindPopup(nama)
+    .openPopup().on("click", centered);
+
+  map.addControl(new L.Control.Fullscreen());
+
+  var marker;
+  const markerPlace = document.querySelector(".marker-position");
+  map.on("click", function(e) {
+    if (marker) { // check
+      map.removeLayer(marker); // remove
+    }
+    marker = new L.marker(e.latlng, {
+      draggable: true,
+      autopan: true
+    }).bindPopup(nama + " " + "(NEW)").addTo(map).on("click", centered); // set
+    marker.on("dragend", function(e) {
+      markerPlace.textContent = `${marker.getLatLng().lat}, ${
+        marker.getLatLng().lng
+      }`;
+      document.getElementById('lat').value = marker.getLatLng().lat;
+      document.getElementById('lng').value = marker.getLatLng().lng;
+    });
+    markerPlace.textContent = `${marker.getLatLng().lat}, ${
+        marker.getLatLng().lng
+      }`;
+    document.getElementById('lat').value = marker.getLatLng().lat;
+    document.getElementById('lng').value = marker.getLatLng().lng;
+  });
+  // const marker2 = new L.marker([lat, lng], {
+  //     draggable: true,
+  //     autoPan: true,
+  //   })
+  //   .bindPopup(nama)
+  //   .addTo(map);
+
+  function centered(e) {
+    map.setView(e.target.getLatLng(), 18);
+  }
+
+
+
+
+  // dragging the marker
+</script>
