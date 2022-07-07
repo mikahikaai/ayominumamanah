@@ -4,7 +4,7 @@ $db = $database->getConnection();
 
 if (isset($_POST['button_edit'])) {
 
-  $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?, lt=?, lg=?  WHERE id=?";
+  $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?, lat=?, lng=?  WHERE id=?";
   $stmt = $db->prepare($updatesql);
   $stmt->bindParam(1, $_POST['nama']);
   $stmt->bindParam(2, $_POST['paket']);
@@ -281,8 +281,8 @@ if (isset($_GET['id'])) {
       template(`<li>No results found: "${currentValue}"</li>`),
   });
 
-  var lat = <?= $row['lt']; ?>;
-  var lng = <?= $row['lg']; ?>;
+  var lat = <?= $row['lat']; ?>;
+  var lng = <?= $row['lng']; ?>;
   var nama = "<?= $row['nama']; ?>";
 
   if (!lat) {
