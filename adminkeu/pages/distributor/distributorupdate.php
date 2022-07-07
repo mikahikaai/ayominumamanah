@@ -288,6 +288,21 @@ if (isset($_GET['id'])) {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }).addTo(map);
 
+  var LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [38, 38],
+      shadowSize: [50, 64],
+      iconAnchor: [22, 94],
+      shadowAnchor: [4, 62],
+      popupAnchor: [-3, -76]
+    }
+  });
+
+  var greenIcon = new LeafIcon({
+    iconUrl: '../images/logooo cropped resized compressed.png',
+    // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
+  })
+
   L.marker([lat, lng]).addTo(map)
     .bindPopup(nama)
     .openPopup().on("click", centered);
@@ -301,6 +316,7 @@ if (isset($_GET['id'])) {
       map.removeLayer(marker); // remove
     }
     marker = new L.marker(e.latlng, {
+      icon: greenIcon,
       draggable: true,
       autopan: true
     }).bindPopup(nama + " " + "(NEW)").addTo(map).on("click", centered); // set
