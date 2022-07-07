@@ -84,23 +84,51 @@ if (isset($_GET['id'])) {
 </div>
 
 <script>
-  var lt = <?= $row['lt']; ?>;
-  var lg = <?= $row['lg']; ?>;
+  var lat = <?= $row['lt']; ?>;
+  var lng = <?= $row['lg']; ?>;
   var nama = "<?= $row['nama']; ?>";
 
-  if (!lt){
-    lt = -3.4960839506671517;
+  if (!lat) {
+    lat = -3.4960839506671517;
+    nama = "Pabrik Air Minum Amanah";
   }
 
-  if (!lg){
-    lg = 114.81016825291921;
+  if (!lng) {
+    lng = 114.81016825291921;
   }
-  var map = L.map('map').setView([lt, lg], 13);
+  var map = L.map('map', {
+    center: [lat, lng],
+    zoom: 18,
+    gestureHandling: true,
+    gestureHandlingOptions: {
+      text: {
+        touch: "Gunakan 2 jari untuk menggeser map",
+        scroll: "Gunakan Ctrl + Scroll untuk memperbesar map",
+        scrollMac: "Gunakan \u2318 + scroll untuk memperbesar map"
+      },
+      duration: 1000
+    }
+  });
 
-  googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+  var LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [38, 38],
+      shadowSize: [50, 64],
+      iconAnchor: [22, 45],
+      shadowAnchor: [4, 62],
+      popupAnchor: [-3, -45]
+    }
+  });
+
+  var greenIcon = new LeafIcon({
+    iconUrl: '../images/logooo cropped resized compressed.png',
+    // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
+  })
+
+  googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3']
-}).addTo(map);
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  }).addTo(map);
 
   map.addControl(new L.Control.Fullscreen());
 
@@ -109,7 +137,13 @@ if (isset($_GET['id'])) {
     markerPlace.textContent = e.latlng;
   });
 
-  L.marker([lt, lg]).addTo(map)
+  L.marker([lat, lng], {
+      icon: greenIcon,
+    }).addTo(map)
     .bindPopup(nama)
-    .openPopup();
+    .openPopup().on("click", centered);;
+
+  function centered(e) {
+    map.setView(e.target.getLatLng(), 18);
+  }
 </script>

@@ -24,6 +24,10 @@
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomik23/autocomplete@1.8.3/dist/css/autocomplete.min.css" />
   <script src="https://cdn.jsdelivr.net/gh/tomik23/autocomplete@1.8.3/dist/js/autocomplete.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css" type="text/css">
+  <script src="https://unpkg.com/leaflet-gesture-handling"></script>
+  <script src="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.css" />
 
 
   <!-- <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"></script>
@@ -50,5 +54,15 @@ https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-domin
       color: white;
       background-color: #A5A8AD;
     }
+
+    /* .marker-position {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 999;
+      padding: 10px;
+      font-weight: 700;
+      background-color: #eee;
+    } */
   </style>
 </head>

@@ -3,7 +3,8 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_edit'])) {
-  $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?  WHERE id=?";
+
+  $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?, lt=?, lg=?  WHERE id=?";
   $stmt = $db->prepare($updatesql);
   $stmt->bindParam(1, $_POST['nama']);
   $stmt->bindParam(2, $_POST['paket']);
@@ -11,7 +12,9 @@ if (isset($_POST['button_edit'])) {
   $stmt->bindParam(4, $_POST['no_telepon']);
   $stmt->bindParam(5, $_POST['jarak']);
   $stmt->bindParam(6, $_POST['status_keaktifan']);
-  $stmt->bindParam(7, $_GET['id']);
+  $stmt->bindParam(7, $_POST['lat']);
+  $stmt->bindParam(8, $_POST['lng']);
+  $stmt->bindParam(9, $_GET['id']);
 
   if ($stmt->execute()) {
     $_SESSION['hasil_update'] = true;
@@ -21,6 +24,7 @@ if (isset($_POST['button_edit'])) {
     $_SESSION['pesan'] = "Gagal Mengubah Data";
   }
   echo '<meta http-equiv="refresh" content="0;url=?page=distributorread"/>';
+  exit;
 }
 
 if (isset($_GET['id'])) {
@@ -115,20 +119,26 @@ if (isset($_GET['id'])) {
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <input type="hidden" id="lat" name="lat" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <input type="hidden" id="lng" name="lng" class="form-control">
+          </div>
+        </div>
         <label for="">Map</label>
         <div class="auto-search-wrapper mb-2">
           <input type="text" autocomplete="off" id="search" class="full-width" placeholder="Ketik nama tempat yang ingin anda cari..." />
         </div>
         <div id="map" style="height: 800px;"></div>
-        <div class="marker-position"></div>
-        <input type="hidden" id="lat" name="lat">
-        <input type="hidden" id="lng" name="lng">
         <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
           <i class="fa fa-times"></i> Batal
         </a>
         <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1 mt-2">
           <i class="fa fa-save"></i> Ubah
         </button>
+        <div class="all-markers"></div>
       </form>
     </div>
   </div>
@@ -149,7 +159,9 @@ if (isset($_GET['id'])) {
     }) => {
       // You can also use static files
       // const api = '../static/search.json'
-      const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=10&q=${encodeURI(currentValue)}`;
+      const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=10&q=${encodeURI(
+        currentValue
+        )}`;
 
       /**
        * jquery
@@ -247,7 +259,7 @@ if (isset($_GET['id'])) {
 
       marker.addTo(map).bindPopup(display_name);
 
-      map.setView([lat, lng], 16);
+      map.setView([lat, lng], 17);
     },
 
     // get index and data from li element after
@@ -275,13 +287,26 @@ if (isset($_GET['id'])) {
 
   if (!lat) {
     lat = -3.4960839506671517;
+    nama = "Pabrik Air Minum Amanah";
   }
 
   if (!lng) {
     lng = 114.81016825291921;
   }
 
-  var map = L.map('map').setView([lat, lng], 18);
+  var map = L.map('map', {
+    center: [lat, lng],
+    zoom: 18,
+    gestureHandling: true,
+    gestureHandlingOptions: {
+      text: {
+        touch: "Gunakan 2 jari untuk menggeser map",
+        scroll: "Gunakan Ctrl + Scroll untuk memperbesar map",
+        scrollMac: "Gunakan \u2318 + scroll untuk memperbesar map"
+      },
+      duration: 1000
+    }
+  });
 
   googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     maxZoom: 20,
@@ -292,11 +317,24 @@ if (isset($_GET['id'])) {
     options: {
       iconSize: [38, 38],
       shadowSize: [50, 64],
-      iconAnchor: [22, 94],
+      iconAnchor: [22, 45],
       shadowAnchor: [4, 62],
-      popupAnchor: [-3, -76]
+      popupAnchor: [-3, -45]
     }
   });
+
+  L.control.coordinates({
+    position: "bottomleft",
+    decimals: 10, //optional default 4
+    decimalSeperator: ".", //optional default "."
+    labelTemplateLat: "Latitude: {y}", //optional default "Lat: {y}"
+    labelTemplateLng: "Longitude: {x}", //optional default "Lng: {x}"
+    enableUserInput: false, //optional default true
+    useDMS: false, //optional default false
+    useLatLngOrder: true, //ordering of labels, default false-> lng-lat
+    markerType: L.marker, //optional default L.marker
+    markerProps: {} //optional default {}
+  }).addTo(map);
 
   var greenIcon = new LeafIcon({
     iconUrl: '../images/logooo cropped resized compressed.png',
@@ -310,7 +348,7 @@ if (isset($_GET['id'])) {
   map.addControl(new L.Control.Fullscreen());
 
   var marker;
-  const markerPlace = document.querySelector(".marker-position");
+  map.doubleClickZoom.disable();
   map.on("click", function(e) {
     if (marker) { // check
       map.removeLayer(marker); // remove
@@ -319,33 +357,31 @@ if (isset($_GET['id'])) {
       icon: greenIcon,
       draggable: true,
       autopan: true
-    }).bindPopup(nama + " " + "(NEW)").addTo(map).on("click", centered); // set
+    }).bindPopup(nama + " " + "(NEW)").addTo(map).openPopup().on("click", centered).on("dblclick", removed); // set
     marker.on("dragend", function(e) {
-      markerPlace.textContent = `${marker.getLatLng().lat}, ${
-        marker.getLatLng().lng
-      }`;
       document.getElementById('lat').value = marker.getLatLng().lat;
       document.getElementById('lng').value = marker.getLatLng().lng;
     });
-    markerPlace.textContent = `${marker.getLatLng().lat}, ${
-        marker.getLatLng().lng
-      }`;
     document.getElementById('lat').value = marker.getLatLng().lat;
     document.getElementById('lng').value = marker.getLatLng().lng;
   });
-  // const marker2 = new L.marker([lat, lng], {
-  //     draggable: true,
-  //     autoPan: true,
-  //   })
-  //   .bindPopup(nama)
-  //   .addTo(map);
+
+  map.clicked = 0;
 
   function centered(e) {
-    map.setView(e.target.getLatLng(), 18);
+    map.clicked = map.clicked + 1;
+    setTimeout(function() {
+      if (map.clicked == 1) {
+        map.setView(e.target.getLatLng(), 18);
+        map.clicked = 0;
+      }
+    }, 250);
   }
 
-
-
-
-  // dragging the marker
+  function removed(e) {
+    map.clicked = 0;
+    map.removeLayer(e.target);
+    document.getElementById('lat').value = lat;
+    document.getElementById('lng').value = lng;
+  }
 </script>
