@@ -100,7 +100,7 @@ if (isset($_GET['id'])) {
           <div class="col-md-6">
             <div class="form-group">
               <label for="jarak">Jarak Dari Pabrik</label>
-              <input type="text" name="jarak" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= $row['jarak']; ?>" required>
+              <input type="text" name="jarak" id="jarak" class="form-control" value="<?= $row['jarak']; ?>" readonly>
             </div>
           </div>
           <div class="col-md-6">
@@ -121,10 +121,10 @@ if (isset($_GET['id'])) {
         </div>
         <div class="row">
           <div class="col-md-6">
-            <input type="hidden" id="lat" name="lat" class="form-control">
+            <input type="text" id="lat" name="lat" value="<?= $row['lat'] ?>" class="form-control">
           </div>
           <div class="col-md-6">
-            <input type="hidden" id="lng" name="lng" class="form-control">
+            <input type="text" id="lng" name="lng" value="<?= $row['lng'] ?>" class="form-control">
           </div>
         </div>
         <label for="">Map</label>
@@ -287,29 +287,43 @@ if (isset($_GET['id'])) {
   var latPabrik = -3.4960839506671517;
   var lngPabrik = 114.81016825291921;
 
+  var map;
   if (!lat && !lng) {
-    lat = latPabrik;
-    lng = lngPabrik;
-    nama = "Pabrik Air Minum Amanah";
+    lat = -3.4945066670586287;
+    lng = 114.81069624423982;
+    map = L.map('map', {
+      zoomControl: false,
+      center: [latPabrik, lngPabrik],
+      zoom: 18,
+      gestureHandling: true,
+      gestureHandlingOptions: {
+        text: {
+          touch: "Gunakan 2 jari untuk menggeser map",
+          scroll: "Gunakan Ctrl + Scroll untuk memperbesar map",
+          scrollMac: "Gunakan \u2318 + scroll untuk memperbesar map"
+        },
+        duration: 1000
+      }
+    });
+  } else {
+    map = L.map('map', {
+      zoomControl: false,
+      center: [lat, lng],
+      zoom: 18,
+      gestureHandling: true,
+      gestureHandlingOptions: {
+        text: {
+          touch: "Gunakan 2 jari untuk menggeser map",
+          scroll: "Gunakan Ctrl + Scroll untuk memperbesar map",
+          scrollMac: "Gunakan \u2318 + scroll untuk memperbesar map"
+        },
+        duration: 1000
+      }
+    });
   }
 
-  var latLangPabrik = L.latLng(latPabrik, lngPabrik);
+  let latLangPabrik = L.latLng(latPabrik, lngPabrik);
   let latLangDistro = L.latLng(lat, lng);
-
-  var map = L.map('map', {
-    zoomControl: false,
-    center: [lat, lng],
-    zoom: 18,
-    gestureHandling: true,
-    gestureHandlingOptions: {
-      text: {
-        touch: "Gunakan 2 jari untuk menggeser map",
-        scroll: "Gunakan Ctrl + Scroll untuk memperbesar map",
-        scrollMac: "Gunakan \u2318 + scroll untuk memperbesar map"
-      },
-      duration: 1000
-    }
-  });
 
   googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     maxZoom: 20,
@@ -343,8 +357,8 @@ if (isset($_GET['id'])) {
   }).addTo(map);
 
   var greenIcon = new LeafIcon({
-  iconUrl: '../images/logooo cropped resized compressed.png',
-  // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
+    iconUrl: '../images/logooo cropped resized compressed.png',
+    // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
   });
 
   // let wp1 = new L.Routing.Waypoint(latLangPabrik);
@@ -374,13 +388,18 @@ if (isset($_GET['id'])) {
 
   //   }
   // })
-
-  var origin;
-  origin = new L.marker([lat, lng]).bindPopup(nama).addTo(map).openPopup().on("click", centered);
-  document.getElementById('lat').value = origin.getLatLng().lat;
-  document.getElementById('lng').value = origin.getLatLng().lng;
+  var pabrik;
+  pabrik = L.marker([latPabrik, lngPabrik], {
+    draggable: false
+  }).bindPopup("Pabrik Air Minum Amanah").openPopup().addTo(map).on("click", centered);
 
   map.addControl(new L.Control.Fullscreen());
+
+  var origin = L.marker([lat, lng], {
+    icon: greenIcon,
+    draggable: false,
+    autopan: true
+  }).bindPopup(nama).addTo(map).openPopup().on("click", centeredOrigin); // set
 
   var marker;
   map.on("click", function(e) {
@@ -388,17 +407,54 @@ if (isset($_GET['id'])) {
       map.removeLayer(marker); // remove
     }
     marker = new L.marker(e.latlng, {
-      icon: greenIcon,
-      draggable: true,
+      //icon: greenIcon,
+      draggable: false,
       autopan: true
     }).bindPopup(nama + " " + "(NEW)").addTo(map).openPopup().on("click", centered).on("dblclick", removed); // set
-    marker.on("dragend", function(e) {
-      document.getElementById('lat').value = marker.getLatLng().lat;
-      document.getElementById('lng').value = marker.getLatLng().lng;
-    });
+    // marker.on("dragend", function(e) {
+    //   document.getElementById('lat').value = marker.getLatLng().lat;
+    //   document.getElementById('lng').value = marker.getLatLng().lng;
+    //   keSini(marker.getLatLng().lat, marker.getLatLng().lng);
+    // });
     document.getElementById('lat').value = marker.getLatLng().lat;
     document.getElementById('lng').value = marker.getLatLng().lng;
+    keSini(marker.getLatLng().lat, marker.getLatLng().lng);
   });
+
+  var control = L.Routing.control({
+    waypoints: [latLangPabrik, latLangDistro]
+  }).on("routesfound", function(e) {
+    document.getElementById('jarak').value = e.routes[0].summary.totalDistance / 1000;
+  });
+  control.addTo(map);
+
+  // L.Routing.control({
+  //   waypoints: [latLangPabrik, latLangDistro]
+  // }).addTo(map);
+
+  // let wp1 = new L.Routing.Waypoint(latLangPabrik);
+  // let wp2 = new L.Routing.Waypoint(latLangDistro);
+
+  // let routeUs = L.Routing.osrmv1();
+  // routeUs.route([wp1, wp2], (err, routes) => {
+  //   if (!err) {
+  //     let best = 100000000000000;
+  //     let bestRoute = 0;
+  //     for (i in routes) {
+  //       if (routes[i].summary.totalDistance < best) {
+  //         bestRoute = i;
+  //         best = routes[i].summary.totalDistance;
+  //       }
+  //     }
+  //     L.Routing.line(routes[bestRoute], {
+  //       styles: [{
+  //         color: 'red',
+  //         weight: '6'
+  //       }]
+  //     }).addTo(map);
+
+  //   }
+  // })
 
   map.clicked = 0;
 
@@ -412,10 +468,31 @@ if (isset($_GET['id'])) {
     }, 250);
   }
 
+  function centeredOrigin(e) {
+    map.clicked = map.clicked + 1;
+    if (marker) { // check
+      map.removeLayer(marker); // remove
+    }
+    setTimeout(function() {
+      if (map.clicked == 1) {
+        map.setView(e.target.getLatLng(), 18);
+        map.clicked = 0;
+      }
+    }, 250);
+    document.getElementById('lat').value = origin.getLatLng().lat;
+    document.getElementById('lng').value = origin.getLatLng().lng;
+    keSini(origin.getLatLng().lat, origin.getLatLng().lng);
+  }
+
   function removed(e) {
     map.clicked = 0;
     map.removeLayer(e.target);
     document.getElementById('lat').value = lat;
     document.getElementById('lng').value = lng;
+  }
+
+  function keSini(lat, lng) {
+    var latLng = L.latLng(lat, lng);
+    control.spliceWaypoints(control.getWaypoints().length - 1, 1, latLng);
   }
 </script>

@@ -153,7 +153,7 @@ if (isset($_GET['id'])) {
       L.Routing.line(routes[bestRoute], {
         styles: [{
           color: 'red',
-          weight: '6'
+          weight: '1'
         }]
       }).addTo(map);
 
@@ -195,7 +195,7 @@ if (isset($_GET['id'])) {
   });
 
   L.marker([lat, lng], {
-      icon: greenIcon,
+      // icon: greenIcon,
     }).addTo(map)
     .bindPopup(nama)
     .openPopup().on("click", centered);

@@ -102,7 +102,7 @@ if ($stmt->rowCount() > 0) {
           <div class="col-md-6">
             <div class="form-group">
               <label for="jarak">Jarak Dari Pabrik</label>
-              <input type="text" name="jarak" class="form-control" onkeypress="return (event.charCode > 47 && event.charCode <58) || event.charCode == 46" min="0" maxlength="14" value="<?= isset($_POST['button_create']) ? $_POST['jarak'] : '' ?>" required>
+              <input type="text" name="jarak" id="jarak" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['jarak'] : '' ?>" readonly>
             </div>
           </div>
           <div class="col-md-6">
@@ -114,10 +114,10 @@ if ($stmt->rowCount() > 0) {
         </div>
         <div class="row">
           <div class="col-md-6">
-            <input type="text" id="lat" name="lat" class="form-control">
+            <input type="hidden" id="lat" name="lat" class="form-control">
           </div>
           <div class="col-md-6">
-            <input type="text" id="lng" name="lng" class="form-control">
+            <input type="hidden" id="lng" name="lng" class="form-control">
           </div>
         </div>
         <label for="">Map</label>
@@ -126,7 +126,7 @@ if ($stmt->rowCount() > 0) {
         </div>
         <div id="map"></div>
         <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
-          <i class="fa fa-times"></i> Batal
+          <i class="fa fa-arrow-left"></i> Kembali
         </a>
         <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1 mt-2">
           <i class="fa fa-save"></i> Simpan
@@ -273,19 +273,24 @@ if ($stmt->rowCount() > 0) {
       template(`<li>No results found: "${currentValue}"</li>`),
   });
 
-  var lat = 0;
-  var lng = 0;
-  var nama = "";
+  var lat = -3.4945066670586287;
+  var lng = 114.81069624423982;
+  var nama = "Amanah Distro (NEW)";
+  var latPabrik = -3.4960839506671517;
+  var lngPabrik = 114.81016825291921;
+
+  let latLangPabrik = L.latLng(latPabrik, lngPabrik);
+  let latLangDistro = L.latLng(lat, lng);
 
   if (!lat && !lng) {
-    lat = -3.4960839506671517;
-    lng = 114.81016825291921;
+    lat = latPabrik;
+    lng = lngPabrik;
     nama = "Pabrik Air Minum Amanah";
   }
 
   var map = L.map('map', {
     zoomControl: false,
-    center: [lat, lng],
+    center: [latPabrik, lngPabrik],
     zoom: 18,
     gestureHandling: true,
     gestureHandlingOptions: {
@@ -334,33 +339,44 @@ if ($stmt->rowCount() > 0) {
     // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
   })
 
-  var origin;
-  origin = L.marker([lat, lng]).addTo(map)
-    .bindPopup(nama)
-    .openPopup().on("click", centered);
-  document.getElementById('lat').value = origin.getLatLng().lat;
-  document.getElementById('lng').value = origin.getLatLng().lng;
+  var pabrik;
+  pabrik = L.marker([latPabrik, lngPabrik], {
+      draggable: false
+    }).bindPopup("Pabrik Air Minum Amanah")
+    .addTo(map)
+    .openPopup()
+    .on("click", centered);
+  document.getElementById('lat').value = pabrik.getLatLng().lat;
+  document.getElementById('lng').value = pabrik.getLatLng().lng;
 
   map.addControl(new L.Control.Fullscreen());
 
   var marker;
-  map.doubleClickZoom.disable();
+  var control;
   map.on("click", function(e) {
     if (marker) { // check
       map.removeLayer(marker); // remove
     }
     marker = new L.marker(e.latlng, {
-      icon: greenIcon,
+      //icon: greenIcon,
       draggable: true,
       autopan: true
     }).bindPopup("Distro Amanah" + " " + "(NEW)").addTo(map).openPopup().on("click", centered).on("dblclick", removed); // set
-    marker.on("dragend", function(e) {
-      document.getElementById('lat').value = marker.getLatLng().lat;
-      document.getElementById('lng').value = marker.getLatLng().lng;
-    });
+    // marker.on("dragend", function(e) {
+    //   document.getElementById('lat').value = marker.getLatLng().lat;
+    //   document.getElementById('lng').value = marker.getLatLng().lng;
+    // });
     document.getElementById('lat').value = marker.getLatLng().lat;
     document.getElementById('lng').value = marker.getLatLng().lng;
+    keSini(marker.getLatLng().lat, marker.getLatLng().lng);
   });
+  control = L.Routing.control({
+    waypoints: [latLangPabrik, latLangDistro]
+  }).on("routesfound", function(e) {
+    document.getElementById('jarak').value = e.routes[0].summary.totalDistance / 1000;
+  })
+  control.addTo(map);
+
 
   map.clicked = 0;
 
@@ -379,5 +395,10 @@ if ($stmt->rowCount() > 0) {
     map.removeLayer(e.target);
     document.getElementById('lat').value = lat;
     document.getElementById('lng').value = lng;
+  }
+
+  function keSini(lat, lng) {
+    var latLng = L.latLng(lat, lng);
+    control.spliceWaypoints(control.getWaypoints().length - 1, 1, latLng);
   }
 </script>
