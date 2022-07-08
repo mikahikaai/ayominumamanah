@@ -133,7 +133,7 @@ if (isset($_GET['id'])) {
         </div>
         <div id="map"></div>
         <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
-          <i class="fa fa-times"></i> Batal
+          <i class="fa fa-arrow-left"></i> Kembali
         </a>
         <button type="submit" name="button_edit" class="btn btn-primary btn-sm float-right mr-1 mt-2">
           <i class="fa fa-save"></i> Ubah
@@ -284,12 +284,17 @@ if (isset($_GET['id'])) {
   var lat = <?= $row['lat']; ?>;
   var lng = <?= $row['lng']; ?>;
   var nama = "<?= $row['nama']; ?>";
+  var latPabrik = -3.4960839506671517;
+  var lngPabrik = 114.81016825291921;
 
   if (!lat && !lng) {
-    lat = -3.4960839506671517;
-    lng = 114.81016825291921;
+    lat = latPabrik;
+    lng = lngPabrik;
     nama = "Pabrik Air Minum Amanah";
   }
+
+  var latLangPabrik = L.latLng(latPabrik, lngPabrik);
+  let latLangDistro = L.latLng(lat, lng);
 
   var map = L.map('map', {
     zoomControl: false,
@@ -338,14 +343,40 @@ if (isset($_GET['id'])) {
   }).addTo(map);
 
   var greenIcon = new LeafIcon({
-    iconUrl: '../images/logooo cropped resized compressed.png',
-    // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
-  })
+  iconUrl: '../images/logooo cropped resized compressed.png',
+  // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
+  });
+
+  // let wp1 = new L.Routing.Waypoint(latLangPabrik);
+  // let wp2 = new L.Routing.Waypoint(latLangDistro);
+
+  // L.Routing.control({
+  //   waypoints: [latLangPabrik, latLangDistro,t2]
+  // }).addTo(map);
+
+  // let routeUs = L.Routing.osrmv1();
+  // routeUs.route([wp1, wp2], (err, routes) => {
+  //   if (!err) {
+  //     let best = 100000000000000;
+  //     let bestRoute = 0;
+  //     for (i in routes) {
+  //       if (routes[i].summary.totalDistance < best) {
+  //         bestRoute = i;
+  //         best = routes[i].summary.totalDistance;
+  //       }
+  //     }
+  //     L.Routing.line(routes[bestRoute], {
+  //       styles: [{
+  //         color: 'red',
+  //         weight: '6'
+  //       }]
+  //     }).addTo(map);
+
+  //   }
+  // })
 
   var origin;
-  origin = L.marker([lat, lng]).addTo(map)
-    .bindPopup(nama)
-    .openPopup().on("click", centered);
+  origin = new L.marker([lat, lng]).bindPopup(nama).addTo(map).openPopup().on("click", centered);
   document.getElementById('lat').value = origin.getLatLng().lat;
   document.getElementById('lng').value = origin.getLatLng().lng;
 

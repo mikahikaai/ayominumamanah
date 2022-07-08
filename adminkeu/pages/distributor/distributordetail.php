@@ -87,15 +87,18 @@ if (isset($_GET['id'])) {
   var lat = <?= $row['lat']; ?>;
   var lng = <?= $row['lng']; ?>;
   var nama = "<?= $row['nama']; ?>";
+  var latPabrik = -3.4960839506671517;
+  var lngPabrik = 114.81016825291921;
 
-  if (!lat) {
-    lat = -3.4960839506671517;
+  if (!lat && !lng) {
+    lat = latPabrik;
+    lng = lngPabrik;
     nama = "Pabrik Air Minum Amanah";
   }
 
-  if (!lng) {
-    lng = 114.81016825291921;
-  }
+  var latLangPabrik = L.latLng(latPabrik, lngPabrik);
+  let latLangDistro = L.latLng(lat, lng);
+
   var map = L.map('map', {
     zoomControl: false,
     center: [lat, lng],
@@ -129,6 +132,39 @@ if (isset($_GET['id'])) {
     // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
   })
 
+  let wp1 = new L.Routing.Waypoint(latLangPabrik);
+  let wp2 = new L.Routing.Waypoint(latLangDistro);
+
+  L.Routing.control({
+    waypoints: [latLangPabrik, latLangDistro]
+  }).addTo(map);
+
+  let routeUs = L.Routing.osrmv1();
+  routeUs.route([wp1, wp2], (err, routes) => {
+    if (!err) {
+      let best = 100000000000000;
+      let bestRoute = 0;
+      for (i in routes) {
+        if (routes[i].summary.totalDistance < best) {
+          bestRoute = i;
+          best = routes[i].summary.totalDistance;
+        }
+      }
+      L.Routing.line(routes[bestRoute], {
+        styles: [{
+          color: 'red',
+          weight: '6'
+        }]
+      }).addTo(map);
+
+    }
+  })
+
+  const points = [
+    [latPabrik, lngPabrik, "Pabrik Air Minum Amanah"],
+    [lat, lng, nama],
+  ];
+
   googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     maxZoom: 20,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -136,25 +172,33 @@ if (isset($_GET['id'])) {
 
   map.addControl(new L.Control.Fullscreen());
 
-  var routeControl = L.Routing.control({
-    waypoints: [
-      L.latLng(lat, lng),
-      L.latLng(-3.4960839506671517, 114.81016825291921)
-    ]
-  }).addTo(map);
+  // adding all markers to the featureGroups array
+  let featureGroups = [];
+  for (let i = 0; i < points.length; i++) {
+    const [lat, lng, title] = points[i];
+    featureGroups.push(L.marker([lat, lng]).bindPopup(title));
+  }
 
-  routeControl.on('routesfound', function(e) {
-    var routes = e.routes;
-    var summary = routes[0].summary;
-    // alert time and distance in km and minutes
-    alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+  // adding all markers to the map
+  for (let i = 0; i < featureGroups.length; i++) {
+    featureGroups[i].addTo(map);
+  }
+
+  // Extended `LayerGroup` that makes it easy
+  // to do the same for all layers of its members
+  let group = new L.featureGroup(featureGroups);
+
+  // method fitBounds sets a map view that
+  // contains the given geographical bounds
+  map.fitBounds(group.getBounds(), {
+    padding: [50, 50], // adding padding to map
   });
 
   L.marker([lat, lng], {
       icon: greenIcon,
     }).addTo(map)
     .bindPopup(nama)
-    .openPopup().on("click", centered);;
+    .openPopup().on("click", centered);
 
   function centered(e) {
     map.setView(e.target.getLatLng(), 18);
