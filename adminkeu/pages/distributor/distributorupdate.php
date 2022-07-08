@@ -131,7 +131,7 @@ if (isset($_GET['id'])) {
         <div class="auto-search-wrapper mb-2">
           <input type="text" autocomplete="off" id="search" class="full-width" placeholder="Ketik nama tempat yang ingin anda cari..." />
         </div>
-        <div id="map" style="height: 800px;"></div>
+        <div id="map"></div>
         <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
           <i class="fa fa-times"></i> Batal
         </a>
@@ -285,16 +285,14 @@ if (isset($_GET['id'])) {
   var lng = <?= $row['lng']; ?>;
   var nama = "<?= $row['nama']; ?>";
 
-  if (!lat) {
+  if (!lat && !lng) {
     lat = -3.4960839506671517;
+    lng = 114.81016825291921;
     nama = "Pabrik Air Minum Amanah";
   }
 
-  if (!lng) {
-    lng = 114.81016825291921;
-  }
-
   var map = L.map('map', {
+    zoomControl: false,
     center: [lat, lng],
     zoom: 18,
     gestureHandling: true,
@@ -312,6 +310,9 @@ if (isset($_GET['id'])) {
     maxZoom: 20,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }).addTo(map);
+
+  var zoomHome = L.Control.zoomHome();
+  zoomHome.addTo(map);
 
   var LeafIcon = L.Icon.extend({
     options: {
@@ -341,14 +342,16 @@ if (isset($_GET['id'])) {
     // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
   })
 
-  L.marker([lat, lng]).addTo(map)
+  var origin;
+  origin = L.marker([lat, lng]).addTo(map)
     .bindPopup(nama)
     .openPopup().on("click", centered);
+  document.getElementById('lat').value = origin.getLatLng().lat;
+  document.getElementById('lng').value = origin.getLatLng().lng;
 
   map.addControl(new L.Control.Fullscreen());
 
   var marker;
-  map.doubleClickZoom.disable();
   map.on("click", function(e) {
     if (marker) { // check
       map.removeLayer(marker); // remove

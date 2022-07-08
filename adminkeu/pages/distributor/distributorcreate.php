@@ -95,7 +95,7 @@ if ($stmt->rowCount() > 0) {
         </div>
         <div class="form-group">
           <label for="alamat_dropping">Alamat Dropping</label>
-          <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat'] : '' ?>" style="text-transform: uppercase;" required>
+          <input type="text" name="alamat_dropping" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['alamat_dropping'] : '' ?>" style="text-transform: uppercase;" required>
         </div>
 
         <div class="row">
@@ -112,17 +112,23 @@ if ($stmt->rowCount() > 0) {
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <input type="text" id="lat" name="lat" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="lng" name="lng" class="form-control">
+          </div>
+        </div>
         <label for="">Map</label>
         <div class="auto-search-wrapper mb-2">
           <input type="text" autocomplete="off" id="search" class="full-width form-control" placeholder="Ketik nama tempat yang ingin anda cari..." />
         </div>
-        <div id="map" style="height: 800px;"></div>
-        <input type="hidden" name="lat" id="lat">
-        <input type="hidden" name="lng" id="lng">
-        <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
+        <div id="map"></div>
+        <a href="?page=distributorread" class="btn btn-danger btn-sm float-right mt-2">
           <i class="fa fa-times"></i> Batal
         </a>
-        <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1">
+        <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1 mt-2">
           <i class="fa fa-save"></i> Simpan
         </button>
       </form>
@@ -271,16 +277,14 @@ if ($stmt->rowCount() > 0) {
   var lng = 0;
   var nama = "";
 
-  if (!lat) {
+  if (!lat && !lng) {
     lat = -3.4960839506671517;
+    lng = 114.81016825291921;
     nama = "Pabrik Air Minum Amanah";
   }
 
-  if (!lng) {
-    lng = 114.81016825291921;
-  }
-
   var map = L.map('map', {
+    zoomControl: false,
     center: [lat, lng],
     zoom: 18,
     gestureHandling: true,
@@ -298,6 +302,9 @@ if ($stmt->rowCount() > 0) {
     maxZoom: 20,
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }).addTo(map);
+
+  var zoomHome = L.Control.zoomHome();
+  zoomHome.addTo(map);
 
   var LeafIcon = L.Icon.extend({
     options: {
@@ -327,9 +334,12 @@ if ($stmt->rowCount() > 0) {
     // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
   })
 
-  L.marker([lat, lng]).addTo(map)
+  var origin;
+  origin = L.marker([lat, lng]).addTo(map)
     .bindPopup(nama)
     .openPopup().on("click", centered);
+  document.getElementById('lat').value = origin.getLatLng().lat;
+  document.getElementById('lng').value = origin.getLatLng().lng;
 
   map.addControl(new L.Control.Fullscreen());
 

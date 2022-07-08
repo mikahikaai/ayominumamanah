@@ -74,7 +74,7 @@ if (isset($_GET['id'])) {
           </div>
         </div>
         <label for="">Map</label>
-        <div id="map" style="height: 800px;"></div>
+        <div id="map"></div>
         <button type="button" class="btn btn-danger btn-sm float-right mr-1 mt-2" onclick="history.back()">
           <i class="fa fa-arrow-left"></i> Kembali
         </button>
@@ -84,8 +84,8 @@ if (isset($_GET['id'])) {
 </div>
 
 <script>
-  var lat = <?= $row['lt']; ?>;
-  var lng = <?= $row['lg']; ?>;
+  var lat = <?= $row['lat']; ?>;
+  var lng = <?= $row['lng']; ?>;
   var nama = "<?= $row['nama']; ?>";
 
   if (!lat) {
@@ -97,6 +97,7 @@ if (isset($_GET['id'])) {
     lng = 114.81016825291921;
   }
   var map = L.map('map', {
+    zoomControl: false,
     center: [lat, lng],
     zoom: 18,
     gestureHandling: true,
@@ -120,6 +121,9 @@ if (isset($_GET['id'])) {
     }
   });
 
+  var zoomHome = L.Control.zoomHome();
+  zoomHome.addTo(map);
+
   var greenIcon = new LeafIcon({
     iconUrl: '../images/logooo cropped resized compressed.png',
     // shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
@@ -132,9 +136,18 @@ if (isset($_GET['id'])) {
 
   map.addControl(new L.Control.Fullscreen());
 
-  map.on("click", function(e) {
-    const markerPlace = document.querySelector(".marker-position");
-    markerPlace.textContent = e.latlng;
+  var routeControl = L.Routing.control({
+    waypoints: [
+      L.latLng(lat, lng),
+      L.latLng(-3.4960839506671517, 114.81016825291921)
+    ]
+  }).addTo(map);
+
+  routeControl.on('routesfound', function(e) {
+    var routes = e.routes;
+    var summary = routes[0].summary;
+    // alert time and distance in km and minutes
+    alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
   });
 
   L.marker([lat, lng], {
