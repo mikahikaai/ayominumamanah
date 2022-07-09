@@ -371,9 +371,11 @@ if ($stmt->rowCount() > 0) {
     keSini(marker.getLatLng().lat, marker.getLatLng().lng);
   });
   control = L.Routing.control({
-    waypoints: [latLangPabrik, latLangDistro]
+    waypoints: [latLangPabrik, latLangDistro],
+    language: 'id'
   }).on("routesfound", function(e) {
-    document.getElementById('jarak').value = e.routes[0].summary.totalDistance / 1000;
+    var jarak = e.routes[0].summary.totalDistance / 1000;
+    document.getElementById('jarak').value = jarak.toFixed(2);
   })
   control.addTo(map);
 

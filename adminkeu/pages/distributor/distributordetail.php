@@ -98,6 +98,7 @@ if (isset($_GET['id'])) {
 
   var latLangPabrik = L.latLng(latPabrik, lngPabrik);
   let latLangDistro = L.latLng(lat, lng);
+  // console.log(latLangPabrik);
 
   var map = L.map('map', {
     zoomControl: false,
@@ -136,29 +137,34 @@ if (isset($_GET['id'])) {
   let wp2 = new L.Routing.Waypoint(latLangDistro);
 
   L.Routing.control({
-    waypoints: [latLangPabrik, latLangDistro]
+    waypoints: [latLangPabrik, latLangDistro],
+    language: 'id',
   }).addTo(map);
 
-  let routeUs = L.Routing.osrmv1();
-  routeUs.route([wp1, wp2], (err, routes) => {
-    if (!err) {
-      let best = 100000000000000;
-      let bestRoute = 0;
-      for (i in routes) {
-        if (routes[i].summary.totalDistance < best) {
-          bestRoute = i;
-          best = routes[i].summary.totalDistance;
-        }
-      }
-      L.Routing.line(routes[bestRoute], {
-        styles: [{
-          color: 'red',
-          weight: '1'
-        }]
-      }).addTo(map);
+  // L.Routing.Formatter({
+  //   language : 'id'
+  // })
 
-    }
-  })
+  // let routeUs = L.Routing.osrmv1();
+  // routeUs.route([wp1, wp2], (err, routes) => {
+  //   if (!err) {
+  //     let best = 100000000000000;
+  //     let bestRoute = 0;
+  //     for (i in routes) {
+  //       if (routes[i].summary.totalDistance < best) {
+  //         bestRoute = i;
+  //         best = routes[i].summary.totalDistance;
+  //       }
+  //     }
+  //     L.Routing.line(routes[bestRoute], {
+  //       styles: [{
+  //         color: 'red',
+  //         weight: '1'
+  //       }]
+  //     }).addTo(map);
+
+  //   }
+  // })
 
   const points = [
     [latPabrik, lngPabrik, "Pabrik Air Minum Amanah"],

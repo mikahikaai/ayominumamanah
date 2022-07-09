@@ -121,10 +121,10 @@ if (isset($_GET['id'])) {
         </div>
         <div class="row">
           <div class="col-md-6">
-            <input type="text" id="lat" name="lat" value="<?= $row['lat'] ?>" class="form-control">
+            <input type="hidden" id="lat" name="lat" value="<?= $row['lat'] ?>" class="form-control">
           </div>
           <div class="col-md-6">
-            <input type="text" id="lng" name="lng" value="<?= $row['lng'] ?>" class="form-control">
+            <input type="hidden" id="lng" name="lng" value="<?= $row['lng'] ?>" class="form-control">
           </div>
         </div>
         <label for="">Map</label>
@@ -401,6 +401,15 @@ if (isset($_GET['id'])) {
     autopan: true
   }).bindPopup(nama).addTo(map).openPopup().on("click", centeredOrigin); // set
 
+  var control = L.Routing.control({
+    waypoints: [latLangPabrik, latLangDistro],
+    language : 'id'
+  }).on("routesfound", function(e) {
+    var jarak = e.routes[0].summary.totalDistance / 1000;
+    document.getElementById('jarak').value = jarak.toFixed(2);
+  });
+  control.addTo(map);
+
   var marker;
   map.on("click", function(e) {
     if (marker) { // check
@@ -410,7 +419,7 @@ if (isset($_GET['id'])) {
       //icon: greenIcon,
       draggable: false,
       autopan: true
-    }).bindPopup(nama + " " + "(NEW)").addTo(map).openPopup().on("click", centered).on("dblclick", removed); // set
+    }).bindPopup(nama + " " + "(NEW) ").addTo(map).openPopup().on("click", centered).on("dblclick", removed); // set
     // marker.on("dragend", function(e) {
     //   document.getElementById('lat').value = marker.getLatLng().lat;
     //   document.getElementById('lng').value = marker.getLatLng().lng;
@@ -420,13 +429,6 @@ if (isset($_GET['id'])) {
     document.getElementById('lng').value = marker.getLatLng().lng;
     keSini(marker.getLatLng().lat, marker.getLatLng().lng);
   });
-
-  var control = L.Routing.control({
-    waypoints: [latLangPabrik, latLangDistro]
-  }).on("routesfound", function(e) {
-    document.getElementById('jarak').value = e.routes[0].summary.totalDistance / 1000;
-  });
-  control.addTo(map);
 
   // L.Routing.control({
   //   waypoints: [latLangPabrik, latLangDistro]

@@ -30,8 +30,8 @@
   <link rel="stylesheet" href="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.css" />
   <link rel="stylesheet" href="../plugins/leaflet-zoomhome/css/leaflet.zoomhome.css">
   <script src="../plugins/leaflet-zoomhome/js/leaflet.zoomhome.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <link rel="stylesheet" href="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <script src="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 
   <!-- <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"></script>
@@ -61,6 +61,14 @@ https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-domin
 
     #map {
       height: 80vh;
+    }
+
+    .leaflet-control-container .leaflet-routing-container {
+      opacity: 0.2;
+    }
+
+    .leaflet-control-container:hover .leaflet-routing-container:hover {
+      opacity: 1;
     }
   </style>
 </head>
