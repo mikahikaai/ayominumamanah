@@ -296,6 +296,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="?page=armadaread" class="nav-link" id='armada'><i class="far fa-circle nav-icon"></i>
+                  <p>Armada</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=karyawanread" class="nav-link" id='karyawan'><i class="far fa-circle nav-icon"></i>
+                  <p>Karyawan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=distributorread" class="nav-link" id="distributor"><i class="far fa-circle nav-icon"></i>
+                  <p>Distributor</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                   <p>Distribusi</p>
                 </a>

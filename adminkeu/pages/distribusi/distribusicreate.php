@@ -50,18 +50,21 @@ if ($stmt->rowCount() > 0) {
     $stmt_jarak1->execute();
     $row_jarak1 = $stmt_jarak1->fetch(PDO::FETCH_ASSOC);
     $jarak1 = $row_jarak1['jarak'];
+    $id1 = $row_jarak1['id'];
 
     $stmt_jarak2 = $db->prepare($jarak_distro);
     $stmt_jarak2->bindParam(1, $_POST['nama_pel_2']);
     $stmt_jarak2->execute();
     $row_jarak2 = $stmt_jarak2->fetch(PDO::FETCH_ASSOC);
     $jarak2 = $row_jarak2['jarak'] ?? 0;
+    $id2 = $row_jarak2['id'] ?? 0;
 
     $stmt_jarak3 = $db->prepare($jarak_distro);
     $stmt_jarak3->bindParam(1, $_POST['nama_pel_3']);
     $stmt_jarak3->execute();
     $row_jarak3 = $stmt_jarak3->fetch(PDO::FETCH_ASSOC);
     $jarak3 = $row_jarak3['jarak'] ?? 0;
+    $id3 = $row_jarak3['id'] ?? 0;
 
     $kecepatan_q = "SELECT * FROM armada WHERE id=?";
     $stmt_kecepatan = $db->prepare($kecepatan_q);
@@ -72,6 +75,9 @@ if ($stmt->rowCount() > 0) {
     $kecepatan_kosong = $row_kecepatan['kecepatan_kosong'];
 
     $jarak_max = max($jarak1, $jarak2, $jarak3);
+
+    // var_dump($array_urutan_input_distro);
+    // die();
 
     $lama_keberangkatan = ($jarak_max / $kecepatan_muatan) * 3600;
     // <akhir hitung lama keberangkatan>
@@ -98,6 +104,42 @@ if ($stmt->rowCount() > 0) {
     $refill1 = !empty($_POST['refill1']) ? $_POST['refill1'] : 0;
     $refill2 = !empty($_POST['refill2']) ? $_POST['refill2'] : 0;
     $refill3 = !empty($_POST['refill3']) ? $_POST['refill3'] : 0;
+
+    $group1['id'] = $id1;
+    $group1['jarak'] = $jarak1;
+    $group1['cup'] = $cup1;
+    $group1['330'] = $a3301;
+    $group1['500'] = $a5001;
+    $group1['600'] = $a6001;
+    $group1['refill'] = $refill1;
+    $group2['id'] = $id2;
+    $group2['jarak'] = $jarak2;
+    $group2['cup'] = $cup2;
+    $group2['330'] = $a3302;
+    $group2['500'] = $a5002;
+    $group2['600'] = $a6002;
+    $group2['refill'] = $refill2;
+    $group3['id'] = $id3;
+    $group3['jarak'] = $jarak3;
+    $group3['cup'] = $cup3;
+    $group3['330'] = $a3303;
+    $group3['500'] = $a5003;
+    $group3['600'] = $a6003;
+    $group3['refill'] = $refill3;
+
+    $array_urutan_input_distro = array($group1, $group2, $group3);
+    if(empty($group2['id'])){
+      unset($array_urutan_input_distro[1]);
+    }
+    if(empty($group3['id'])){
+      unset($array_urutan_input_distro[2]);
+    }
+    // var_dump($array_urutan_input_distro);
+    // die();
+
+    usort($array_urutan_input_distro, function ($a, $b) {
+      return $a['jarak'] <=> $b['jarak'];
+    });
 
     $jumlah_cup = $cup1 + $cup2 + $cup3;
     $jumlah_330 = $a3301 + $a3302 + $a3303;
@@ -159,33 +201,34 @@ if ($stmt->rowCount() > 0) {
         jam_berangkat, estimasi_jam_datang) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $helper_1 = !empty($_POST['helper_1']) ? $_POST['helper_1'] : null;
     $helper_2 = !empty($_POST['helper_2']) ? $_POST['helper_2'] : null;
-    $nama_pel_2 = !empty($_POST['nama_pel_2']) ? $_POST['nama_pel_2'] : null;
-    $nama_pel_3 = !empty($_POST['nama_pel_3']) ? $_POST['nama_pel_3'] : null;
+    $nama_pel_1 = !empty($array_urutan_input_distro[0]['id']) ? $array_urutan_input_distro[0]['id'] : null;
+    $nama_pel_2 = !empty($array_urutan_input_distro[1]['id']) ? $array_urutan_input_distro[1]['id'] : null;
+    $nama_pel_3 = !empty($array_urutan_input_distro[2]['id']) ? $array_urutan_input_distro[2]['id'] : null;
     $stmt_insert = $db->prepare($insertsql);
     $stmt_insert->bindParam(1, $no_perjalanan_new);
     $stmt_insert->bindParam(2, $_POST['id_plat']);
     $stmt_insert->bindParam(3, $_POST['driver']);
     $stmt_insert->bindParam(4, $helper_1);
     $stmt_insert->bindParam(5, $helper_2);
-    $stmt_insert->bindParam(6, $_POST['nama_pel_1']);
+    $stmt_insert->bindParam(6, $nama_pel_1);
     $stmt_insert->bindParam(7, $nama_pel_2);
     $stmt_insert->bindParam(8, $nama_pel_3);
     $stmt_insert->bindParam(9, $_POST['bongkar']);
-    $stmt_insert->bindParam(10, $_POST['cup1']);
-    $stmt_insert->bindParam(11, $_POST['a3301']);
-    $stmt_insert->bindParam(12, $_POST['a5001']);
-    $stmt_insert->bindParam(13, $_POST['a6001']);
-    $stmt_insert->bindParam(14, $_POST['refill1']);
-    $stmt_insert->bindParam(15, $_POST['cup2']);
-    $stmt_insert->bindParam(16, $_POST['a3302']);
-    $stmt_insert->bindParam(17, $_POST['a5002']);
-    $stmt_insert->bindParam(18, $_POST['a6002']);
-    $stmt_insert->bindParam(19, $_POST['refill2']);
-    $stmt_insert->bindParam(20, $_POST['cup3']);
-    $stmt_insert->bindParam(21, $_POST['a3303']);
-    $stmt_insert->bindParam(22, $_POST['a5003']);
-    $stmt_insert->bindParam(23, $_POST['a6003']);
-    $stmt_insert->bindParam(24, $_POST['refill3']);
+    $stmt_insert->bindParam(10, $array_urutan_input_distro[0]['cup']);
+    $stmt_insert->bindParam(11, $array_urutan_input_distro[0]['330']);
+    $stmt_insert->bindParam(12, $array_urutan_input_distro[0]['500']);
+    $stmt_insert->bindParam(13, $array_urutan_input_distro[0]['600']);
+    $stmt_insert->bindParam(14, $array_urutan_input_distro[0]['refill']);
+    $stmt_insert->bindParam(15, $array_urutan_input_distro[1]['cup']);
+    $stmt_insert->bindParam(16, $array_urutan_input_distro[1]['330']);
+    $stmt_insert->bindParam(17, $array_urutan_input_distro[1]['500']);
+    $stmt_insert->bindParam(18, $array_urutan_input_distro[1]['600']);
+    $stmt_insert->bindParam(19, $array_urutan_input_distro[1]['refill']);
+    $stmt_insert->bindParam(20, $array_urutan_input_distro[2]['cup']);
+    $stmt_insert->bindParam(21, $array_urutan_input_distro[2]['330']);
+    $stmt_insert->bindParam(22, $array_urutan_input_distro[2]['500']);
+    $stmt_insert->bindParam(23, $array_urutan_input_distro[2]['600']);
+    $stmt_insert->bindParam(24, $array_urutan_input_distro[2]['refill']);
     $stmt_insert->bindParam(25, $jam_berangkat);
     $stmt_insert->bindParam(26, $estimasi_datang);
     $stmt_insert->execute();
@@ -199,7 +242,6 @@ if ($stmt->rowCount() > 0) {
       $stmt_insert_upah->bindParam(1, $last_id);
       $stmt_insert_upah->bindParam(2, $array_tim_pengirim[$i]);
       $stmt_insert_upah->execute();
-
     }
 
     if ($sukses) {

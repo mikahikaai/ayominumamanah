@@ -22,6 +22,30 @@ if (isset($_GET['page'])) {
       file_exists('pages/distribusi/distribusibatalvalidasi.php') ? include 'pages/distribusi/distribusibatalvalidasi.php' : include '../pages/404.php';
       $title = 'Distribusi';
       break;
+    case 'armadaread':
+      file_exists('pages/armada/armadaread.php') ? include 'pages/armada/armadaread.php' : include '../pages/404.php';
+      $title = 'Armada';
+      break;
+    case 'armadadetail':
+      file_exists('pages/armada/armadadetail.php') ? include 'pages/armada/armadadetail.php' : include '../pages/404.php';
+      $title = 'Armada';
+      break;
+    case 'distributorread':
+      file_exists('pages/distributor/distributorread.php') ? include 'pages/distributor/distributorread.php' : include '../pages/404.php';
+      $title = 'Distributor';
+      break;
+    case 'distributordetail':
+      file_exists('pages/distributor/distributordetail.php') ? include 'pages/distributor/distributordetail.php' : include '../pages/404.php';
+      $title = 'Distributor';
+      break;
+    case 'karyawanread':
+      file_exists('pages/karyawan/karyawanread.php') ? include 'pages/karyawan/karyawanread.php' : include '../pages/404.php';
+      $title = 'Karyawan';
+      break;
+    case 'karyawandetail':
+      file_exists('pages/karyawan/karyawandetail.php') ? include 'pages/karyawan/karyawandetail.php' : include '../pages/404.php';
+      $title = 'Karyawan';
+      break;
     default:
       include '../pages/404.php';
       $title = '404 Halaman Tidak Ditemukan';

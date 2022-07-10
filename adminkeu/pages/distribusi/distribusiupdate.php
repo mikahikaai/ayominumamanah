@@ -32,18 +32,21 @@ if (isset($_POST['button_edit'])) {
   $stmt_jarak1->execute();
   $row_jarak1 = $stmt_jarak1->fetch(PDO::FETCH_ASSOC);
   $jarak1 = $row_jarak1['jarak'];
+  $id1 = $row_jarak1['id'];
 
   $stmt_jarak2 = $db->prepare($jarak_distro);
   $stmt_jarak2->bindParam(1, $_POST['nama_pel_2']);
   $stmt_jarak2->execute();
   $row_jarak2 = $stmt_jarak2->fetch(PDO::FETCH_ASSOC);
   $jarak2 = $row_jarak2['jarak'] ?? 0;
+  $id2 = $row_jarak2['id'] ?? 0;
 
   $stmt_jarak3 = $db->prepare($jarak_distro);
   $stmt_jarak3->bindParam(1, $_POST['nama_pel_3']);
   $stmt_jarak3->execute();
   $row_jarak3 = $stmt_jarak3->fetch(PDO::FETCH_ASSOC);
   $jarak3 = $row_jarak3['jarak'] ?? 0;
+  $id3 = $row_jarak3['id'] ?? 0;
 
   $kecepatan_q = "SELECT * FROM armada WHERE id=?";
   $stmt_kecepatan = $db->prepare($kecepatan_q);
@@ -80,6 +83,45 @@ if (isset($_POST['button_edit'])) {
   $refill1 = !empty($_POST['refill1']) ? $_POST['refill1'] : 0;
   $refill2 = !empty($_POST['refill2']) ? $_POST['refill2'] : 0;
   $refill3 = !empty($_POST['refill3']) ? $_POST['refill3'] : 0;
+
+  $group1['id'] = $id1;
+  $group1['jarak'] = $jarak1;
+  $group1['cup'] = $cup1;
+  $group1['330'] = $a3301;
+  $group1['500'] = $a5001;
+  $group1['600'] = $a6001;
+  $group1['refill'] = $refill1;
+  $group2['id'] = $id2;
+  $group2['jarak'] = $jarak2;
+  $group2['cup'] = $cup2;
+  $group2['330'] = $a3302;
+  $group2['500'] = $a5002;
+  $group2['600'] = $a6002;
+  $group2['refill'] = $refill2;
+  $group3['id'] = $id3;
+  $group3['jarak'] = $jarak3;
+  $group3['cup'] = $cup3;
+  $group3['330'] = $a3303;
+  $group3['500'] = $a5003;
+  $group3['600'] = $a6003;
+  $group3['refill'] = $refill3;
+
+  $array_urutan_input_distro = array($group1, $group2, $group3);
+  if (empty($group2['id'])) {
+    unset($array_urutan_input_distro[1]);
+  }
+  if (empty($group3['id'])) {
+    unset($array_urutan_input_distro[2]);
+  }
+  // var_dump($array_urutan_input_distro);
+  // die();
+
+  usort($array_urutan_input_distro, function ($a, $b) {
+    return $a['jarak'] <=> $b['jarak'];
+  });
+
+  // var_dump($array_urutan_input_distro);
+  // die();
 
   $jumlah_cup = $cup1 + $cup2 + $cup3;
   $jumlah_330 = $a3301 + $a3302 + $a3303;
@@ -121,32 +163,33 @@ if (isset($_POST['button_edit'])) {
   $updatesql = "UPDATE distribusi SET id_plat=?, driver=?, helper_1=?, helper_2=?, nama_pel_1=?, nama_pel_2=?, nama_pel_3=?, bongkar=?, cup1=?, a3301=?, a5001=?, a6001=?, refill1=?, cup2=?, a3302=?, a5002=?, a6002=?, refill2=?, cup3=?, a3303=?, a5003=?, a6003=?, refill3=?, jam_berangkat=?, estimasi_jam_datang=? where id=?";
   $helper_1 = !empty($_POST['helper_1']) ? $_POST['helper_1'] : null;
   $helper_2 = !empty($_POST['helper_2']) ? $_POST['helper_2'] : null;
-  $nama_pel_2 = !empty($_POST['nama_pel_2']) ? $_POST['nama_pel_2'] : null;
-  $nama_pel_3 = !empty($_POST['nama_pel_3']) ? $_POST['nama_pel_3'] : null;
+  $nama_pel_1 = !empty($array_urutan_input_distro[0]['id']) ? $array_urutan_input_distro[0]['id'] : null;
+  $nama_pel_2 = !empty($array_urutan_input_distro[1]['id']) ? $array_urutan_input_distro[1]['id'] : null;
+  $nama_pel_3 = !empty($array_urutan_input_distro[2]['id']) ? $array_urutan_input_distro[2]['id'] : null;
   $stmt_update = $db->prepare($updatesql);
   $stmt_update->bindParam(1, $_POST['id_plat']);
   $stmt_update->bindParam(2, $_POST['driver']);
   $stmt_update->bindParam(3, $helper_1);
   $stmt_update->bindParam(4, $helper_2);
-  $stmt_update->bindParam(5, $_POST['nama_pel_1']);
+  $stmt_update->bindParam(5, $nama_pel_1);
   $stmt_update->bindParam(6, $nama_pel_2);
   $stmt_update->bindParam(7, $nama_pel_3);
   $stmt_update->bindParam(8, $_POST['bongkar']);
-  $stmt_update->bindParam(9, $_POST['cup1']);
-  $stmt_update->bindParam(10, $_POST['a3301']);
-  $stmt_update->bindParam(11, $_POST['a5001']);
-  $stmt_update->bindParam(12, $_POST['a6001']);
-  $stmt_update->bindParam(13, $_POST['refill1']);
-  $stmt_update->bindParam(14, $_POST['cup2']);
-  $stmt_update->bindParam(15, $_POST['a3302']);
-  $stmt_update->bindParam(16, $_POST['a5002']);
-  $stmt_update->bindParam(17, $_POST['a6002']);
-  $stmt_update->bindParam(18, $_POST['refill2']);
-  $stmt_update->bindParam(19, $_POST['cup3']);
-  $stmt_update->bindParam(20, $_POST['a3303']);
-  $stmt_update->bindParam(21, $_POST['a5003']);
-  $stmt_update->bindParam(22, $_POST['a6003']);
-  $stmt_update->bindParam(23, $_POST['refill3']);
+  $stmt_update->bindParam(9, $array_urutan_input_distro[0]['cup']);
+  $stmt_update->bindParam(10, $array_urutan_input_distro[0]['330']);
+  $stmt_update->bindParam(11, $array_urutan_input_distro[0]['500']);
+  $stmt_update->bindParam(12, $array_urutan_input_distro[0]['600']);
+  $stmt_update->bindParam(13, $array_urutan_input_distro[0]['refill']);
+  $stmt_update->bindParam(14, $array_urutan_input_distro[1]['cup']);
+  $stmt_update->bindParam(15, $array_urutan_input_distro[1]['330']);
+  $stmt_update->bindParam(16, $array_urutan_input_distro[1]['500']);
+  $stmt_update->bindParam(17, $array_urutan_input_distro[1]['600']);
+  $stmt_update->bindParam(18, $array_urutan_input_distro[1]['refill']);
+  $stmt_update->bindParam(19, $array_urutan_input_distro[2]['cup']);
+  $stmt_update->bindParam(20, $array_urutan_input_distro[2]['330']);
+  $stmt_update->bindParam(21, $array_urutan_input_distro[2]['500']);
+  $stmt_update->bindParam(22, $array_urutan_input_distro[2]['600']);
+  $stmt_update->bindParam(23, $array_urutan_input_distro[2]['refill']);
   $stmt_update->bindParam(24, $jam_berangkat);
   $stmt_update->bindParam(25, $estimasi_datang);
   $stmt_update->bindParam(26, $_GET['id']);
@@ -170,7 +213,7 @@ if (isset($_POST['button_edit'])) {
     $stmt_update_gaji->bindParam(1, $array_tim_pengirim[$i]);
     $stmt_update_gaji->bindParam(2, $id_gaji);
     $stmt_update_gaji->execute();
-    }
+  }
 
 
   echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
@@ -216,7 +259,7 @@ if (isset($_GET['id'])) {
     </div>
     <div class="card-body">
       <form action="" method="post">
-        <input type="hidden" name="no_perjalanan" value="<?= $row['id'];?>">
+        <input type="hidden" name="no_perjalanan" value="<?= $row['id']; ?>">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">Tujuan 1</h4>
