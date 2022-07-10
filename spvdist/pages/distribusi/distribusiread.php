@@ -176,19 +176,22 @@ if (isset($_SESSION['hasil'])) {
                 <?php } ?>
               </td>
               <td>
+                <a href="?page=detaildistribusi&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
                 <?php if ($row['status'] == 0) { ?>
-                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block btn-sm mr-1">
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary btn-sm mr-1">
                     <i class="fa fa-edit"></i> Validasi
                   </a>
-                <?php } else if ($row['upah_verif'] == 2 OR $row['insentif_verif'] == 2) { ?>
-                  <button class="btn btn-secondary d-block btn-sm mr-1 disabled">
-                    <i class="fa fa-trash"></i> Batalkan Validasi
+                <?php } else if ($row['upah_verif'] == 2 or $row['insentif_verif'] == 2) { ?>
+                  <button class="btn btn-secondary btn-sm mr-1 disabled">
+                    <i class="fa fa-times"></i> Batalkan
                   </button>
                 <?php } else if ($row['status'] == 1) { ?>
-                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger d-block btn-sm mr-1" id="distribusibatalvalidasi">
-                    <i class="fa fa-trash"></i> Batalkan Validasi
+                  <a href="?page=distribusibatalvalidasi&id=<?= $row['id']; ?>" class="btn btn-danger btn-sm mr-1" id="distribusibatalvalidasi">
+                    <i class="fa fa-times"></i> Batalkan
                   </a>
-                  <?php } ?>
+                <?php } ?>
               </td>
             </tr>
           <?php } ?>
@@ -203,65 +206,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('a#distribusibatalvalidasi').click(function(e) {
-      e.preventDefault();
-      var urlToRedirect = e.currentTarget.getAttribute('href');
-      console.log(urlToRedirect);
-      //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
-      Swal.fire({
-        title: 'Batalkan validasi?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Tidak',
-        confirmButtonText: 'Ya'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = urlToRedirect;
-        }
-      });
-    });
-    if ($('div#hasil_delete').length) {
-      Swal.fire({
-        title: 'Deleted!',
-        text: 'Data berhasil dihapus',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
-    } else if ($('div#hasil_create').length) {
-      Swal.fire({
-        title: 'Created!',
-        text: 'Data berhasil disimpan',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
-    } else if ($('div#hasil_update').length) {
-      Swal.fire({
-        title: 'Updated!',
-        text: 'Data berhasil diubah',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
-    }
-    $(document).on({
-      mouseenter: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").addClass("hover");
-          });
-        });
-      },
-      mouseleave: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").removeClass("hover");
-          });
-        });
-      }
-    }, ".dataTables_wrapper tr");
     $('#mytable').DataTable({
       pagingType: "full_numbers",
       stateSave: true,

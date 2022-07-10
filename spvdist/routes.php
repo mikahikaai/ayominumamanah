@@ -46,6 +46,18 @@ if (isset($_GET['page'])) {
       file_exists('pages/karyawan/karyawandetail.php') ? include 'pages/karyawan/karyawandetail.php' : include '../pages/404.php';
       $title = 'Karyawan';
       break;
+    case 'detaildistribusi':
+      file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
+      $title = 'Distribusi';
+      break;
+    case 'rangeprestasikaryawan':
+      file_exists('pages/prestasi/rangeprestasikaryawan.php') ? include 'pages/prestasi/rangeprestasikaryawan.php' : include '../pages/404.php';
+      $title = 'Prestasi';
+      break;
+    case 'prestasikaryawan':
+      file_exists('pages/prestasi/prestasikaryawan.php') ? include 'pages/prestasi/prestasikaryawan.php' : include '../pages/404.php';
+      $title = 'Prestasi';
+      break;
     default:
       include '../pages/404.php';
       $title = '404 Halaman Tidak Ditemukan';

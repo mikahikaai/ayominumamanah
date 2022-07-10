@@ -176,6 +176,22 @@ include_once "../partials/scripts.php";
         }
       }
     });
+    $('#datetimepicker3').tempusDominus({
+      localization: {
+        locale: 'id',
+        dayViewHeaderFormat: {
+          month: 'long',
+          year: 'numeric'
+        }
+      },
+      display: {
+        components: {
+          calendar: true,
+          date: true,
+          clock: false,
+        }
+      }
+    });
     $(".preloader").delay(5000).fadeOut();
     var title = '<?= $title; ?>';
     if (title == "Home") {
@@ -194,6 +210,10 @@ include_once "../partials/scripts.php";
       $("a#link_master_data").addClass("active");
     } else if (title == "Distribusi") {
       $("a#distribusi").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Prestasi") {
+      $("a#prestasikaryawan").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
     }

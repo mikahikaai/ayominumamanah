@@ -51,6 +51,7 @@
             <th>Tanggal Validasi</th>
             <th>Validator</th>
             <th>Status</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
@@ -130,6 +131,11 @@
                   <span class="text-success"><i class="fa fa-check"></i> Tervalidasi</span>
                 <?php } ?>
               </td>
+              <td>
+                <a href="?page=detaildistribusi&id=<?= $row['id']; ?>" class="btn btn-success btn-sm mr-1">
+                  <i class="fa fa-eye"></i> Lihat
+                </a>
+              </td>
             </tr>
           <?php } ?>
         </tbody>
@@ -143,30 +149,16 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $(document).on({
-      mouseenter: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").addClass("hover");
-          });
-        });
-      },
-      mouseleave: function() {
-        trIndex = $(this).index() + 1;
-        $("table.dataTable").each(function(index) {
-          $(this).find("tr:eq(" + trIndex + ")").each(function(index) {
-            $(this).find("td").removeClass("hover");
-          });
-        });
-      }
-    }, ".dataTables_wrapper tr");
     $('#mytable').DataTable({
       pagingType: "full_numbers",
       stateSave: true,
       stateDuration: 60,
       scrollX: true,
       scrollCollapse: true,
+      fixedColumns: {
+        leftColumns: 2,
+        rightColumns: 1
+      },
     });
   });
 </script>

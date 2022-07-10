@@ -216,6 +216,10 @@ include_once "../partials/scripts.php";
       $("a#distribusi").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
+    } else if (title == "Prestasi") {
+      $("a#prestasikaryawan").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
     }
   });
 </script>

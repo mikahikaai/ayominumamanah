@@ -228,6 +228,22 @@ include_once "../partials/scripts.php";
       $("a#rekapinsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Prestasi") {
+      $("a#prestasikaryawan").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Armada") {
+      $("a#armada").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Karyawan") {
+      $("a#karyawan").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
+    } else if (title == "Distributor") {
+      $("a#distributor").addClass("active");
+      $("li#master_data").addClass("menu-open");
+      $("a#link_master_data").addClass("active");
     }
   });
 </script>
