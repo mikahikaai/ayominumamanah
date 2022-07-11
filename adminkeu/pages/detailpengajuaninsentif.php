@@ -8,7 +8,7 @@ if (isset($_GET['idk'])) {
   RIGHT JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
-  WHERE id_pengirim=? AND no_pengajuan IS NULL";
+  WHERE id_pengirim=? AND no_pengajuan IS NULL AND d.jam_datang IS NOT NULL";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['idk']);
   $stmt->execute();

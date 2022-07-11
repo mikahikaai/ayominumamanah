@@ -10,7 +10,6 @@ if (isset($_POST['button_show'])) {
   $_SESSION['tgl_rekap_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal']);
   $_SESSION['tgl_rekap_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
   $_SESSION['id_karyawan_rekap_upah'] = $_POST['id_karyawan_rekap_upah'];
-  $_SESSION['terbayar'] = $_POST['terbayar'];
 
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();

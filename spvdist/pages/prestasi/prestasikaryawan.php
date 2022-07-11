@@ -95,7 +95,11 @@ include_once "../partials/cssdatatables.php";
         <tfoot>
           <tr>
             <td colspan="7" class="font-weight-bold text-center align-middle">Kesimpulan</td>
-            <td>Tepat Waktu : <?= $jumlah_tepat_waktu . "x (" . ($jumlah_tepat_waktu / $jumlah_data) * 100 . " %)" ?> <br> Terlambat : <?= $jumlah_terlambat . "x (" . ($jumlah_terlambat / $jumlah_data) * 100 . " %)" ?></td>
+            <?php if ($jumlah_data == 0) { ?>
+              <td>Tidak Ada Data</td>
+            <?php } else { ?>
+              <td>Tepat Waktu : <?= $jumlah_tepat_waktu . "x (" . ($jumlah_tepat_waktu / $jumlah_data) * 100 . " %)" ?> <br> Terlambat : <?= $jumlah_terlambat . "x (" . ($jumlah_terlambat / $jumlah_data) * 100 . " %)" ?></td>
+            <?php } ?>
           </tr>
         </tfoot>
       </table>
