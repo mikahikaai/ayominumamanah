@@ -94,8 +94,10 @@ if (isset($_POST['ajukan'])) {
           <tbody>
 
             <?php
-            $selectSql = "SELECT *, u.id id_upah FROM gaji u LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah
-          INNER JOIN distribusi d ON u.id_distribusi = d.id WHERE u.id_pengirim = ? AND no_pengajuan IS NULL";
+            $selectSql = "SELECT *, u.id id_upah FROM gaji u
+            LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah
+            INNER JOIN distribusi d ON u.id_distribusi = d.id
+            WHERE u.id_pengirim = ? AND no_pengajuan IS NULL AND d.jam_datang IS NOT NULL";
             // var_dump($tgl_rekap_awal);
             // var_dump($tgl_rekap_akhir);
             // die();
