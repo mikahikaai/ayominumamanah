@@ -33,7 +33,6 @@
   <link rel="stylesheet" href="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
   <script src="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
-
   <!-- <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"></script>
 
   <link href="

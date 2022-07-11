@@ -50,6 +50,14 @@ if (isset($_GET['page'])) {
       file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
       $title = 'Distribusi';
       break;
+    case 'ubahpassword':
+      file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
+      $title = 'Ubah Password';
+      break;
+    case 'gantifoto':
+      file_exists('../pages/gantifoto.php') ? include '../pages/gantifoto.php' : include '../pages/404.php';
+      $title = 'Ubah Foto';
+      break;
     case 'rangeprestasikaryawan':
       file_exists('pages/prestasi/rangeprestasikaryawan.php') ? include 'pages/prestasi/rangeprestasikaryawan.php' : include '../pages/404.php';
       $title = 'Prestasi';
@@ -57,6 +65,10 @@ if (isset($_GET['page'])) {
     case 'prestasikaryawan':
       file_exists('pages/prestasi/prestasikaryawan.php') ? include 'pages/prestasi/prestasikaryawan.php' : include '../pages/404.php';
       $title = 'Prestasi';
+      break;
+    case 'gantiprofil':
+      file_exists('../pages/gantiprofil.php') ? include '../pages/gantiprofil.php' : include '../pages/404.php';
+      $title = 'Ubah profil';
       break;
     default:
       include '../pages/404.php';

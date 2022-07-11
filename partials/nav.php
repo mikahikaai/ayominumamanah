@@ -15,7 +15,7 @@
         <a href="?page=gantifoto" class="dropdown-item">
           <i class="fas fa-circle-user mr-2"></i> Ganti Foto
         </a>
-        <a href="?page=ubahinformasi" class="dropdown-item">
+        <a href="?page=gantiprofil" class="dropdown-item">
         <i class="fa-solid fa-user-pen mr-2"></i>Ubah Data Diri
         </a>
         <a href="?page=ubahpassword" class="dropdown-item">

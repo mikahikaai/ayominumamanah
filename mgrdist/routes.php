@@ -92,15 +92,11 @@ if (isset($_GET['page'])) {
       break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
+      $title = 'Ubah Password';
       break;
-    case 'spvhome':
-      file_exists('pages/spvdist/home.php') ? include 'pages/spvdist/home.php' : include '../pages/404.php';
-      break;
-    case 'spvdistribusiread':
-      file_exists('pages/spvdist/distribusi/distribusiread.php') ? include 'pages/spvdist/distribusi/distribusiread.php' : include '../pages/404.php';
-      break;
-    case 'spvdistribusiupdate':
-      file_exists('pages/spvdist/distribusi/distribusiupdate.php') ? include 'pages/spvdist/distribusi/distribusiupdate.php' : include '../pages/404.php';
+    case 'gantifoto':
+      file_exists('../pages/gantifoto.php') ? include '../pages/gantifoto.php' : include '../pages/404.php';
+      $title = 'Ubah Foto';
       break;
     case 'armadaread':
       file_exists('pages/armada/armadaread.php') ? include 'pages/armada/armadaread.php' : include '../pages/404.php';
@@ -137,6 +133,10 @@ if (isset($_GET['page'])) {
     case 'prestasikaryawan':
       file_exists('pages/prestasi/prestasikaryawan.php') ? include 'pages/prestasi/prestasikaryawan.php' : include '../pages/404.php';
       $title = 'Prestasi';
+      break;
+    case 'gantiprofil':
+      file_exists('../pages/gantiprofil.php') ? include '../pages/gantiprofil.php' : include '../pages/404.php';
+      $title = 'Ubah profil';
       break;
     default:
       include '../pages/404.php';
