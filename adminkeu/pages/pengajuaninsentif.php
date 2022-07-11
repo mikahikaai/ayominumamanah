@@ -68,7 +68,7 @@ if (isset($_POST['ajukan'])) {
             RIGHT JOIN gaji i on p.id_insentif = i.id
             INNER JOIN karyawan k on i.id_pengirim = k.id
             INNER JOIN distribusi d on i.id_distribusi = d.id
-            WHERE p.terbayar IS NULL AND (d.jam_berangkat BETWEEN ? AND ?)
+            WHERE p.terbayar IS NULL AND (d.jam_berangkat BETWEEN ? AND ?) AND d.jam_datang IS NOT NULL
             GROUP BY k.nama ORDER BY k.nama ASC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_pengajuan_insentif_awal);
