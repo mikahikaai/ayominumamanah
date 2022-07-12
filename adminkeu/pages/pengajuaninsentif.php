@@ -36,7 +36,7 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Insentif Belum Terbayar<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Insentif Belum Pengajuan<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
       <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>

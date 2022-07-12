@@ -72,7 +72,7 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Upah Belum Terbayar</h3>
+      <h3 class="card-title">Data Upah Belum Pengajuan</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -139,7 +139,7 @@ if (isset($_POST['ajukan'])) {
         <?php
         if ($stmt->rowCount() > 0) {
         ?>
-          <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
+          <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan"><i class="fa fa-paper-plane"></i> Ajukan</button>
         <?php } ?>
     </form>
   </div>
