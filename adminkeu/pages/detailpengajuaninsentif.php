@@ -67,10 +67,10 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Detail Insentif Belum Terbayar</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Insentif Belum Terbayar<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <form action="" method="post">
       <div class="card-body">
@@ -111,9 +111,9 @@ if (isset($_POST['ajukan'])) {
             </tr>
           </tfoot>
         </table>
-        <button type="submit" name="ajukan" class="btn btn-sm float-right btn-success mt-2"><i class="fas fa-paper-plane"></i> Ajukan</button>
+        <a href="?page=pengajuaninsentif" class="btn btn-sm mt-2 btn-danger float-right"><i class="fa fa-arrow-left"></i> Kembali</a>
+        <button type="submit" name="ajukan" class="btn btn-sm float-right btn-success mt-2 mr-1"><i class="fas fa-paper-plane"></i> Ajukan</button>
     </form>
-    <a href="?page=pengajuaninsentif" class="btn btn-sm mt-2 btn-danger float-right mr-1"><i class="fa fa-arrow-left"></i> Kembali</a>
   </div>
 </div>
 </div>

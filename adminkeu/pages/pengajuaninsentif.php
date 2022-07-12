@@ -10,6 +10,9 @@ if (isset($_POST['ajukan'])) {
   $stmt_update->bindParam(1, $_SESSION['id']);
   $stmt_update->execute();
 }
+
+$tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
+$tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
 ?>
 
 <div class="content-header">
@@ -33,10 +36,10 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Upah Belum Terbayar</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Insentif Belum Terbayar<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -52,8 +55,7 @@ if (isset($_POST['ajukan'])) {
         </thead>
         <tbody>
           <?php
-          $tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
-          $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
+
 
           $selectSql = "SELECT * FROM gaji i
           LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
