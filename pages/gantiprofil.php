@@ -127,7 +127,7 @@ if (isset($_POST['button_edit'])) {
         </div>
         <div class="form-group">
           <label for="alamat">Alamat</label>
-          <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat']) ?>" maxlength="0" required>
+          <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat']) ?>" style="text-transform: uppercase;" required>
         </div>
         <div class="row">
           <div class="col-md-6">
