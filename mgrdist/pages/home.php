@@ -19,6 +19,24 @@ $stmt->bindParam(1, $_SESSION['id']);
 $stmt->execute();
 $num_rows = $stmt->rowCount();
 
+if (isset($_SESSION['hasil_update_pw'])) {
+  if ($_SESSION['hasil_update_pw']) {
+?>
+    <div id='hasil_update_pw'></div>
+  <?php
+  }
+  unset($_SESSION['hasil_update_pw']);
+}
+
+if (isset($_SESSION['login_sukses'])) {
+  if ($_SESSION['login_sukses']) {
+  ?>
+    <div id='login_sukses'></div>
+<?php
+  }
+  unset($_SESSION['login_sukses']);
+}
+
 ?>
 
 <!-- Main content -->
