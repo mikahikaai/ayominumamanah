@@ -16,16 +16,17 @@ $erroremail = false;
 $suksesreset = false;
 
 if (isset($_POST['kirim'])) {
-  $select = 'SELECT * FROM karyawan WHERE email = ?';
+  $select = 'SELECT * FROM karyawan WHERE email = ? OR username = ?';
   $stmtselect = $db->prepare($select);
   $stmtselect->bindParam(1, $_POST['email']);
+  $stmtselect->bindParam(2, $_POST['email']);
   $stmtselect->execute();
   $rowselect = $stmtselect->fetch(PDO::FETCH_ASSOC);
 
   if ($stmtselect->rowCount() == 0) {
     $erroremail = true;
   } else {
-    $emailTo = $_POST["email"]; //email kamu atau email penerima link reset
+    $emailTo = $rowselect["email"]; //email kamu atau email penerima link reset
     $code = uniqid(true); //Untuk kode atau parameter acak
     $query = 'INSERT INTO reset_password VALUES (NULL,?,?,?,0)';
     $tgl_reset = date('Y-m-d');
@@ -115,7 +116,7 @@ if (isset($_POST['kirim'])) {
             <span class="d-flex justify-content-center mb-3" style="font-weight: bold; font-size: 20px;">Reset Password</span>
             <form action="" method="POST" class="signin-form">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Masukkan e-mail" name="email" value="<?= $_POST['username'] ?? '' ?>" required>
+                <input type="text" class="form-control" placeholder="Masukkan e-mail atau Username" name="email" value="<?= $_POST['username'] ?? '' ?>" required>
               </div>
               <!-- <div class="form-group">
                 <input id="password-field" type="password" class="form-control" placeholder="Password" name="password" required>
@@ -123,6 +124,9 @@ if (isset($_POST['kirim'])) {
               </div> -->
               <div class="form-group">
                 <button type="submit" class="form-control btn btn-primary submit px-3" name="kirim">Kirim</button>
+              </div>
+              <div class="form-group">
+                <a href="./login.php" class="float-right mr-2" style="color: #fff"><u>Login?</u></a>
               </div>
               <!-- <div class="form-group d-md-flex">
                 <div class="w-50">
