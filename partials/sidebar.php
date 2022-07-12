@@ -82,7 +82,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?page=rekappengajuanupah" class="nav-link" id="rekappengajuanupah">
+                <a href="?page=rangerekappengajuanupah" class="nav-link" id="rekappengajuanupah">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Pengajuan Upah</p>
                 </a>
@@ -171,13 +171,13 @@
               <li class="nav-item">
                 <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Upah Borongan</p>
+                  <p>Rekap Upah</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Insentif Borongan</p>
+                  <p>Rekap Insentif</p>
                 </a>
               </li>
             </ul>
@@ -267,13 +267,13 @@
               <li class="nav-item">
                 <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Upah Borongan</p>
+                  <p>Rekap Upah</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Rekap Insentif Borongan</p>
+                  <p>Rekap Insentif</p>
                 </a>
               </li>
             </ul>

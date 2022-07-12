@@ -4,7 +4,7 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.*, p.id id_pengajuan_upah FROM pengajuan_upah_borongan p
+  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
@@ -13,20 +13,19 @@ if (isset($_GET['no_pengajuan'])) {
   $stmt->bindParam(1, $_GET['no_pengajuan']);
   $stmt->execute();
 }
-
 ?>
 
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pengajuan Upah</h1>
+        <h1 class="m-0">Detail Rekap Pengajuan Upah</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
           <li class="breadcrumb-item"><a href="?page=rekappengajuanupah">Rekap Pengajuan Upah</a></li>
-          <li class="breadcrumb-item active">Rekap Detail Pengajuan Upah</li>
+          <li class="breadcrumb-item active">Detail Rekap Pengajuan Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -38,10 +37,10 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Detail Upah Belum Terbayar</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah Terverifikasi<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -76,7 +75,7 @@ if (isset($_GET['no_pengajuan'])) {
           </tr>
         </tfoot>
       </table>
-      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
+      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
   </div>
 </div>
@@ -86,9 +85,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#selectAll').click(function(e) {
-      $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
-    });
     $('#mytable').DataTable({
       footerCallback: function(row, data, start, end, display) {
         var api = this.api();
@@ -101,7 +97,7 @@ include_once "../partials/scriptdatatables.php";
         // Total over all pages
         nb_cols = api.columns().nodes().length;
         var j = 4;
-        while (j < nb_cols && j != 5) {
+        while (j < nb_cols) {
           total = api
             .column(j)
             .data()
@@ -123,11 +119,7 @@ include_once "../partials/scriptdatatables.php";
 
         // Update footer
         // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      },
-      "columnDefs": [{
-        "orderable": false,
-        "targets": [0]
-      }, ]
+      }
     });
   });
 </script>

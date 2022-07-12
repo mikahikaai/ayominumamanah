@@ -5,13 +5,14 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_show'])) {
-  $_SESSION['tgl_rekap_insentif_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_awal']);
-  $_SESSION['tgl_rekap_insentif_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_akhir'])->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['tgl_rekap_insentif_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_awal'])->setTime(0,0,0);
+  $_SESSION['tgl_rekap_insentif_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_insentif_akhir'])->setTime(0,0,0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
   $_SESSION['id_karyawan_rekap_insentif'] = $_POST['id_karyawan_rekap_insentif'];
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
 
   echo '<meta http-equiv="refresh" content="0;url=?page=rekapinsentif"/>';
+  exit;
 }
 ?>
 
@@ -28,6 +29,7 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="col-md-2">
           <select name="id_karyawan_rekap_insentif" id="nama_karyawan" class="form-control">
+          <option value="all">-- Semua Karyawan --</option>
             <?php
             $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
             $stmt_select_karyawan = $db->prepare($select_karyawan);

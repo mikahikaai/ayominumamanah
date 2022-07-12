@@ -1,14 +1,21 @@
-<?php include_once "../partials/cssdatatables.php" ?>
+<?php  ?>
 
 <?php
+include_once "../partials/cssdatatables.php";
+
+$database = new Database;
+$db = $database->getConnection();
+
 if (isset($_POST['button_show'])) {
-  $_SESSION['tgl_rekap_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal']);
-  $_SESSION['tgl_rekap_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['tgl_rekap_awal_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0, 0, 0);
+  $_SESSION['tgl_rekap_akhir_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0, 0, 0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['id_karyawan_rekap_upah'] = $_POST['id_karyawan_rekap_upah'];
 
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
 
   echo '<meta http-equiv="refresh" content="0;url=?page=rekapupah"/>';
+  exit;
 }
 ?>
 
@@ -24,8 +31,8 @@ if (isset($_POST['button_show'])) {
           <label for="nama">:</label>
         </div>
         <div class="col-md-2">
-          <select name="nama" id="nama_karyawan" class="form-control">
-            <option value=""><?= $_SESSION['nama']; ?></option>
+          <select name="id_karyawan_rekap_upah" id="nama_karyawan" class="form-control">
+            <option value="<?= $_SESSION['id'] ?>"><?= $_SESSION['nama'] ?></option>
           </select>
         </div>
       </div>

@@ -3,14 +3,14 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
-  INNER JOIN gaji u ON p.id_upah = u.id
-  INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE no_pengajuan=?";
+if (isset($_GET['id'])) {
+  $selectSql = "SELECT d.*, i.*, p.*, k.*, i.bongkar bongkar2 FROM pengajuan_insentif_borongan p
+  INNER JOIN gaji i ON p.id_insentif = i.id
+  INNER JOIN distribusi d ON d.id = i.id_distribusi
+  INNER JOIN karyawan k ON k.id = i.id_pengirim
+  WHERE k.id=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['id']);
   $stmt->execute();
 }
 ?>
@@ -19,13 +19,13 @@ if (isset($_GET['no_pengajuan'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Detail Rekap Pengajuan Upah</h1>
+        <h1 class="m-0">Detail Rekap Insentif</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item"><a href="?page=rekappengajuanupah">Rekap Pengajuan Upah</a></li>
-          <li class="breadcrumb-item active">Detail Rekap Pengajuan Upah</li>
+          <li class="breadcrumb-item"><a href="?page=rekappengajuanupah">Rekap Insentif</a></li>
+          <li class="breadcrumb-item active">Detail Rekap Insentif</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -37,7 +37,7 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah Terverifikasi<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+    <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
       <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
@@ -50,7 +50,8 @@ if (isset($_GET['no_pengajuan'])) {
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
             <th>Nama</th>
-            <th>Upah</th>
+            <th>Ontime</th>
+            <th>Bongkar</th>
           </tr>
         </thead>
         <tbody>
@@ -64,13 +65,15 @@ if (isset($_GET['no_pengajuan'])) {
               <td><?= $row['tanggal'] ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
             <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
             <td style="text-align: right; font-weight: bold;"></td>
           </tr>
         </tfoot>
@@ -97,7 +100,7 @@ include_once "../partials/scriptdatatables.php";
         // Total over all pages
         nb_cols = api.columns().nodes().length;
         var j = 4;
-        while (j < nb_cols) {
+        while (j < nb_cols && j < 6) {
           total = api
             .column(j)
             .data()

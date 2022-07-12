@@ -1,10 +1,14 @@
-<?php include_once "../partials/cssdatatables.php" ?>
+<?php
+include_once "../partials/cssdatatables.php";
+$database = new Database;
+$db = $database->getConnection();
+?>
 
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Rekapitulasi Upah</h1>
+        <h1 class="m-0">Rekap Upah</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -21,53 +25,57 @@
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Rekap Gaji</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>No.</th>
-            <th>Tanggal & Jam Berangkat</th>
-            <th>No Perjalanan</th>
             <th>Nama</th>
-            <th>Upah</th>
-            <th>Terbayar</th>
+            <th>Status</th>
+            <th>Total Upah</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $tgl_rekap_awal = $_SESSION['tgl_rekap_awal']->format('Y-m-d H:i:s');
-          $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir']->format('Y-m-d H:i:s');
-          $database = new Database;
-          $db = $database->getConnection();
+          $tgl_rekap_awal = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
+          $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
 
-          $selectSql = "SELECT u.*, d.*, p.*, k.*, d.id id_distribusi FROM gaji u
+          $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji u
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
           WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
-          // var_dump($tgl_rekap_awal);
-          // var_dump($tgl_rekap_akhir);
-          // die();
           $stmt = $db->prepare($selectSql);
           $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
           $stmt->bindParam(2, $tgl_rekap_awal);
           $stmt->bindParam(3, $tgl_rekap_akhir);
           $stmt->execute();
+          if ($stmt->rowCount() > 0) {
+            $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(upah) total_upah FROM gaji u
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
+          INNER JOIN karyawan k ON k.id = u.id_pengirim
+          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'
+          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+            $stmt = $db->prepare($selectSql);
+            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
+            $stmt->bindParam(2, $tgl_rekap_awal);
+            $stmt->bindParam(3, $tgl_rekap_akhir);
+            $stmt->execute();
+          }
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
@@ -80,12 +88,16 @@
 
                 ?>
               </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
+              <td>
+                <a href="?page=rekapdetailupah&id=<?= $row['id_karyawan']; ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+              </td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td></td>
           </tr>
@@ -112,8 +124,8 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 4;
-        while (j < nb_cols && j != 5) {
+        var j = 3;
+        while (j < nb_cols && j < 4) {
           total = api
             .column(j)
             .data()

@@ -2,13 +2,14 @@
 
 <?php
 if (isset($_POST['button_show'])) {
-  $_SESSION['tgl_pengajuan_insentif_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_pengajuan_insentif_awal']);
-  $_SESSION['tgl_pengajuan_insentif_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_pengajuan_insentif_akhir'])->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['tgl_pengajuan_insentif_awal'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_pengajuan_insentif_awal'])->setTime(0,0,0);
+  $_SESSION['tgl_pengajuan_insentif_akhir'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_pengajuan_insentif_akhir'])->setTime(0,0,0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
 
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
 
   echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
+  exit;
 }
 ?>
 

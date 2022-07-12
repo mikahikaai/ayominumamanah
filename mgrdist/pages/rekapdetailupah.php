@@ -3,14 +3,14 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
+if (isset($_GET['id'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE no_pengajuan=?";
+  WHERE k.id=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['id']);
   $stmt->execute();
 }
 ?>
@@ -19,13 +19,13 @@ if (isset($_GET['no_pengajuan'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Detail Rekap Pengajuan Upah</h1>
+        <h1 class="m-0">Detail Rekap Upah</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item"><a href="?page=rekappengajuanupah">Rekap Pengajuan Upah</a></li>
-          <li class="breadcrumb-item active">Detail Rekap Pengajuan Upah</li>
+          <li class="breadcrumb-item"><a href="?page=rekappengajuanupah">Rekap Upah</a></li>
+          <li class="breadcrumb-item active">Detail Rekap Upah</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -37,7 +37,7 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah Terverifikasi<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+    <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
       <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>

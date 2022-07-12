@@ -1,10 +1,14 @@
-<?php include_once "../partials/cssdatatables.php" ?>
+<?php
+include_once "../partials/cssdatatables.php";
+$database = new Database;
+$db = $database->getConnection();
+?>
 
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Rekapitulasi Insentif</h1>
+        <h1 class="m-0">Rekap Insentif</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -21,85 +25,111 @@
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Rekap Insentif</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered">
+      <table id="mytable" class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>No.</th>
-            <th>Tanggal & Jam Berangkat</th>
-            <th>No Perjalanan</th>
             <th>Nama</th>
-            <th>Ontime</th>
-            <th>Bongkar</th>
-            <th>Terbayar</th>
+            <th>Status</th>
+            <th>Total Bongkar</th>
+            <th>Total Ontime</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $tgl_rekap_insentif_awal = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
-          $tgl_rekap_insentif_akhir = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
-          $database = new Database;
-          $db = $database->getConnection();
+          $tgl_rekap_awal = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
+          $tgl_rekap_akhir = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
 
-          $selectSql = "SELECT i.*, d.*, p.*, k.*, d.id id_distribusi, i.bongkar bongkar2 FROM gaji i
-          INNER JOIN distribusi d ON i.id_distribusi = d.id
-          LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
+          if ($_SESSION['id_karyawan_rekap_insentif'] == 'all') {
+            $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
+          INNER JOIN karyawan k ON k.id = i.id_pengirim
+          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'";
+            $stmt = $db->prepare($selectSql);
+            $stmt->bindParam(1, $tgl_rekap_awal);
+            $stmt->bindParam(2, $tgl_rekap_akhir);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+              $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
+          INNER JOIN karyawan k ON k.id = i.id_pengirim
+          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'
+          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+              $stmt = $db->prepare($selectSql);
+              $stmt->bindParam(1, $tgl_rekap_awal);
+              $stmt->bindParam(2, $tgl_rekap_akhir);
+              $stmt->execute();
+            }
+          } else {
+            $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
           INNER JOIN karyawan k ON k.id = i.id_pengirim
           WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
-          // var_dump($tgl_rekap_awal);
-          // var_dump($tgl_rekap_akhir);
-          // die();
-          $stmt = $db->prepare($selectSql);
-          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
-          $stmt->bindParam(2, $tgl_rekap_insentif_awal);
-          $stmt->bindParam(3, $tgl_rekap_insentif_akhir);
-          $stmt->execute();
-
-          // var_dump($_SESSION['id_karyawan_rekap_insentif']);
-          // die();
+            $stmt = $db->prepare($selectSql);
+            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
+            $stmt->bindParam(2, $tgl_rekap_awal);
+            $stmt->bindParam(3, $tgl_rekap_akhir);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+              $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
+          INNER JOIN karyawan k ON k.id = i.id_pengirim
+          WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'
+          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+              $stmt = $db->prepare($selectSql);
+              $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
+              $stmt->bindParam(2, $tgl_rekap_awal);
+              $stmt->bindParam(3, $tgl_rekap_akhir);
+              $stmt->execute();
+            }
+          }
 
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // var_dump($row['bongkar']);
-            // die();
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
-              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.'); ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.'); ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
-                } else if ($row['terbayar'] == '1')  {
+                } else if ($row['terbayar'] == '1') {
                   echo 'Mengajukan';
-                } else if ($row['terbayar'] == '2')  {
+                } else if ($row['terbayar'] == '2') {
                   echo 'Terverifikasi';
                 }
 
                 ?>
+              </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
+              <td>
+                <a href="?page=rekapdetailinsentif&id=<?= $row['id_karyawan']; ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td></td>
           </tr>
         </tfoot>
       </table>
-
     </div>
   </div>
 </div>
@@ -120,8 +150,8 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 4;
-        while (j < nb_cols && j != 6) {
+        var j = 3;
+        while (j < nb_cols && j < 5) {
           total = api
             .column(j)
             .data()
@@ -146,5 +176,4 @@ include_once "../partials/scriptdatatables.php";
       }
     });
   });
-  
 </script>

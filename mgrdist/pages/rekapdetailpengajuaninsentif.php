@@ -19,13 +19,13 @@ if (isset($_GET['no_pengajuan'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pengajuan Insentif</h1>
+        <h1 class="m-0">Detail Rekap Pengajuan Insentif</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
           <li class="breadcrumb-item"><a href="?page=rekappengajuaninsentif">Rekap Pengajuan Insentif</a></li>
-          <li class="breadcrumb-item active">Rekap Detail Pengajuan Insentif</li>
+          <li class="breadcrumb-item active">Detail Rekap Pengajuan Insentif</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -37,10 +37,10 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Detail Insentif Belum Terbayar</h3>
-      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
+      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a> -->
+      </a>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">

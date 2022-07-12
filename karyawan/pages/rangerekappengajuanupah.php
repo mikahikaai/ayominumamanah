@@ -5,20 +5,21 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_show'])) {
-  $_SESSION['tgl_rekap_awal_pengajuan_insentif'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0,0,0);
-  $_SESSION['tgl_rekap_akhir_pengajuan_insentif'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0,0,0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
-  $_SESSION['id_karyawan_rekap_pengajuan_insentif'] = $_POST['id_karyawan_rekap_pengajuan_insentif'];
-  // var_dump($_SESSION['tgl_rekap_awal']);
+  $_SESSION['tgl_rekap_awal_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0,0,0);
+  $_SESSION['tgl_rekap_akhir_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0,0,0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['id_karyawan_rekap_pengajuan_upah'] = $_POST['id_karyawan_rekap_pengajuan_upah'];
+
+  // var_dump($_SESSION['id_karyawan_rekap_pengajuan_upah']);
   // die();
 
-  echo '<meta http-equiv="refresh" content="0;url=?page=rekappengajuaninsentif"/>';
+  echo '<meta http-equiv="refresh" content="0;url=?page=rekappengajuanupah"/>';
   exit;
 }
 ?>
 
 <div class="content-header">
   <div class="container-fluid">
-    <h3>Pilih Periode Rekap Pengajuan Insentif</h3>
+    <h3>Pilih Periode Rekap Pengajuan Upah</h3>
     <form action="" method="POST">
       <div class="row mb-2 mt-2 align-items-center">
         <div class="col-md-2">
@@ -28,25 +29,17 @@ if (isset($_POST['button_show'])) {
           <label for="nama">:</label>
         </div>
         <div class="col-md-2">
-          <select name="id_karyawan_rekap_pengajuan_insentif" id="nama_karyawan" class="form-control">
-          <option value="all" selected>-- Semua Karyawan --</option>
-            <?php
-              $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
-              $stmt_select_karyawan = $db->prepare($select_karyawan);
-              $stmt_select_karyawan->execute();
-              while ($row_select_karyawan = $stmt_select_karyawan->fetch(PDO::FETCH_ASSOC)){
-                ?>
-              <option value="<?= $row_select_karyawan['id']; ?>"><?= $row_select_karyawan['nama']; ?></option>
-              <?php } ?>
+          <select name="id_karyawan_rekap_pengajuan_upah" id="nama_karyawan" class="form-control">
+            <option value='<?= $_SESSION['id'];?>' selected><?= $_SESSION['nama'];?></option>
           </select>
         </div>
       </div>
       <div class="row align-items-center">
         <div class="col-md-2">
-          <label for="tgl_rekap_awal_pengajuan_insentif">Tanggal Awal</label>
+          <label for="tgl_rekap_awal">Tanggal Awal</label>
         </div>
         <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_rekap_awal_pengajuan_insentif">:</label>
+          <label for="tgl_rekap_awal">:</label>
         </div>
         <div class="col-md-2">
           <input id='datetimepicker2' type='text' class='form-control' data-td-target='#datetimepicker2' placeholder="dd/mm/yyyy" name="tgl_rekap_awal" required>
@@ -54,10 +47,10 @@ if (isset($_POST['button_show'])) {
       </div>
       <div class="row align-items-center mt-2">
         <div class="col-md-2">
-          <label for="tgl_rekap_akhir_pengajuan_insentif">Tanggal Akhir</label>
+          <label for="tgl_rekap_akhir">Tanggal Akhir</label>
         </div>
         <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_rekap_akhir_pengajuan_insentif">:</label>
+          <label for="tgl_rekap_akhir">:</label>
         </div>
         <div class="col-md-2">
           <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_rekap_akhir" required>
