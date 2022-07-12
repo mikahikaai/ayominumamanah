@@ -38,7 +38,7 @@ if (isset($_POST['button_edit'])) {
     $stmt->bindParam(9, $_POST['gol_darah']);
     $stmt->bindParam(10, $_POST['no_telepon']);
     $stmt->bindParam(11, $_POST['email']);
-    $stmt->bindParam(12, $_GET['id']);
+    $stmt->bindParam(12, $_SESSION['id']);
     if ($stmt->execute()) {
       $_SESSION['hasil_update'] = true;
       $_SESSION['pesan'] = "Berhasil Mengubah Data";
