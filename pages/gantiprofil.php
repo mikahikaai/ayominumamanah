@@ -38,7 +38,7 @@ if (isset($_POST['button_edit'])) {
     $stmt->bindParam(9, $_POST['gol_darah']);
     $stmt->bindParam(10, $_POST['no_telepon']);
     $stmt->bindParam(11, $_POST['email']);
-    $stmt->bindParam(12, $_GET['id']);
+    $stmt->bindParam(12, $_SESSION['id']);
     if ($stmt->execute()) {
       $_SESSION['hasil_update'] = true;
       $_SESSION['pesan'] = "Berhasil Mengubah Data";
@@ -127,7 +127,7 @@ if (isset($_POST['button_edit'])) {
         </div>
         <div class="form-group">
           <label for="alamat">Alamat</label>
-          <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat']) ?>" maxlength="0" required>
+          <input type="textarea" name="alamat" class="form-control" value="<?= strtoupper($row['alamat']) ?>" style="text-transform: uppercase;" required>
         </div>
         <div class="row">
           <div class="col-md-6">

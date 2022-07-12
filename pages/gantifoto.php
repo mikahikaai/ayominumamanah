@@ -34,8 +34,8 @@ if (isset($_POST['upload'])) {
 
   .preview {
     overflow: hidden;
-    width: 160px;
-    height: 160px;
+    width: 220px;
+    height: 220px;
     margin: 10px;
     border: 1px solid red;
   }
@@ -112,7 +112,7 @@ if (isset($_POST['upload'])) {
             <input type="file" name="image" class="image" id="upload_image" style="display:none" />
           </label>
         </div>
-        <button type="submit" name="upload" class="btn btn-md btn-success" id="simpan"><i class="fa fa-save"></i> Simpan</button>
+        <button type="submit" name="upload" class="btn btn-md btn-success" style="display: none;" id="simpan"><i class="fa fa-save"></i> Simpan</button>
       </div>
   </form>
   <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
