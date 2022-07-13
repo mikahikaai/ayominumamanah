@@ -3,14 +3,14 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['id'])) {
+if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k.*, i.bongkar bongkar2 FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
   WHERE k.id=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['id']);
+  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
   $stmt->execute();
 }
 ?>
@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
       <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>

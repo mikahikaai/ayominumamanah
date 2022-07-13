@@ -3,14 +3,14 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['id'])) {
+if (isset($_SESSION['id_karyawan_rekap_upah'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
   WHERE k.id=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['id']);
+  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
   $stmt->execute();
 }
 ?>

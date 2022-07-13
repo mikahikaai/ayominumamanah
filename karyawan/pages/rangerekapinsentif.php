@@ -11,7 +11,7 @@ if (isset($_POST['button_show'])) {
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
 
-  echo '<meta http-equiv="refresh" content="0;url=?page=rekapinsentif"/>';
+  echo '<meta http-equiv="refresh" content="0;url=?page=rekapdetailinsentif"/>';
   exit;
 }
 ?>
