@@ -3,6 +3,34 @@
 $database = new Database;
 $db = $database->getConnection();
 
+$tahun = date('Y');
+$arrayChartJumlahKeberangkatan = [];
+for ($i = 1; $i <= 12; $i++) {
+  $selectChartUpah = "SELECT COUNT(*) total_berangkat FROM distribusi d
+WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ?
+GROUP BY MONTH(d.jam_berangkat)";
+  $stmtChartUpah = $db->prepare($selectChartUpah);
+  $stmtChartUpah->bindParam(1, $i);
+  $stmtChartUpah->bindParam(2, $tahun);
+  $stmtChartUpah->execute();
+  $rowChartUpah = $stmtChartUpah->fetch(PDO::FETCH_ASSOC);
+  if ($stmtChartUpah->rowCount() == 0) {
+    array_push($arrayChartJumlahKeberangkatan, 0);
+  } else {
+    array_push($arrayChartJumlahKeberangkatan, (int) $rowChartUpah['total_berangkat']);
+  }
+}
+$selectKetepatanWaktuDistribusi = "SELECT COUNT(*) tepat_waktu, (SELECT COUNT(*) FROM distribusi d WHERE d.jam_datang > d.estimasi_jam_datang + INTERVAL 15 MINUTE) tidak_tepat_waktu FROM distribusi d WHERE YEAR(d.jam_berangkat)=? AND d.jam_datang IS NOT NULL AND d.jam_datang < d.estimasi_jam_datang + INTERVAL 15 MINUTE";
+$stmtKetepatanWaktuDistribusi = $db->prepare($selectKetepatanWaktuDistribusi);
+$stmtKetepatanWaktuDistribusi->bindParam(1, $tahun);
+$stmtKetepatanWaktuDistribusi->execute();
+$rowKetepatanWaktuDistribusi = $stmtKetepatanWaktuDistribusi->fetch(PDO::FETCH_ASSOC);
+$jumlahDataTepatWaktu = $rowKetepatanWaktuDistribusi['tepat_waktu'];
+$jumlahDataTidakTepatWaktu = $rowKetepatanWaktuDistribusi['tidak_tepat_waktu'];
+// var_dump($arrayChartUpah);
+// var_dump($arrayChartInsentif);
+// die();
+
 $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
 FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
 LEFT JOIN karyawan k1 on d.driver = k1.id
@@ -85,7 +113,7 @@ if (isset($_SESSION['login_sukses'])) {
             ?>
               <div class="col-md-3 mb-3">
                 <div class="card shadow-sm">
-                  <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
+                  <h5 class="card-header bg-info"><?= $row['no_perjalanan']; ?></h5>
                   <div class="card-body">
                     <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
                     <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
@@ -93,7 +121,7 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
                     <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
                   </div>
-                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Validasi</a>
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-info d-block">Validasi</a>
                 </div>
               </div>
             <?php
@@ -109,6 +137,16 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="mb-3"># Data Grafik Jumlah Keberangkatan Tahun <?= date('Y'); ?> </h3>
+        <canvas id="myChart3"></canvas>
+      </div>
+      <div class="col-md-6">
+        <h3 class="mb-3"># Data Persentase Prestasi Ketepatan Waktu Tahun <?= date('Y'); ?> </h3>
+        <canvas id="myChart4"></canvas>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -174,5 +212,76 @@ include_once "../partials/scriptdatatables.php";
   //     }
   //   })
   // });
+
+  var arrayIndicator = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  var arrayBackground1 = [];
+  var arrayBorder1 = [];
+
+  for (let i = 0; i < arrayIndicator.length; i++) {
+    r = Math.floor(Math.random() * 255);
+    g = Math.floor(Math.random() * 255);
+    b = Math.floor(Math.random() * 255);
+    arrayBackground1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '0.2)');
+    arrayBorder1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '1)');
+  }
+
+  //chart keberangkatan
+  var arrayChartJumlahKeberangkatan = <?= json_encode($arrayChartJumlahKeberangkatan); ?>;
+  const ctxBerangkat = document.getElementById('myChart3').getContext('2d');
+  const myChartBerangkat = new Chart(ctxBerangkat, {
+    type: 'line',
+    data: {
+      labels: arrayIndicator,
+      datasets: [{
+        label: '# Jumlah Keberangkatan Tahun ' + new Date().getFullYear(),
+        data: arrayChartJumlahKeberangkatan,
+        backgroundColor: arrayBackground1,
+        borderColor: arrayBorder1,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        labels: {
+          render: 'value',
+          precision: 2
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  //chart persentase ketepatan waktu
+  var jumlahDataTepatWaktu = <?= json_encode($jumlahDataTepatWaktu); ?>;
+  var jumlahDataTidakTepatWaktu = <?= json_encode($jumlahDataTidakTepatWaktu); ?>;
+  var label = ['Tepat Waktu', 'Tidak Tepat Waktu'];
+  const ctxPersentaseKetepatanWaktu = document.getElementById('myChart4').getContext('2d');
+  const myChartPersentaseKetepatanWaktu = new Chart(ctxPersentaseKetepatanWaktu, {
+    type: 'doughnut',
+    data: {
+      labels: label,
+      datasets: [{
+        label: '# Persentase Ketepatan Waktu Selama Tahun ' + new Date().getFullYear(),
+        data: [jumlahDataTepatWaktu, jumlahDataTidakTepatWaktu],
+        backgroundColor: [arrayBackground1[0], arrayBackground1[1]],
+        borderColor: [arrayBorder1[0], arrayBorder1[1]],
+        // borderWidth: 1
+      }]
+    },
+    options: {
+      // responsive: true,
+      // maintainAspectRatio: true,
+      plugins: {
+        labels: {
+          render: 'percentage',
+          precision: 2
+        }
+      },
+    }
+  });
 </script>
 <!-- /.content -->

@@ -3,14 +3,19 @@
 $database = new Database;
 $db = $database->getConnection();
 
+$tgl_rekap_awal_insentif = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
+$tgl_rekap_akhir_insentif = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
+
 if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k.*, i.bongkar bongkar2 FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
-  WHERE k.id=?";
+  WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?)";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
+  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
+  $stmt->bindParam(2, $tgl_rekap_awal_insentif);
+  $stmt->bindParam(3, $tgl_rekap_akhir_insentif);
   $stmt->execute();
 }
 ?>
@@ -78,7 +83,7 @@ if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
           </tr>
         </tfoot>
       </table>
-      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a href="?page=rangerekapinsentif" class="btn btn-sm mt-2 btn-danger float-right mr-1" <i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
   </div>
 </div>

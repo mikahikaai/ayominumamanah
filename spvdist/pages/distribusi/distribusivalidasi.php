@@ -5,21 +5,21 @@ $db = $database->getConnection();
 
 if (isset($_POST['button_validasi'])) {
 
-	$cup1 = $_POST['cup1'];
-	$cup2 = $_POST['cup2'];
-	$cup3 = $_POST['cup3'];
-	$a3301 = $_POST['a3301'];
-	$a3302 = $_POST['a3302'];
-	$a3303 = $_POST['a3303'];
-	$a5001 = $_POST['a5001'];
-	$a5002 = $_POST['a5002'];
-	$a5003 = $_POST['a5003'];
-	$a6001 = $_POST['a6001'];
-	$a6002 = $_POST['a6002'];
-	$a6003 = $_POST['a6003'];
-	$refill1 = $_POST['refill1'];
-	$refill2 = $_POST['refill2'];
-	$refill3 = $_POST['refill3'];
+	$cup1 = !empty($_POST['cup1']) ? $_POST['cup1'] : 0;
+	$cup2 = !empty($_POST['cup2']) ? $_POST['cup2'] : 0;
+	$cup3 = !empty($_POST['cup3']) ? $_POST['cup3'] : 0;
+	$a3301 = !empty($_POST['a3301']) ? $_POST['a3301'] : 0;
+	$a3302 = !empty($_POST['a3302']) ? $_POST['a3302'] : 0;
+	$a3303 = !empty($_POST['a3303']) ? $_POST['a3303'] : 0;
+	$a5001 = !empty($_POST['a5001']) ? $_POST['a5001'] : 0;
+	$a5002 = !empty($_POST['a5002']) ? $_POST['a5002'] : 0;
+	$a5003 = !empty($_POST['a5003']) ? $_POST['a5003'] : 0;
+	$a6001 = !empty($_POST['a6001']) ? $_POST['a6001'] : 0;
+	$a6002 = !empty($_POST['a6002']) ? $_POST['a6002'] : 0;
+	$a6003 = !empty($_POST['a6003']) ? $_POST['a6003'] : 0;
+	$refill1 = !empty($_POST['refill1']) ? $_POST['refill1'] : 0;
+	$refill2 = !empty($_POST['refill2']) ? $_POST['refill2'] : 0;
+	$refill3 = !empty($_POST['refill3']) ? $_POST['refill3'] : 0;
 
 	$jumlah_cup = $cup1 + $cup2 + $cup3;
 	$jumlah_330 = $a3301 + $a3302 + $a3303;
@@ -58,11 +58,11 @@ if (isset($_POST['button_validasi'])) {
 
 	$durasi = round((strtotime($jam_datang) - strtotime($_POST['jam_berangkat2'])) / 3600, 1);
 
-for ($i = 0; $i < 3; $i++) {
-	$ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang2']), '+15 Minutes');
-	$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
-	$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
-	$hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i], $durasi);
+	for ($i = 0; $i < 3; $i++) {
+		$ontime = date_create($_POST['jam_datang']) <= date_modify(date_create($_POST['estimasi_jam_datang2']), '+15 Minutes');
+		$hitungInsentifOntime = $ontime ? hitungInsentifOntime($jarak_max, $kateg) : 0;
+		$hitungInsentifBongkar = hitungInsentifBongkar($jumlah_cup, $jumlah_330, $jumlah_500, $jumlah_600, $jumlah_refill);
+		$hitungUpah = hitungUpah($jarak_max, $array_upah_tim_pengirim[$i], $durasi);
 		if (empty($array_tim_pengirim[$i])) {
 			$hitungInsentifOntime = 0;
 			$hitungInsentifBongkar = 0;
@@ -82,8 +82,6 @@ for ($i = 0; $i < 3; $i++) {
 		$stmt_insert_gaji->bindParam(3, $hitungUpah);
 		$stmt_insert_gaji->bindParam(4, $id_gaji);
 		$stmt_insert_gaji->execute();
-
-		
 	}
 
 	$sukses = true;

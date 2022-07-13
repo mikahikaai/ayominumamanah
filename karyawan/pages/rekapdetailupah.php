@@ -3,14 +3,19 @@
 $database = new Database;
 $db = $database->getConnection();
 
+$tgl_rekap_awal_upah = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
+$tgl_rekap_akhir_upah = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
+
 if (isset($_SESSION['id_karyawan_rekap_upah'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE k.id=?";
+  WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?)";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
+  $stmt->bindParam(2, $tgl_rekap_awal_upah);
+  $stmt->bindParam(3, $tgl_rekap_akhir_upah);
   $stmt->execute();
 }
 ?>

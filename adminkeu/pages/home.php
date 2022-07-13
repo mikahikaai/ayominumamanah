@@ -3,6 +3,47 @@
 $database = new Database;
 $db = $database->getConnection();
 
+$tahun = date('Y');
+$arrayChartUpah = [];
+for ($i = 1; $i <= 12; $i++) {
+  $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
+  INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
+  INNER JOIN karyawan k ON u.id_pengirim = k.id
+  INNER JOIN distribusi d ON u.id_distribusi = d.id
+  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
+  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  $stmtChartUpah = $db->prepare($selectChartUpah);
+  $stmtChartUpah->bindParam(1, $i);
+  $stmtChartUpah->bindParam(2, $tahun);
+  $stmtChartUpah->execute();
+  $rowChartUpah = $stmtChartUpah->fetch(PDO::FETCH_ASSOC);
+  if ($stmtChartUpah->rowCount() == 0) {
+    array_push($arrayChartUpah, 0);
+  } else {
+    array_push($arrayChartUpah, (int) $rowChartUpah['total_upah']);
+  }
+}
+
+$arrayChartInsentif = [];
+for ($i = 1; $i <= 12; $i++) {
+  $selectChartInsentif = "SELECT MONTH(d.jam_berangkat), k.nama, sum(u.bongkar+u.ontime) total_insentif FROM gaji u
+  INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
+  INNER JOIN karyawan k ON u.id_pengirim = k.id
+  INNER JOIN distribusi d ON u.id_distribusi = d.id
+  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
+  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  $stmtChartInsentif = $db->prepare($selectChartInsentif);
+  $stmtChartInsentif->bindParam(1, $i);
+  $stmtChartInsentif->bindParam(2, $tahun);
+  $stmtChartInsentif->execute();
+  $rowChartInsentif = $stmtChartInsentif->fetch(PDO::FETCH_ASSOC);
+  if ($stmtChartInsentif->rowCount() == 0) {
+    array_push($arrayChartInsentif, 0);
+  } else {
+    array_push($arrayChartInsentif, (int) $rowChartInsentif['total_insentif']);
+  }
+}
+
 $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
 FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
 LEFT JOIN karyawan k1 on d.driver = k1.id
@@ -44,7 +85,7 @@ if (isset($_SESSION['login_sukses'])) {
   <div class="container-fluid">
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-3">Dalam Perjalanan </h3>
+        <h3 class="mb-3"># Dalam Perjalanan </h3>
       </div>
       <div class="col-6 text-right">
         <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
@@ -85,7 +126,7 @@ if (isset($_SESSION['login_sukses'])) {
             ?>
               <div class="col-md-3 mb-3">
                 <div class="card shadow-sm">
-                  <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
+                  <h5 class="card-header bg-info"><?= $row['no_perjalanan']; ?></h5>
                   <div class="card-body">
                     <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
                     <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
@@ -93,7 +134,7 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
                     <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
                   </div>
-                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-primary d-block">Ubah</a>
+                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-info d-block" style="opacity: 0.5;">Ubah</a>
                 </div>
               </div>
             <?php
@@ -108,7 +149,18 @@ if (isset($_SESSION['login_sukses'])) {
         </div>
       </div>
       <!-- /.row -->
-    </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.container-fluid -->
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="mb-3"># Data Grafik Upah Karyawan Tahun <?= date('Y'); ?> </h3>
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <h3 class="mb-3"># Data Grafik Insentif Karyawan Tahun <?= date('Y'); ?> </h3>
+        <canvas id="myChart2"></canvas>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -174,5 +226,76 @@ include_once "../partials/scriptdatatables.php";
   //     }
   //   })
   // });
+
+  //chart upah
+  var arrayIndicator = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  var arrayChartUpah = <?= json_encode($arrayChartUpah); ?>;
+  var arrayBackground1 = [];
+  var arrayBorder1 = [];
+
+  for (let i = 0; i < arrayIndicator.length; i++) {
+    r = Math.floor(Math.random() * 255);
+    g = Math.floor(Math.random() * 255);
+    b = Math.floor(Math.random() * 255);
+    arrayBackground1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '0.2)');
+    arrayBorder1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '1)');
+  }
+  const ctxUpah = document.getElementById('myChart').getContext('2d');
+  const myChartUpah = new Chart(ctxUpah, {
+    type: 'bar',
+    data: {
+      labels: arrayIndicator,
+      datasets: [{
+        label: '# Jumlah Upah Tahun ' + new Date().getFullYear(),
+        data: arrayChartUpah,
+        backgroundColor: arrayBackground1,
+        borderColor: arrayBorder1,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        labels: {
+          render: 'value',
+          precision: 2
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  //chart insentif
+  var arrayChartInsentif = <?= json_encode($arrayChartInsentif); ?>;
+  const ctxInsentif = document.getElementById('myChart2').getContext('2d');
+  const myChartInsentif = new Chart(ctxInsentif, {
+    type: 'bar',
+    data: {
+      labels: arrayIndicator,
+      datasets: [{
+        label: '# Jumlah Insentif Tahun ' + new Date().getFullYear(),
+        data: arrayChartInsentif,
+        backgroundColor: arrayBackground1,
+        borderColor: arrayBorder1,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        labels: {
+          render: 'value',
+          precision: 2
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 </script>
 <!-- /.content -->

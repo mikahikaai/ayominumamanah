@@ -47,9 +47,9 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
           <tr>
             <th>No.</th>
             <th>Nama</th>
+            <th>Status</th>
             <th>Total Ontime</th>
             <th>Total Bongkar</th>
-            <th>Status</th>
             <th>Opsi</th>
           </tr>
         </thead>
@@ -66,7 +66,7 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
           $stmt = $db->prepare($selectSql);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
-            $selectSql = "SELECT p.*, i.*,k.*, k.id id_karyawan, d.*, SUM(ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
+            $selectSql = "SELECT p.*, i.*,k.*, k.id id_karyawan, d.*, SUM(i.ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
             RIGHT JOIN gaji i on p.id_insentif = i.id
             INNER JOIN karyawan k on i.id_pengirim = k.id
             INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -84,8 +84,6 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == NULL) {
@@ -97,6 +95,8 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
                 }
                 ?>
               </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=detailpengajuaninsentif&idk=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-primary">
                   <i class="fa fa-eye"></i> Lihat</a>
@@ -104,6 +104,14 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
       <!-- <form action="" method="post">
         <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
@@ -117,6 +125,41 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable();
+    $('#mytable').DataTable({
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
+        };
+
+        // Total over all pages
+        nb_cols = api.columns().nodes().length;
+        var j = 3;
+        while (j < nb_cols && j < 5) {
+          total = api
+            .column(j)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+          j++
+        }
+        // Total over this page
+        // pageTotal = api
+        //   .column(4, {
+        //     page: 'current'
+        //   })
+        //   .data()
+        //   .reduce(function(a, b) {
+        //     return intVal(a) + intVal(b);
+        //   }, 0);
+
+        // Update footer
+        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+      }
+    });
   });
 </script>

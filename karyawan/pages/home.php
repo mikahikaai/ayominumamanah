@@ -5,14 +5,13 @@ $db = $database->getConnection();
 
 $tahun = date('Y');
 $arrayChartUpah = [];
-$arrayChartInsentif = [];
-$arrayChartJumlahKeberangkatan = [];
 for ($i = 1; $i <= 12; $i++) {
-  $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah, sum(u.bongkar+u.ontime) total_insentif, count(d.id) total_berangkat FROM gaji u
-INNER JOIN karyawan k ON u.id_pengirim = k.id
-INNER JOIN distribusi d ON u.id_distribusi = d.id
-WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ?
-GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
+  INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
+  INNER JOIN karyawan k ON u.id_pengirim = k.id
+  INNER JOIN distribusi d ON u.id_distribusi = d.id
+  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
+  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
   $stmtChartUpah = $db->prepare($selectChartUpah);
   $stmtChartUpah->bindParam(1, $_SESSION['id']);
   $stmtChartUpah->bindParam(2, $i);
@@ -21,14 +20,52 @@ GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
   $rowChartUpah = $stmtChartUpah->fetch(PDO::FETCH_ASSOC);
   if ($stmtChartUpah->rowCount() == 0) {
     array_push($arrayChartUpah, 0);
-    array_push($arrayChartInsentif, 0);
-    array_push($arrayChartJumlahKeberangkatan, 0);
   } else {
     array_push($arrayChartUpah, (int) $rowChartUpah['total_upah']);
-    array_push($arrayChartInsentif, (int) $rowChartUpah['total_insentif']);
+  }
+}
+
+$arrayChartInsentif = [];
+for ($i = 1; $i <= 12; $i++) {
+  $selectChartInsentif = "SELECT MONTH(d.jam_berangkat), k.nama, sum(u.bongkar+u.ontime) total_insentif FROM gaji u
+  INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
+  INNER JOIN karyawan k ON u.id_pengirim = k.id
+  INNER JOIN distribusi d ON u.id_distribusi = d.id
+  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
+  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  $stmtChartInsentif = $db->prepare($selectChartInsentif);
+  $stmtChartInsentif->bindParam(1, $_SESSION['id']);
+  $stmtChartInsentif->bindParam(2, $i);
+  $stmtChartInsentif->bindParam(3, $tahun);
+  $stmtChartInsentif->execute();
+  $rowChartInsentif = $stmtChartInsentif->fetch(PDO::FETCH_ASSOC);
+  if ($stmtChartInsentif->rowCount() == 0) {
+    array_push($arrayChartInsentif, 0);
+  } else {
+    array_push($arrayChartInsentif, (int) $rowChartInsentif['total_insentif']);
+  }
+}
+
+$arrayChartJumlahKeberangkatan = [];
+for ($i = 1; $i <= 12; $i++) {
+  $selectChartUpah = "SELECT COUNT(*) total_berangkat FROM distribusi d
+WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND (d.driver = ? OR d.helper_1 = ? OR d.helper_2 = ?) AND d.jam_datang IS NOT NULL
+GROUP BY MONTH(d.jam_berangkat)";
+  $stmtChartUpah = $db->prepare($selectChartUpah);
+  $stmtChartUpah->bindParam(1, $i);
+  $stmtChartUpah->bindParam(2, $tahun);
+  $stmtChartUpah->bindParam(3, $_SESSION['id']);
+  $stmtChartUpah->bindParam(4, $_SESSION['id']);
+  $stmtChartUpah->bindParam(5, $_SESSION['id']);
+  $stmtChartUpah->execute();
+  $rowChartUpah = $stmtChartUpah->fetch(PDO::FETCH_ASSOC);
+  if ($stmtChartUpah->rowCount() == 0) {
+    array_push($arrayChartJumlahKeberangkatan, 0);
+  } else {
     array_push($arrayChartJumlahKeberangkatan, (int) $rowChartUpah['total_berangkat']);
   }
 }
+
 $selectKetepatanWaktuDistribusi = "SELECT COUNT(*) tepat_waktu, (SELECT COUNT(*) FROM distribusi d WHERE d.jam_datang > d.estimasi_jam_datang + INTERVAL 15 MINUTE) tidak_tepat_waktu FROM distribusi d WHERE (driver=? OR helper_1 = ? OR helper_2 = ?) AND YEAR(d.jam_berangkat)=? AND d.jam_datang IS NOT NULL AND d.jam_datang < d.estimasi_jam_datang + INTERVAL 15 MINUTE";
 $stmtKetepatanWaktuDistribusi = $db->prepare($selectKetepatanWaktuDistribusi);
 $stmtKetepatanWaktuDistribusi->bindParam(1, $_SESSION['id']);
@@ -165,7 +202,7 @@ if (isset($_SESSION['login_sukses'])) {
         <canvas id="myChart3"></canvas>
       </div>
       <div class="col-md-6">
-        <h3 class="mb-3"># Data Persentase Prestasi Ketepatan Waktu Tahun <?= date('Y'); ?> </h3>
+        <h3 class="mb-3"># Data Persentase Ketepatan Waktu Tahun <?= date('Y'); ?> </h3>
         <canvas id="myChart4"></canvas>
       </div>
     </div>
@@ -231,8 +268,6 @@ include_once "../partials/scriptdatatables.php";
     arrayBackground1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '0.2)');
     arrayBorder1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '1)');
   }
-  // console.log(arrayBackground1);
-  // console.log(arrayBorder1);
   const ctxUpah = document.getElementById('myChart').getContext('2d');
   const myChartUpah = new Chart(ctxUpah, {
     type: 'bar',

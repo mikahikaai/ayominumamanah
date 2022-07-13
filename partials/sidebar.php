@@ -99,6 +99,12 @@
                   <p>Rekap Insentif</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapdistribusi" class="nav-link" id="rekapdistribusi">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Distribusi</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" id='master_data'>
@@ -178,6 +184,12 @@
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapdistribusi" class="nav-link" id="rekapdistribusi">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Distribusi</p>
                 </a>
               </li>
             </ul>
@@ -276,6 +288,12 @@
                   <p>Rekap Insentif</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapdistribusi" class="nav-link" id="rekapdistribusi">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Distribusi</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" id='master_data'>
@@ -311,6 +329,23 @@
           </li>
         <?php } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
         ?>
+          <li class="nav-item" id="rekapitulasi">
+            <a href="#" class="nav-link" id="link_rekapitulasi">
+              <i class="nav-icon fas fa-paperclip"></i>
+              <p>
+                Rekapitulasi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="?page=rangerekapdistribusi" class="nav-link" id="rekapdistribusi">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Distribusi</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item" id='master_data'>
             <a href="#" class="nav-link" id='link_master_data'>
               <i class="fas fa-th nav-icon"></i>
