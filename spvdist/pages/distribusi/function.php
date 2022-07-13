@@ -10,7 +10,7 @@ function hitungUpah($jarak, $upah, $jam)
   if ($jam >= 24){
     $upah_kirim = $upah_kirim * ($jam/24);
   }
-  return $upah_kirim;
+  return round($upah_kirim, 2);
 }
 
 function hitungInsentifBongkar($cup, $a330, $a500, $a600, $refill)
@@ -30,7 +30,7 @@ function hitungInsentifBongkar($cup, $a330, $a500, $a600, $refill)
 
   $insentif = $insentif_cup + $insentif_a330 + $insentif_a500 + $insentif_a600 + $insentif_refill;
 
-  return $insentif;
+  return round($insentif, 2);
 }
 
 function hitungInsentifOntime($jarak, $mobil)
@@ -53,5 +53,5 @@ function hitungInsentifOntime($jarak, $mobil)
 
   $ontime = $jarak * $KONSTANTA_ARMADA * 0.6;
 
-  return $ontime;
+  return round($ontime, 2);
 }
