@@ -84,7 +84,7 @@ if (isset($_SESSION['login_sukses'])) {
             ?>
               <div class="col-md-3 mb-3">
                 <div class="card shadow-sm">
-                  <h5 class="card-header"><?= $row['no_perjalanan']; ?></h5>
+                  <h5 class="card-header bg-info"><?= $row['no_perjalanan']; ?></h5>
                   <div class="card-body">
                     <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
                     <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
