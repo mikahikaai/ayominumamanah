@@ -32,6 +32,7 @@
   <script src="../plugins/leaflet-zoomhome/js/leaflet.zoomhome.min.js"></script>
   <link rel="stylesheet" href="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
   <script src="../plugins/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <!-- <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"></script>
 

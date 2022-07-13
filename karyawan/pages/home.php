@@ -108,6 +108,14 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
+    <div class="row">
+      <div class="col-md-6">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="col-md-6">
+  
+      </div>
+    </div>
   </div>
 </div>
 
@@ -173,5 +181,43 @@ include_once "../partials/scriptdatatables.php";
   //     }
   //   })
   // });
+
+  //chart
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [1200, 1900, 300, 500, 200, 300],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 </script>
 <!-- /.content -->

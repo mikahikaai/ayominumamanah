@@ -73,6 +73,7 @@ include_once "../partials/scripts.php";
     margin: 10px;
     border: 1px solid red;
   }
+
 </style>
 
 <body class="hold-transition sidebar-mini">
