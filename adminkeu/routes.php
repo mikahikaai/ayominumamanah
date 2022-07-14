@@ -162,6 +162,14 @@ if (isset($_GET['page'])) {
       file_exists('pages/rekapdetailinsentif.php') ? include 'pages/rekapdetailinsentif.php' : include '../pages/404.php';
       $title = 'Rekap Insentif';
       break;
+    case 'rangerekapdistribusi':
+      file_exists('pages/rangerekapdistribusi.php') ? include 'pages/rangerekapdistribusi.php' : include '../pages/404.php';
+      $title = 'Rekap Distribusi';
+      break;
+    case 'rekapdistribusi':
+      file_exists('pages/rekapdistribusi.php') ? include 'pages/rekapdistribusi.php' : include '../pages/404.php';
+      $title = 'Rekap Distribusi';
+      break;
     case 'detaildistribusi':
       file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
       $title = 'Distribusi';

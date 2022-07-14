@@ -244,6 +244,10 @@ include_once "../partials/scripts.php";
       $("a#distributor").addClass("active");
       $("li#master_data").addClass("menu-open");
       $("a#link_master_data").addClass("active");
+    } else if (title == "Rekap Distribusi") {
+      $("a#rekapdistribusi").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     }
   });
 </script>

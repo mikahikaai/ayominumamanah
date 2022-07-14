@@ -1,5 +1,5 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4 min-vh-100 position-fixed">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
   <!-- Brand Logo -->
   <?php
   if (isset($_SESSION['jabatan'])) {
@@ -24,7 +24,7 @@
   </a>
 
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar overflow-auto h-100">
     <!-- Sidebar user panel (optional) -->
 
     <!-- SidebarSearch Form -->
