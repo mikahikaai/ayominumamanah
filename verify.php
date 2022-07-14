@@ -149,9 +149,10 @@ if (isset($_GET['code'])) {
               LEFT JOIN distributor r2 on d.nama_pel_2 = r2.id
               LEFT JOIN distributor r3 on d.nama_pel_3 = r3.id
               INNER JOIN karyawan k ON k.id = u.id_pengirim
-              WHERE no_pengajuan=?";
+              WHERE no_pengajuan=? AND qrcode=?";
               $stmtdetail = $db->prepare($detailsql);
               $stmtdetail->bindParam(1, $row['no_pengajuan']);
+              $stmtdetail->bindParam(2, $_GET['code']);
               $stmtdetail->execute();
               while ($rowdetail = $stmtdetail->fetch(PDO::FETCH_ASSOC)) {
               ?>

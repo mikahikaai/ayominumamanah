@@ -17,7 +17,7 @@ if (isset($_GET['no_pengajuan'])) {
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE no_pengajuan=?";
+  WHERE no_pengajuan=? AND terbayar='1'";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
   $stmt->execute();
