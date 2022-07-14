@@ -253,7 +253,7 @@ if ($stmt->rowCount() > 0) {
     }
 
     echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
-    // akhir insert data distribusi ke db
+    exit;
   }
 }
 ?>

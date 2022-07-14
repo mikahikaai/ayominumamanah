@@ -56,6 +56,7 @@ if (isset($_POST['button_edit'])) {
     $_SESSION['pesan'] = "Gagal Mengubah Data";
   }
   echo '<meta http-equiv="refresh" content="0;url=?page=armadaread"/>';
+  exit;
 }
 
 if (isset($_GET['id'])) {

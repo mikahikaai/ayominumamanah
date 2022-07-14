@@ -39,6 +39,7 @@ if ($stmt->rowCount() > 0) {
       $_SESSION['pesan'] = "Gagal Menyimpan Data";
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=distributorread"/>';
+    exit;
   }
 }
 ?>

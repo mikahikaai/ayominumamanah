@@ -41,6 +41,7 @@ if (isset($_POST['ajukan'])) {
       $stmt_insert->execute();
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
+    exit;
   }
 }
 ?>

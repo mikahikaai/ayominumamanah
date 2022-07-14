@@ -2,12 +2,12 @@
 session_start();
 if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
-  die();
+  exit;
 } else {
   if ($_SESSION['jabatan'] != "MGRDISTRIBUSI") {
     echo '<h2>ANDA TIDAK MEMILIKI AKSES KE HALAMAN INI !</h2>';
     echo '<meta http-equiv="refresh" content="2;url=/login.php"/>';
-    die();
+    exit;
   }
 }
 

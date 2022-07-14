@@ -15,3 +15,4 @@ $db = $database->getConnection();
         }
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
+    exit;

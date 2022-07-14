@@ -25,6 +25,7 @@ if (isset($_POST['button_edit'])) {
   }
   echo '<meta http-equiv="refresh" content="0;url=?page=distributorread"/>';
   exit;
+  exit;
 }
 
 if (isset($_GET['id'])) {

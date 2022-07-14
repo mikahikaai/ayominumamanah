@@ -22,4 +22,5 @@ if (isset($_GET['id'])) {
     $_SESSION['pesan'] = "Gagal Menghapus Data";
   }
   echo '<meta http-equiv="refresh" content="0;url=?page=distribusiread"/>';
+  exit;
 }

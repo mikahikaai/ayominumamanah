@@ -15,6 +15,7 @@ if (isset($_POST['button_show'])) {
   // die();
 
   echo '<meta http-equiv="refresh" content="0;url=?page=prestasikaryawan"/>';
+  exit;
 }
 ?>
 
