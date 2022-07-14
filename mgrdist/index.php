@@ -214,8 +214,8 @@ include_once "../partials/scripts.php";
       $("a#link_pengajuanupah").addClass("active");
     } else if (title == "Distribusi") {
       $("a#distribusi").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+      $("li#master_distribusi").addClass("menu-open");
+      $("a#link_master_distribusi").addClass("active");
     } else if (title == "Rekap Pengajuan Insentif") {
       $("a#rekappengajuaninsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
@@ -230,8 +230,8 @@ include_once "../partials/scripts.php";
       $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Prestasi") {
       $("a#prestasikaryawan").addClass("active");
-      $("li#master_data").addClass("menu-open");
-      $("a#link_master_data").addClass("active");
+      $("li#master_distribusi").addClass("menu-open");
+      $("a#link_master_distribusi").addClass("active");
     } else if (title == "Armada") {
       $("a#armada").addClass("active");
       $("li#master_data").addClass("menu-open");

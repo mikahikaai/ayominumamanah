@@ -41,7 +41,7 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-colum overflow-auto h-100" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
@@ -107,11 +107,11 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item" id='master_data'>
-            <a href="#" class="nav-link" id='link_master_data'>
-              <i class="fas fa-th nav-icon"></i>
+          <li class="nav-item" id='master_distribusi'>
+            <a href="#" class="nav-link" id='link_master_distribusi'>
+              <i class="fas fa-truck nav-icon"></i>
               <p>
-                Master Data
+                Master Distribusi
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -218,6 +218,17 @@
                   <p>Distributor</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item" id='master_distribusi'>
+            <a href="#" class="nav-link" id='link_master_distribusi'>
+              <i class="fas fa-truck nav-icon"></i>
+              <p>
+                Master Distribusi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                   <p>Distribusi</p>
@@ -320,11 +331,27 @@
                   <p>Distributor</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item" id='master_distribusi'>
+            <a href="#" class="nav-link" id='link_master_distribusi'>
+              <i class="fas fa-truck nav-icon"></i>
+              <p>
+                Master Distribusi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                   <p>Distribusi</p>
                 </a>
               </li>
+              <!-- <li class="nav-item">
+                <a href="?page=rangeprestasikaryawan" class="nav-link" id="prestasikaryawan"><i class="far fa-circle nav-icon"></i>
+                  <p>Prestasi Keberangkatan</p>
+                </a>
+              </li> -->
             </ul>
           </li>
         <?php } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {
@@ -370,6 +397,17 @@
                   <p>Distributor</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-item" id='master_distribusi'>
+            <a href="#" class="nav-link" id='link_master_distribusi'>
+              <i class="fas fa-truck nav-icon"></i>
+              <p>
+                Master Distribusi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="?page=distribusiread" class="nav-link" id="distribusi"><i class="far fa-circle nav-icon"></i>
                   <p>Distribusi</p>
