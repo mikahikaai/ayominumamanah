@@ -7,11 +7,11 @@ $tahun = date('Y');
 $arrayChartUpah = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
-  INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
+  LEFT JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
-  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
-  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND terbayar='2'
+  GROUP BY MONTH(d.jam_berangkat)";
   $stmtChartUpah = $db->prepare($selectChartUpah);
   $stmtChartUpah->bindParam(1, $i);
   $stmtChartUpah->bindParam(2, $tahun);
@@ -27,14 +27,16 @@ for ($i = 1; $i <= 12; $i++) {
 $arrayChartInsentif = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartInsentif = "SELECT MONTH(d.jam_berangkat), k.nama, sum(u.bongkar+u.ontime) total_insentif FROM gaji u
-  INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
+  LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
-  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
-  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  WHERE MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND terbayar='2'
+  GROUP BY MONTH(d.jam_berangkat)";
   $stmtChartInsentif = $db->prepare($selectChartInsentif);
   $stmtChartInsentif->bindParam(1, $i);
   $stmtChartInsentif->bindParam(2, $tahun);
+  // $stmtChartInsentif->debugDumpParams();
+  // die();
   $stmtChartInsentif->execute();
   $rowChartInsentif = $stmtChartInsentif->fetch(PDO::FETCH_ASSOC);
   if ($stmtChartInsentif->rowCount() == 0) {

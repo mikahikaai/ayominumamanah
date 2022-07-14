@@ -51,7 +51,7 @@ $db = $database->getConnection();
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'";
+          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_rekap_awal);
             $stmt->bindParam(2, $tgl_rekap_akhir);
@@ -61,8 +61,8 @@ $db = $database->getConnection();
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND p.terbayar='2'
+          GROUP BY k.nama ORDER BY k.nama";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $tgl_rekap_awal);
               $stmt->bindParam(2, $tgl_rekap_akhir);
@@ -73,7 +73,7 @@ $db = $database->getConnection();
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
+          WHERE u.id_pengirim = ? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
             $stmt->bindParam(2, $tgl_rekap_awal);
@@ -84,7 +84,7 @@ $db = $database->getConnection();
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE u.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'
+          WHERE u.id_pengirim = ? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'
           GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);

@@ -24,7 +24,7 @@
   </a>
 
   <!-- Sidebar -->
-  <div class="sidebar overflow-auto h-100">
+  <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
 
     <!-- SidebarSearch Form -->
@@ -41,7 +41,7 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-colum overflow-auto h-100" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-colum" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">

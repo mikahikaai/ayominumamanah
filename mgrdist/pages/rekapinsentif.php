@@ -63,7 +63,7 @@ $db = $database->getConnection();
           LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
           INNER JOIN karyawan k ON k.id = i.id_pengirim
           WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+          GROUP BY k.nama ORDER BY k.nama ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $tgl_rekap_awal);
               $stmt->bindParam(2, $tgl_rekap_akhir);
@@ -86,7 +86,7 @@ $db = $database->getConnection();
           LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
           INNER JOIN karyawan k ON k.id = i.id_pengirim
           WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
+          GROUP BY k.nama ORDER BY k.nama ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
               $stmt->bindParam(2, $tgl_rekap_awal);

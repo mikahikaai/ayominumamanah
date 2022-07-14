@@ -11,7 +11,7 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?)";
+  WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
   $stmt->bindParam(2, $tgl_rekap_awal_upah);
@@ -80,7 +80,7 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
           </tr>
         </tfoot>
       </table>
-      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a href="?page=rangerekapupah" class="btn btn-sm mt-2 btn-danger float-right mr-1"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
   </div>
 </div>

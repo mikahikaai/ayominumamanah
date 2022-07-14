@@ -75,7 +75,7 @@ include_once "../partials/scripts.php";
   }
 </style>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini ">
   <?php
 
   if ($host == "/" . "mgrdist" . "/") {
@@ -104,9 +104,8 @@ include_once "../partials/scripts.php";
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
+  <script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
 </body>
-
-<script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
 
 <script>
   $("title").html("Amanah | <?= $title ?>");

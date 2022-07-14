@@ -10,8 +10,8 @@ for ($i = 1; $i <= 12; $i++) {
   INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
-  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
-  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = '2'
+  GROUP BY MONTH(d.jam_berangkat) ORDER BY d.jam_berangkat ASC";
   $stmtChartUpah = $db->prepare($selectChartUpah);
   $stmtChartUpah->bindParam(1, $_SESSION['id']);
   $stmtChartUpah->bindParam(2, $i);
@@ -31,8 +31,8 @@ for ($i = 1; $i <= 12; $i++) {
   INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
-  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = 2
-  GROUP BY MONTH(d.jam_berangkat), u.id_pengirim ORDER BY d.jam_berangkat ASC";
+  WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = '2'
+  GROUP BY MONTH(d.jam_berangkat) ORDER BY d.jam_berangkat ASC";
   $stmtChartInsentif = $db->prepare($selectChartInsentif);
   $stmtChartInsentif->bindParam(1, $_SESSION['id']);
   $stmtChartInsentif->bindParam(2, $i);
@@ -88,11 +88,13 @@ LEFT JOIN karyawan k3 on d.helper_2 = k3.id
 LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
 LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
 LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-WHERE jam_datang IS NOT NULL AND driver = ?
+WHERE jam_datang IS NOT NULL AND (driver = ? OR helper_1 = ? OR helper_2 = ?)
 ORDER BY jam_datang DESC
 LIMIT 12; ";
 $stmt = $db->prepare($selectsql);
 $stmt->bindParam(1, $_SESSION['id']);
+$stmt->bindParam(2, $_SESSION['id']);
+$stmt->bindParam(3, $_SESSION['id']);
 $stmt->execute();
 $num_rows = $stmt->rowCount();
 

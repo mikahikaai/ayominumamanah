@@ -75,7 +75,7 @@ include_once "../partials/scripts.php";
   }
 </style>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" data-scrollbar-auto-hide="n">
   <?php
 
   if ($host == "/" . "adminkeu" . "/") {
