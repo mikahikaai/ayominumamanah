@@ -238,7 +238,7 @@ if (isset($_SESSION['login_sukses'])) {
         <canvas id="myChart2"></canvas>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
       <div class="col-md-6">
         <h3 class="mb-3"># Data Grafik Jumlah Keberangkatan Tahun <?= date('Y'); ?> </h3>
         <canvas id="myChart3"></canvas>
@@ -318,7 +318,8 @@ include_once "../partials/scriptdatatables.php";
   var arrayIndicator = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   var arrayBackground1 = [];
   var arrayBorder1 = [];
-  
+
+
   for (let i = 0; i < arrayIndicator.length; i++) {
     r = Math.floor(Math.random() * 255);
     g = Math.floor(Math.random() * 255);
@@ -327,14 +328,19 @@ include_once "../partials/scriptdatatables.php";
     arrayBorder1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '1)');
   }
 
+  Chart.Legend.prototype.afterFit = function() {
+    this.height = this.height + 10;
+  };
+
   var arrayChartUpah = <?= json_encode($arrayChartUpah); ?>;
+
   const ctxUpah = document.getElementById('myChart').getContext('2d');
   const myChartUpah = new Chart(ctxUpah, {
     type: 'bar',
     data: {
       labels: arrayIndicator,
       datasets: [{
-        label: '# Jumlah Upah Tahun ' + new Date().getFullYear(),
+        label: '# Jumlah Upah Tahun' + new Date().getFullYear(),
         data: arrayChartUpah,
         backgroundColor: arrayBackground1,
         borderColor: arrayBorder1,
@@ -352,7 +358,7 @@ include_once "../partials/scriptdatatables.php";
         y: {
           beginAtZero: true
         }
-      }
+      },
     }
   });
 
