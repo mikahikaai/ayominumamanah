@@ -25,49 +25,69 @@ if (isset($_GET['no_pengajuan'])) {
   }
 
   table#content th {
-    border: 1px solid #ddd;
+    border: 1px solid grey;
     padding: 8px;
     text-align: center;
     width: fit-content;
+    background-color: #DFDFDE;
   }
 
   table#content td {
-    border: 1px solid #ddd;
+    border: 1px solid grey;
     padding: 8px;
   }
 
-  table#header{
+  table#header {
     width: 100%;
     border: none;
-    background-color: green;
-    margin-bottom: 20px;
+    /* background-color: green; */
+    margin-bottom: 10px;
+    height: auto;
+    border-collapse: collapse;
+    /* table-layout: fixed; */
   }
 
   #logo-text {
     /* width: 100%; */
-    float: left;
-    margin-left: 100px;
-    margin-top: 20px;
+    /* float: left; */
+    /* margin-left: 100px; */
+    /* margin-top: 20px; */
     /* padding-top: 15px; */
     color: white;
     font-weight: bold;
+    font-size: x-large;
     /* background-color: black; */
   }
 
   #logo-img {
-    float: right;
-    margin-right: 100px;
-    /* background-color: wheat; */
+    /* position: static; */
+    /* float: right; */
+    /* margin-right: 100px; */
+    /* background-color: white; */
   }
 </style>
 
 <table id="header">
   <tr>
-    <th align="right">
+    <td></td>
+    <td rowspan="3" align="center" width="15%"><img id="logo-img" src="../../images/logooo cropped resized compressed.png" height="75px" alt=""></td>
+    <td></td>
+    <!-- <td align="right" width="75%">
       <div id="logo-text">PT PANCURAN KAAPIT SENDANG</div>
-    </th>
-    <th><img id="logo-img" src="../../images/logooo cropped resized compressed.png" width="50" alt=""></th>
+    </td>
+    <td align="left" width="25%"><img id="logo-img" src="../../images/logooo cropped resized compressed.png" width="75" alt=""></td> -->
   </tr>
+  <tr>
+    <td align="right" style="background-color: green; padding-right: 20px;" height="25%"><div id="logo-text">PT PANCURAN KAAPIT SENDANG</div></td>
+    <!-- <td >4</td> -->
+    <td style="background-color: green;"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <!-- <td>6</td> -->
+    <td></td>
+  </tr>
+
 </table>
 <table id="content">
   <thead>
