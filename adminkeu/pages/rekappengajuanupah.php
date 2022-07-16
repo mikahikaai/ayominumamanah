@@ -57,7 +57,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND (p.tgl_pengajuan BETWEEN ? AND ?)";
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?)";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_awal);
             $stmt->bindParam(2, $tgl_akhir);
@@ -70,7 +70,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND (p.tgl_pengajuan BETWEEN ? AND ?)
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?)
           GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $tgl_awal);
@@ -83,7 +83,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)";
+          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->bindParam(2, $tgl_awal);
@@ -97,7 +97,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)
+          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)
           GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindValue(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
@@ -130,7 +130,14 @@ $db = $database->getConnection();
               </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary mr-1"><i class="fa fa-eye"></i> Lihat</a>
+                <?php if ($row['terbayar'] == '2') { ?>
+                  <a href="report/reportpengajuanupahdetail.php?no_pengajuan=<?= $row['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa fa-download"></i> Unduh
+                  </a>
+                <?php } else { ?>
+                  <button class="btn btn-sm btn-secondary" disabled><i class="fa fa-download"></i> Unduh</button>
+                <?php } ?>
               </td>
             </tr>
           <?php } ?>

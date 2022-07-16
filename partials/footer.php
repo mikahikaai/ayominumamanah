@@ -1,5 +1,5 @@
  <!-- Main Footer -->
- <footer class="main-footer mt-2">
+ <footer class="main-footer">
    <!-- To the right -->
    <div class="float-right d-none d-sm-block ">
      <strong>Version 1.0.1</strong>

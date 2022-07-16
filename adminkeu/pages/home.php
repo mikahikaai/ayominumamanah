@@ -242,6 +242,11 @@ include_once "../partials/scriptdatatables.php";
     arrayBackground1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '0.2)');
     arrayBorder1.push('rgba(' + r + ', ' + g + ', ' + b + ', ' + '1)');
   }
+
+  Chart.Legend.prototype.afterFit = function() {
+    this.height = this.height + 10;
+  };
+
   const ctxUpah = document.getElementById('myChart').getContext('2d');
   const myChartUpah = new Chart(ctxUpah, {
     type: 'bar',

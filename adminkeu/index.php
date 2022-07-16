@@ -93,7 +93,7 @@ include_once "../partials/scripts.php";
     <?php include "../partials/sidebar.php"; ?>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper pb-3">
       <?php include "routes.php"; ?>
     </div>
     <!-- /.content-wrapper -->
