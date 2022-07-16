@@ -17,24 +17,25 @@ if (isset($_GET['no_pengajuan'])) {
 }
 ?>
 <style>
-  table {
+  table#content {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     /* table-layout: fixed; */
     width: 100%;
   }
 
-  th {
+  table#content th {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
     width: fit-content;
   }
 
-  td {
+  table#content td {
     border: 1px solid #ddd;
     padding: 8px;
   }
+
   table#header{
     width: 100%;
     border: none;
@@ -56,19 +57,19 @@ if (isset($_GET['no_pengajuan'])) {
   #logo-img {
     float: right;
     margin-right: 100px;
-    background-color: wheat;
+    /* background-color: wheat; */
   }
 </style>
 
 <table id="header">
   <tr>
-    <th>
+    <th align="right">
       <div id="logo-text">PT PANCURAN KAAPIT SENDANG</div>
     </th>
     <th><img id="logo-img" src="../../images/logooo cropped resized compressed.png" width="50" alt=""></th>
   </tr>
 </table>
-<table>
+<table id="content">
   <thead>
     <tr>
       <th>No.</th>
