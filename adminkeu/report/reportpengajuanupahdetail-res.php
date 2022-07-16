@@ -59,12 +59,6 @@ if (isset($_GET['no_pengajuan'])) {
     /* background-color: black; */
   }
 
-  #logo-img {
-    /* position: static; */
-    /* float: right; */
-    /* margin-right: 100px; */
-    /* background-color: white; */
-  }
 </style>
 
 <table id="header">
