@@ -71,7 +71,7 @@ if (isset($_GET['no_pengajuan'])) {
 
 <table style="width: 100%; margin-bottom: 10px;">
   <tr>
-    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP PENGAJUAN UPAH</u></td>
+    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP PENGAJUAN UPAH PER KARYAWAN</u></td>
   </tr>
 </table>
 

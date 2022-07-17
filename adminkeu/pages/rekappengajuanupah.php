@@ -27,8 +27,8 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah Terverifikasi<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+      <a href="report/reportpengajuanupah.php" target="_blank" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
     </div>
@@ -40,8 +40,8 @@ $db = $database->getConnection();
             <th>Tanggal Pengajuan</th>
             <th>No. Pengajuan</th>
             <th>Nama Karyawan</th>
-            <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
+            <th>Tanggal Verifikasi</th>
             <th>Status</th>
             <th>Total Upah</th>
             <th>Opsi</th>
@@ -94,8 +94,8 @@ $db = $database->getConnection();
               <td><?= $row['tgl_pengajuan'] ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
-              <td><?= $row['tgl_verifikasi'] ?></td>
               <td><?= $row['nama_verifikator'] ?></td>
+              <td><?= $row['tgl_verifikasi'] ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
