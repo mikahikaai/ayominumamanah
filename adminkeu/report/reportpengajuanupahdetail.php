@@ -3,7 +3,7 @@
 require_once '../../vendor/autoload.php';
 
 ob_start();
-include 'reportheader.php';
+include '../../pages/report/reportheader.php';
 $header = ob_get_clean();
 // ob_end_clean();
 
@@ -13,7 +13,7 @@ $html = ob_get_clean();
 // ob_end_clean();
 
 ob_start();
-include 'reportfooter.php';
+include '../../pages/report/reportfooter.php';
 $footer = ob_get_clean();
 ob_end_clean();
 
