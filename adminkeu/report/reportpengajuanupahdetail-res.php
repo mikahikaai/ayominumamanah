@@ -65,12 +65,11 @@ if (isset($_GET['no_pengajuan'])) {
     width: 100%;
     border-collapse: collapse;
   }
-
 </style>
 
 <!-- header -->
 
-<table style="width: 100%; margin-bottom: 10px; padding-top: 70px;">
+<table style="width: 100%; margin-bottom: 10px;">
   <tr>
     <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP PENGAJUAN UPAH</u></td>
   </tr>
@@ -144,21 +143,23 @@ if (isset($_GET['no_pengajuan'])) {
 <!-- end content -->
 
 <!-- summary -->
-
-<table id="summary">
-  <tr>
-    <td width="70%"></td>
-    <td align="center">Banjarbaru, <?= tanggal_indo(date('Y-m-d')) ?></td>
-  </tr>
-  <tr>
-    <td width="70%"></td>
-    <td align="center"><img src="../../dist/verif/<?= $row1['qrcode'] . '.png' ?>" alt="" width="150px" height="150px"></td>
-  </tr>
-  <tr>
-    <td width="70%"></td>
-    <td align="center"><u><b><?= $row1['nama_verifikator']; ?></b></u></td>
-  </tr>
-</table>
+<!-- <page_break type='clonebycss' /> -->
+<div style="page-break-inside: avoid;">
+  <table id="summary">
+    <tr style="box-decoration-break: slice;">
+      <td width="70%"></td>
+      <td align="center">Banjarbaru, <?= tanggal_indo(date('Y-m-d')) ?></td>
+    </tr>
+    <tr style="box-decoration-break: slice;">
+      <td width=" 70%"></td>
+      <td align="center"><img src="../../dist/verif/<?= $row1['qrcode'] . '.png' ?>" alt="" width="150px" height="150px"></td>
+    </tr>
+    <tr style="box-decoration-break: clone;">
+      <td width="70%"></td>
+      <td align="center"><u><b><?= $row1['nama_verifikator']; ?></b></u></td>
+    </tr>
+  </table>
+</div>
 
 <!-- end summary -->
 

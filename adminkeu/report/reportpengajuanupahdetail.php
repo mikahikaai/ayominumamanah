@@ -18,7 +18,8 @@ $footer = ob_get_clean();
 ob_end_clean();
 
 $mpdf = new \Mpdf\Mpdf([
-  'format' => 'A4-P'
+  'format' => 'A4-P',
+  'margin_top' => '32'
 ]);
 
 $mpdf->SetHTMLHeader($header);

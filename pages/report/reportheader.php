@@ -1,6 +1,6 @@
 <!-- header -->
 
-<table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+<table style="width: 100%; border-collapse: collapse;">
   <tr>
     <td></td>
     <td rowspan="3" align="center" width="15%"><img id="logo-img" src="../../images/logooo cropped resized compressed.png" height="75px" alt=""></td>
