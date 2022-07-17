@@ -8,7 +8,7 @@ $header = ob_get_clean();
 // ob_end_clean();
 
 ob_start();
-include 'reportpengajuaninsentifdetail-res.php';
+include 'reportrekapupahdetail-res.php';
 $html = ob_get_clean();
 // ob_end_clean();
 
@@ -18,7 +18,7 @@ $footer = ob_get_clean();
 ob_end_clean();
 
 $mpdf = new \Mpdf\Mpdf([
-  'format' => 'A4-P',
+  'format' => 'A4-L',
   'margin_top' => '32',
   'margin_bottom' => '30'
 ]);

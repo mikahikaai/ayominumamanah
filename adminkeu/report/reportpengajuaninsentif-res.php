@@ -160,7 +160,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     </tr>
     <tr style="background-color: #e4ede4">
       <td colspan="7" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
-      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar+$total_ontime, 0, ',', '.') ?></td>
+      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
 </table>
@@ -168,23 +168,21 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 <!-- end content -->
 
 <!-- summary -->
-<!-- <page_break type='clonebycss' /> -->
-<div style="page-break-inside: avoid;">
-  <table id="summary">
-    <tr style="box-decoration-break: slice;">
-      <td width="70%"></td>
-      <td align="center">Banjarbaru, <?= tanggal_indo(date('Y-m-d')) ?></td>
-    </tr>
-    <tr style="box-decoration-break: slice;">
-      <td width=" 70%"></td>
-      <td><br><br><br><br><br><br><br></td>
-    </tr>
-    <tr style="box-decoration-break: clone;">
-      <td width="70%"></td>
-      <td align="center"><u><b><?= $_SESSION['nama']; ?></b></u></td>
-    </tr>
-  </table>
-</div>
+
+<table id="summary" autosize="1" style="page-break-inside: avoid" ;>
+  <tr>
+    <td width="70%"></td>
+    <td align="center">Banjarbaru, <?= tanggal_indo(date('Y-m-d')) ?></td>
+  </tr>
+  <tr>
+    <td width=" 70%"></td>
+    <td><br><br><br><br><br><br><br></td>
+  </tr>
+  <tr>
+    <td width="70%"></td>
+    <td align="center"><u><b><?= $_SESSION['nama']; ?></b></u></td>
+  </tr>
+</table>
 
 <!-- end summary -->
 

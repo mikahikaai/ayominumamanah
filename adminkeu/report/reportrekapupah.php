@@ -8,7 +8,7 @@ $header = ob_get_clean();
 // ob_end_clean();
 
 ob_start();
-include 'reportpengajuaninsentifdetail-res.php';
+include 'reportrekapupah-res.php';
 $html = ob_get_clean();
 // ob_end_clean();
 

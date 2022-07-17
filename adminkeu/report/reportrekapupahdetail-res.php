@@ -5,19 +5,26 @@ include "../../database/database.php";
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengaju, k2.nama nama_verifikator, u.bongkar bongkar2 FROM pengajuan_insentif_borongan p
-  RIGHT JOIN gaji u ON p.id_insentif = u.id
+$tgl_rekap_awal = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
+$tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
+
+if (isset($_GET['id'])) {
+  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+  RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE no_pengajuan=?";
+  WHERE k1.id=? AND (d.jam_datang BETWEEN ? AND ?) AND terbayar='2'";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['id']);
+  $stmt->bindParam(2, $tgl_rekap_awal);
+  $stmt->bindParam(3, $tgl_rekap_akhir);
   $stmt->execute();
 
   $stmt1 = $db->prepare($selectSql);
-  $stmt1->bindParam(1, $_GET['no_pengajuan']);
+  $stmt1->bindParam(1, $_GET['id']);
+  $stmt1->bindParam(2, $tgl_rekap_awal);
+  $stmt1->bindParam(3, $tgl_rekap_akhir);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 }
@@ -71,34 +78,22 @@ if (isset($_GET['no_pengajuan'])) {
 
 <table style="width: 100%; margin-bottom: 10px;">
   <tr>
-    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP PENGAJUAN INSENTIF PER KARYAWAN</u></td>
+    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP UPAH</u></td>
   </tr>
 </table>
 
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">No Pengajuan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $_GET['no_pengajuan'] ?></td>
-    <td width="25%" align="right"><?= tanggal_indo($row1['tgl_pengajuan'], true); ?></td>
-  </tr>
-  <tr>
     <td width="20%">Nama Karyawan</td>
     <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_pengaju'] ?></td>
+    <td width="50%" align="left"><?= $row1['nama_pengirim'] ?></td>
     <td width="25%" align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Nama Verifikator</td>
+    <td width="20%">Periode Upah</td>
     <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_verifikator'] ?></td>
-    <td width="25%" align="right"></td>
-  </tr>
-  <tr>
-    <td width="20%">Tanggal Verifikasi</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($row1['tgl_verifikasi'], true) ?></td>
+    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></td>
     <td width="25%" align="right"></td>
   </tr>
 </table>
@@ -112,39 +107,36 @@ if (isset($_GET['no_pengajuan'])) {
       <th>Tanggal & Jam Berangkat</th>
       <th>No Perjalanan</th>
       <th>Nama</th>
-      <th>Bongkar</th>
-      <th>Ontime</th>
+      <th>No Pengajuan</th>
+      <th>Nama Verifikator</th>
+      <th>Tanggal Verifikasi</th>
+      <th>Upah</th>
     </tr>
   </thead>
   <tbody>
     <?php
 
     $no = 1;
-    $total_bongkar = 0;
-    $total_ontime = 0;
+    $total_upah = 0;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      $total_bongkar += $row['bongkar2'];
-      $total_ontime += $row['ontime'];
+      $total_upah += $row['upah'];
     ?>
       <tr>
         <td><?= $no++ ?></td>
-        <td><?= $row['tanggal'] ?></td>
+        <td><?= $row['jam_berangkat'] ?></td>
         <td><?= $row['no_perjalanan'] ?></td>
-        <td><?= $row['nama_pengaju'] ?></td>
-        <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.') ?></td>
-        <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
+        <td><?= $row['nama_pengirim'] ?></td>
+        <td><?= $row['no_pengajuan'] ?></td>
+        <td><?= $row['nama_verifikator'] ?></td>
+        <td><?= tanggal_indo($row['tgl_verifikasi']) ?></td>
+        <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
       </tr>
     <?php } ?>
   </tbody>
   <tfoot>
     <tr style="background-color: #e4ede4">
-      <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
-      <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
-      <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
-    </tr>
-    <tr style="background-color: #e4ede4">
-      <td colspan="4" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
-      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
+      <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+      <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
 </table>
@@ -152,7 +144,7 @@ if (isset($_GET['no_pengajuan'])) {
 <!-- end content -->
 
 <!-- summary -->
-
+<!-- <page_break type='clonebycss' /> -->
 <table id="summary" style="page-break-inside: avoid;" autosize="1">
   <tr>
     <td width="70%"></td>
@@ -160,11 +152,11 @@ if (isset($_GET['no_pengajuan'])) {
   </tr>
   <tr>
     <td width=" 70%"></td>
-    <td align="center"><img src="../../dist/verif/<?= $row1['qrcode'] . '.png' ?>" alt="" width="150px" height="150px"></td>
+    <td><br><br><br><br><br><br><br></td>
   </tr>
   <tr>
     <td width="70%"></td>
-    <td align="center"><u><b><?= $row1['nama_verifikator']; ?></b></u></td>
+    <td align="center"><u><b><?= $_SESSION['nama'] ?></b></u></td>
   </tr>
 </table>
 

@@ -5,22 +5,29 @@ include "../../database/database.php";
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengaju, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
-  RIGHT JOIN gaji u ON p.id_upah = u.id
-  INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
-  INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE no_pengajuan=?";
-  $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
-  $stmt->execute();
+$tgl_rekap_awal = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
+$tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
 
-  $stmt1 = $db->prepare($selectSql);
-  $stmt1->bindParam(1, $_GET['no_pengajuan']);
-  $stmt1->execute();
-  $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-}
+$selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(upah) total_upah FROM gaji u
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
+          INNER JOIN karyawan k ON k.id = u.id_pengirim
+          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND p.terbayar='2' AND u.id_pengirim = IF (? = 'all', u.id_pengirim, ?)
+          GROUP BY k.nama ORDER BY k.nama";
+$stmt = $db->prepare($selectSql);
+$stmt->bindParam(1, $tgl_rekap_awal);
+$stmt->bindParam(2, $tgl_rekap_akhir);
+$stmt->bindParam(3, $_SESSION['id_karyawan_rekap_upah']);
+$stmt->bindParam(4, $_SESSION['id_karyawan_rekap_upah']);
+$stmt->execute();
+
+$stmt1 = $db->prepare($selectSql);
+$stmt1->bindParam(1, $tgl_rekap_awal);
+$stmt1->bindParam(2, $tgl_rekap_akhir);
+$stmt1->bindParam(3, $_SESSION['id_karyawan_rekap_upah']);
+$stmt1->bindParam(4, $_SESSION['id_karyawan_rekap_upah']);
+$stmt1->execute();
+$row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
 <style>
   table#content {
@@ -71,34 +78,22 @@ if (isset($_GET['no_pengajuan'])) {
 
 <table style="width: 100%; margin-bottom: 10px;">
   <tr>
-    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP PENGAJUAN UPAH PER KARYAWAN</u></td>
+    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP UPAH</u></td>
   </tr>
 </table>
 
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">No Pengajuan</td>
+    <td width="20%">Nama Karyawan</td>
     <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $_GET['no_pengajuan'] ?></td>
-    <td width="25%" align="right"><?= tanggal_indo($row1['tgl_pengajuan'], true); ?></td>
-  </tr>
-  <tr>
-    <td width="20%">Nama Pengaju</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_pengaju'] ?></td>
+    <td width="50%" align="left"><?= $row1['nama'] ?></td>
     <td width="25%" align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Nama Verifikator</td>
+    <td width="20%">Periode Upah</td>
     <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_verifikator'] ?></td>
-    <td width="25%" align="right"></td>
-  </tr>
-  <tr>
-    <td width="20%">Tanggal Verifikasi</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($row1['tgl_verifikasi'], true) ?></td>
+    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></td>
     <td width="25%" align="right"></td>
   </tr>
 </table>
@@ -109,10 +104,9 @@ if (isset($_GET['no_pengajuan'])) {
   <thead>
     <tr>
       <th>No.</th>
-      <th>Tanggal & Jam Berangkat</th>
-      <th>No Perjalanan</th>
       <th>Nama</th>
-      <th>Upah</th>
+      <th>Status</th>
+      <th>Total Upah</th>
     </tr>
   </thead>
   <tbody>
@@ -121,20 +115,19 @@ if (isset($_GET['no_pengajuan'])) {
     $no = 1;
     $total_upah = 0;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      $total_upah += $row['upah'];
+      $total_upah += $row['total_upah'];
     ?>
       <tr>
         <td><?= $no++ ?></td>
-        <td><?= $row['tanggal'] ?></td>
-        <td><?= $row['no_perjalanan'] ?></td>
-        <td><?= $row['nama_pengaju'] ?></td>
-        <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+        <td><?= $row['nama'] ?></td>
+        <td>Terverifikasi</td>
+        <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
       </tr>
     <?php } ?>
   </tbody>
   <tfoot>
     <tr style="background-color: #e4ede4">
-      <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+      <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
@@ -144,18 +137,18 @@ if (isset($_GET['no_pengajuan'])) {
 
 <!-- summary -->
 
-<table id="summary" autosize="1" style="page-break-inside: avoid;">
+<table id="summary" style="page-break-inside: avoid;" autosize="1">
   <tr>
     <td width="70%"></td>
     <td align="center">Banjarbaru, <?= tanggal_indo(date('Y-m-d')) ?></td>
   </tr>
   <tr>
     <td width=" 70%"></td>
-    <td align="center"><img src="../../dist/verif/<?= $row1['qrcode'] . '.png' ?>" alt="" width="150px" height="150px"></td>
+    <td><br><br><br><br><br><br><br></td>
   </tr>
   <tr>
     <td width="70%"></td>
-    <td align="center"><u><b><?= $row1['nama_verifikator']; ?></b></u></td>
+    <td align="center"><u><b><?= $_SESSION['nama'] ?></b></u></td>
   </tr>
 </table>
 

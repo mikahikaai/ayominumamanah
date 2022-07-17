@@ -19,10 +19,11 @@ ob_end_clean();
 
 $mpdf = new \Mpdf\Mpdf([
   'format' => 'A4-L',
-  'margin_top' => '32'
+  'margin_top' => '32',
+  'margin_bottom' => '30'
 ]);
 
 $mpdf->SetHTMLHeader($header);
-$mpdf->WriteHTML($html);
 $mpdf->SetHTMLFooter($footer);
+$mpdf->WriteHTML($html);
 $mpdf->Output();
