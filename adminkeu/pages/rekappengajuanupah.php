@@ -51,60 +51,40 @@ $db = $database->getConnection();
           <?php
           $tgl_awal = $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d H:i:s');
           $tgl_akhir = $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d H:i:s');
-          if ($_SESSION['id_karyawan_rekap_pengajuan_upah'] == 'all') {
-            $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+          $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
           INNER JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE (p.tgl_pengajuan BETWEEN ? AND ?)";
-            $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $tgl_awal);
-            $stmt->bindParam(2, $tgl_akhir);
-            $stmt->execute();
-            // $stmt->debugDumpParams();
-            // die();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
+          WHERE u.id_pengirim = IF (? = 'all', u.id_pengirim, ?) AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)";
+          $stmt = $db->prepare($selectSql);
+          $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
+          $stmt->bindParam(2, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
+          $stmt->bindParam(3, $tgl_awal);
+          $stmt->bindParam(4, $tgl_akhir);
+          $stmt->bindParam(5, $_SESSION['status_rekap_pengajuan_upah']);
+          $stmt->bindParam(6, $_SESSION['status_rekap_pengajuan_upah']);
+          $stmt->execute();
+          // $stmt->debugDumpParams();
+          // die();
+          if ($stmt->rowCount() > 0) {
+            $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
           INNER JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE (p.tgl_pengajuan BETWEEN ? AND ?)
+          WHERE u.id_pengirim = IF (? = 'all', u.id_pengirim, ?) AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
           GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $tgl_awal);
-              $stmt->bindParam(2, $tgl_akhir);
-              $stmt->execute();
-            }
-          } else {
-            $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
-          INNER JOIN gaji u on p.id_upah = u.id
-          LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
-          LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
-            $stmt->bindParam(2, $tgl_awal);
-            $stmt->bindParam(3, $tgl_akhir);
+            $stmt->bindParam(2, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
+            $stmt->bindParam(3, $tgl_awal);
+            $stmt->bindParam(4, $tgl_akhir);
+            $stmt->bindParam(5, $_SESSION['status_rekap_pengajuan_upah']);
+            $stmt->bindParam(6, $_SESSION['status_rekap_pengajuan_upah']);
             $stmt->execute();
             // $stmt->debugDumpParams();
             // die();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
-          INNER JOIN gaji u on p.id_upah = u.id
-          LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
-          LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindValue(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
-              $stmt->bindParam(2, $tgl_awal);
-              $stmt->bindParam(3, $tgl_akhir);
-              $stmt->execute();
-            }
           }
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

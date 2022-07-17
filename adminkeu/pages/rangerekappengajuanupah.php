@@ -5,9 +5,10 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_POST['button_show'])) {
-  $_SESSION['tgl_rekap_awal_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0,0,0);
-  $_SESSION['tgl_rekap_akhir_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0,0,0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
+  $_SESSION['tgl_rekap_awal_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0, 0, 0);
+  $_SESSION['tgl_rekap_akhir_pengajuan_upah'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0, 0, 0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
   $_SESSION['id_karyawan_rekap_pengajuan_upah'] = $_POST['id_karyawan_rekap_pengajuan_upah'];
+  $_SESSION['status_rekap_pengajuan_upah'] = $_POST['status_rekap_pengajuan_upah'];
 
   // var_dump($_SESSION['id_karyawan_rekap_pengajuan_upah']);
   // die();
@@ -62,6 +63,21 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="col-md-2">
           <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_rekap_akhir" required>
+        </div>
+      </div>
+      <div class="row mb-2 mt-2 align-items-center">
+        <div class="col-md-2">
+          <label for="status_rekap_pengajuan_upah">Status Pembayaran</label>
+        </div>
+        <div class="col-md-1 d-flex justify-content-end">
+          <label for="status_rekap_pengajuan_upah">:</label>
+        </div>
+        <div class="col-md-2">
+          <select name="status_rekap_pengajuan_upah" id="status_rekap_pengajuan_upah" class="form-control">
+            <option value='all' selected>-- Semua Status --</option>
+            <option value='1'>Mengajukan</option>
+            <option value='2'>Terbayar</option>
+          </select>
         </div>
       </div>
       <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">
