@@ -12,6 +12,11 @@ if (isset($_GET['no_pengajuan'])) {
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
   $stmt->execute();
+
+  $stmt1 = $db->prepare($selectSql);
+  $stmt1->bindParam(1, $_GET['no_pengajuan']);
+  $stmt1->execute();
+  $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -38,9 +43,12 @@ if (isset($_GET['no_pengajuan'])) {
   <div class="card">
     <div class="card-header">
     <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
-        <i class="fa fa-plus-circle"></i> Export PDF
-      </a>
+    <?php
+      if ($row1['terbayar'] != '1') { ?>
+        <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm float-right">
+          <i class="fa fa-plus-circle"></i> Export PDF
+        </a>
+      <?php } ?>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">

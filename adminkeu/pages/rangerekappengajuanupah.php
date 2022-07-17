@@ -76,7 +76,7 @@ if (isset($_POST['button_show'])) {
           <select name="status_rekap_pengajuan_upah" id="status_rekap_pengajuan_upah" class="form-control">
             <option value='all' selected>-- Semua Status --</option>
             <option value='1'>Mengajukan</option>
-            <option value='2'>Terbayar</option>
+            <option value='2'>Diverifikasi</option>
           </select>
         </div>
       </div>

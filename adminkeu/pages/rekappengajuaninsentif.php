@@ -28,7 +28,7 @@ $db = $database->getConnection();
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <a href="report/reportpengajuaninsentif.php" target="_blank" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
     </div>
@@ -43,7 +43,8 @@ $db = $database->getConnection();
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
             <th>Status</th>
-            <th>Total Insentif</th>
+            <th>Total Bongkar</th>
+            <th>Total Ontime</th>
             <th>Opsi</th>
           </tr>
         </thead>
@@ -57,48 +58,26 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE terbayar='2' AND (p.tgl_pengajuan BETWEEN ? AND ?)";
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_awal);
             $stmt->bindParam(2, $tgl_akhir);
+            $stmt->bindParam(3, $_SESSION['status_rekap_pengajuan_insentif']);
+            $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_insentif']);
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
+              $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM pengajuan_insentif_borongan p
           INNER JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE terbayar='2' AND (p.tgl_pengajuan BETWEEN ? AND ?)
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
           GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
               $stmt = $db->prepare($selectSql);
               $stmt->bindParam(1, $tgl_awal);
               $stmt->bindParam(2, $tgl_akhir);
-              $stmt->execute();
-            }
-          } else {
-            $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
-          LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
-          LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE i.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)";
-            $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
-            $stmt->bindParam(2, $tgl_awal);
-            $stmt->bindParam(3, $tgl_akhir);
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
-          LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
-          LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE i.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
-              $stmt->bindParam(2, $tgl_awal);
-              $stmt->bindParam(3, $tgl_akhir);
+              $stmt->bindParam(3, $_SESSION['status_rekap_pengajuan_insentif']);
+              $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_insentif']);
               $stmt->execute();
             }
           }
@@ -124,9 +103,17 @@ $db = $database->getConnection();
 
                 ?>
               </td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_insentif'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <?php if ($row['terbayar'] == '2') { ?>
+                  <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $row['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa fa-download"></i> Unduh
+                  </a>
+                <?php } else { ?>
+                  <button class="btn btn-sm btn-secondary" disabled><i class="fa fa-download"></i> Unduh</button>
+                <?php } ?>
               </td>
             </tr>
           <?php } ?>
@@ -134,6 +121,7 @@ $db = $database->getConnection();
         <tfoot>
           <tr>
             <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td></td>
           </tr>
@@ -163,7 +151,7 @@ include_once "../partials/scriptdatatables.php";
         // Total over all pages
         nb_cols = api.columns().nodes().length;
         var j = 7;
-        while (j < nb_cols && j < 8) {
+        while (j < nb_cols && j < 9) {
           total = api
             .column(j)
             .data()
