@@ -217,6 +217,10 @@ include_once "../partials/scripts.php";
       $("a#pengajuaninsentif").addClass("active");
       $("li#pengajuaninsentif").addClass("menu-open");
       $("a#link_pengajuaninsentif").addClass("active");
+    } else if (title == "Upah Belum Diajukan") {
+      $("a#upahbelumdiajukan").addClass("active");
+      $("li#pengajuaninsentif").addClass("menu-open");
+      $("a#link_pengajuaninsentif").addClass("active");
     } else if (title == "Rekap Pengajuan Insentif") {
       $("a#rekappengajuaninsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
@@ -237,6 +241,10 @@ include_once "../partials/scripts.php";
       $("a#rekapdistribusi").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Prestasi") {
+      $("a#prestasikaryawan").addClass("active");
+      $("li#master_distribusi").addClass("menu-open");
+      $("a#link_master_distribusi").addClass("active");
     }
   });
 </script>

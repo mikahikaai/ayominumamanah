@@ -252,12 +252,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="?page=pengajuanupah" class="nav-link" id="verifupah">
+              <li class="nav-item">
+                <a href="?page=upahbelumdiajukan" class="nav-link" id="upahbelumdiajukan">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Verifikasi Upah</p>
+                  <p>Upah Belum Diajukan</p>
                 </a>
-              </li> -->
+              </li>
               <li class="nav-item">
                 <a href="?page=rangepengajuaninsentif" class="nav-link" id="pengajuaninsentif">
                   <i class="far fa-circle nav-icon"></i>
@@ -347,11 +347,11 @@
                   <p>Distribusi</p>
                 </a>
               </li>
-              <!-- <li class="nav-item">
+              <li class="nav-item">
                 <a href="?page=rangeprestasikaryawan" class="nav-link" id="prestasikaryawan"><i class="far fa-circle nav-icon"></i>
                   <p>Prestasi Keberangkatan</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
         <?php } else if ($_SESSION['jabatan'] == "SPVDISTRIBUSI") {

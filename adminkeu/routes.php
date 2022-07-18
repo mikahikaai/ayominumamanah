@@ -118,13 +118,13 @@ if (isset($_GET['page'])) {
       file_exists('pages/rangepengajuanupah.php') ? include 'pages/rangepengajuanupah.php' : include '../pages/404.php';
       $title = 'Pengajuan Upah';
       break;
-    case 'pengajuanupah':
-      file_exists('pages/pengajuanupah.php') ? include 'pages/pengajuanupah.php' : include '../pages/404.php';
-      $title = 'Pengajuan Upah';
+    case 'upahbelumdiajukan':
+      file_exists('pages/upahbelumdiajukan.php') ? include 'pages/upahbelumdiajukan.php' : include '../pages/404.php';
+      $title = 'Upah Belum Diajukan';
       break;
-    case 'detailpengajuanupah':
-      file_exists('pages/detailpengajuanupah.php') ? include 'pages/detailpengajuanupah.php' : include '../pages/404.php';
-      $title = 'Pengajuan Upah';
+    case 'upahbelumdiajukandetail':
+      file_exists('pages/upahbelumdiajukandetail.php') ? include 'pages/upahbelumdiajukandetail.php' : include '../pages/404.php';
+      $title = 'Upah Belum Diajukan';
       break;
     case 'rangerekappengajuanupah':
       file_exists('pages/rangerekappengajuanupah.php') ? include 'pages/rangerekappengajuanupah.php' : include '../pages/404.php';
@@ -173,6 +173,18 @@ if (isset($_GET['page'])) {
     case 'detaildistribusi':
       file_exists('pages/detaildistribusi.php') ? include 'pages/detaildistribusi.php' : include '../pages/404.php';
       $title = 'Distribusi';
+      break;
+    case 'rangeprestasikaryawan':
+      file_exists('pages/prestasi/rangeprestasikaryawan.php') ? include 'pages/prestasi/rangeprestasikaryawan.php' : include '../pages/404.php';
+      $title = 'Prestasi';
+      break;
+    case 'prestasikaryawan':
+      file_exists('pages/prestasi/prestasikaryawan.php') ? include 'pages/prestasi/prestasikaryawan.php' : include '../pages/404.php';
+      $title = 'Prestasi';
+      break;
+    case 'prestasikaryawandetail':
+      file_exists('pages/prestasi/prestasikaryawandetail.php') ? include 'pages/prestasi/prestasikaryawandetail.php' : include '../pages/404.php';
+      $title = 'Prestasi';
       break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
