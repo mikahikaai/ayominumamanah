@@ -45,8 +45,8 @@ if (isset($_GET['no_pengajuan'])) {
     <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
     <?php
       if ($row1['terbayar'] != '1') { ?>
-        <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm float-right">
-          <i class="fa fa-plus-circle"></i> Export PDF
+        <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
+          <i class="fa fa-file-pdf"></i> Export PDF
         </a>
       <?php } ?>
     </div>

@@ -28,8 +28,8 @@ $db = $database->getConnection();
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
-      <a href="report/reportpengajuaninsentif.php" target="_blank" class="btn btn-success btn-sm float-right">
-        <i class="fa fa-plus-circle"></i> Export PDF
+      <a href="report/reportpengajuaninsentif.php" target="_blank" class="btn btn-warning btn-sm float-right">
+        <i class="fa fa-file-pdf"></i> Export PDF
       </a>
     </div>
     <div class="card-body">
