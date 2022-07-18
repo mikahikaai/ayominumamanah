@@ -66,7 +66,10 @@ if (isset($_SESSION['hasil'])) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Data Distributor</h3>
-      <a href="?page=distributorcreate" class="btn btn-success btn-sm float-right">
+      <a href="report/reportdistributor.php" target="_blank" class="btn btn-warning btn-sm float-right">
+        <i class="fa fa-file-pdf"></i> Export PDF
+      </a>
+      <a href="?page=distributorcreate" class="btn btn-success btn-sm mr-2 float-right">
         <i class="fa fa-plus-circle"></i> Tambah Data
       </a>
     </div>
