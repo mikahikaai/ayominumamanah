@@ -84,12 +84,12 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 
 <!-- content dibawah header -->
 <table id="content1">
-  <tr>
+  <!-- <tr>
     <td width="20%">Nama Karyawan</td>
     <td width="5%" align="right">:</td>
     <td width="50%" align="left"><?= $row1['nama'] ?></td>
     <td width="25%" align="right"></td>
-  </tr>
+  </tr> -->
   <tr>
     <td width="20%">Periode Insentif</td>
     <td width="5%" align="right">:</td>
