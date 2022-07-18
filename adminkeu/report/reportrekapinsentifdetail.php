@@ -8,7 +8,7 @@ $header = ob_get_clean();
 // ob_end_clean();
 
 ob_start();
-include 'reportpengajuanupah-res.php';
+include 'reportrekapinsentifdetail-res.php';
 $html = ob_get_clean();
 // ob_end_clean();
 
@@ -23,7 +23,8 @@ $mpdf = new \Mpdf\Mpdf([
   'margin_bottom' => '30'
 ]);
 
+$mpdf->SetTitle('Amanah | Cetak Rekap Insentif Per Karyawan');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output();
+$mpdf->Output('Rekap Insentif Per Karyawan.pdf', 'I');

@@ -26,7 +26,7 @@ $db = $database->getConnection();
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <a href="report/reportrekapinsentif.php" target="_blank" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
     </div>
@@ -47,52 +47,30 @@ $db = $database->getConnection();
           $tgl_rekap_awal = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
           $tgl_rekap_akhir = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
 
-          if ($_SESSION['id_karyawan_rekap_insentif'] == 'all') {
-            $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji i
+          $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji i
           INNER JOIN distribusi d on i.id_distribusi = d.id
           LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
           INNER JOIN karyawan k ON k.id = i.id_pengirim
-          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'";
+          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2' AND i.id_pengirim = IF (? = 'all', i.id_pengirim, ?)";
+          $stmt = $db->prepare($selectSql);
+          $stmt->bindParam(1, $tgl_rekap_awal);
+          $stmt->bindParam(2, $tgl_rekap_akhir);
+          $stmt->bindParam(3, $_SESSION['id_karyawan_rekap_insentif']);
+          $stmt->bindParam(4, $_SESSION['id_karyawan_rekap_insentif']);
+          $stmt->execute();
+          if ($stmt->rowCount() > 0) {
+            $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM gaji i
+          INNER JOIN distribusi d on i.id_distribusi = d.id
+          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
+          INNER JOIN karyawan k ON k.id = i.id_pengirim
+          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2' AND i.id_pengirim = IF (? = 'all', i.id_pengirim, ?)
+          GROUP BY k.nama ORDER BY k.nama ASC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_rekap_awal);
             $stmt->bindParam(2, $tgl_rekap_akhir);
+            $stmt->bindParam(3, $_SESSION['id_karyawan_rekap_insentif']);
+            $stmt->bindParam(4, $_SESSION['id_karyawan_rekap_insentif']);
             $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM gaji i
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
-          INNER JOIN karyawan k ON k.id = i.id_pengirim
-          WHERE (tanggal BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY k.nama ASC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $tgl_rekap_awal);
-              $stmt->bindParam(2, $tgl_rekap_akhir);
-              $stmt->execute();
-            }
-          } else {
-            $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji i
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
-          INNER JOIN karyawan k ON k.id = i.id_pengirim
-          WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'";
-            $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
-            $stmt->bindParam(2, $tgl_rekap_awal);
-            $stmt->bindParam(3, $tgl_rekap_akhir);
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT i.*, d.*, p.*, k.*, k.id id_karyawan, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM gaji i
-          INNER JOIN distribusi d on i.id_distribusi = d.id
-          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = i.id
-          INNER JOIN karyawan k ON k.id = i.id_pengirim
-          WHERE i.id_pengirim = ? AND (tanggal BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY k.nama ASC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
-              $stmt->bindParam(2, $tgl_rekap_awal);
-              $stmt->bindParam(3, $tgl_rekap_akhir);
-              $stmt->execute();
-            }
           }
 
           $no = 1;
@@ -116,7 +94,8 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailinsentif&id=<?= $row['id_karyawan']; ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailinsentif&id=<?= $row['id_karyawan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="report/reportrekapinsentifdetail.php?id=<?= $row['id_karyawan']; ?>" target="_blank" class="btn btn-success btn-sm"><i class="fa fa-download"></i> Unduh</a>
               </td>
             </tr>
           <?php } ?>

@@ -8,7 +8,7 @@ $header = ob_get_clean();
 // ob_end_clean();
 
 ob_start();
-include 'reportpengajuanupah-res.php';
+include 'reportrekapinsentif-res.php';
 $html = ob_get_clean();
 // ob_end_clean();
 
@@ -18,12 +18,13 @@ $footer = ob_get_clean();
 ob_end_clean();
 
 $mpdf = new \Mpdf\Mpdf([
-  'format' => 'A4-L',
+  'format' => 'A4-P',
   'margin_top' => '32',
   'margin_bottom' => '30'
 ]);
 
+$mpdf->SetTitle('Amanah | Cetak Rekap Insentif');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output();
+$mpdf->Output('Rekap Insentif.pdf', 'I');
