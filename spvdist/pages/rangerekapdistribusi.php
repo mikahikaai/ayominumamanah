@@ -1,5 +1,3 @@
-<?php  ?>
-
 <?php
 include_once "../partials/cssdatatables.php";
 
@@ -10,6 +8,7 @@ if (isset($_POST['button_show'])) {
   $_SESSION['tgl_rekap_awal_distribusi'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_awal'])->setTime(0, 0, 0);
   $_SESSION['tgl_rekap_akhir_distribusi'] = DateTime::createFromFormat('d/m/Y', $_POST['tgl_rekap_akhir'])->setTime(0, 0, 0)->modify('+23 Hours')->modify('59 Minutes')->modify('59 Seconds');
   $_SESSION['id_karyawan_rekap_distribusi'] = $_POST['id_karyawan_rekap_distribusi'];
+  $_SESSION['status_kedatangan_distribusi'] = $_POST['status_kedatangan_distribusi'];
 
   // var_dump($_SESSION['tgl_rekap_awal']);
   // die();
@@ -64,6 +63,21 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="col-md-2">
           <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_rekap_akhir" required>
+        </div>
+      </div>
+      <div class="row mb-2 mt-2 align-items-center">
+        <div class="col-md-2">
+          <label for="status_kedatangan_distribusi">Status Kedatangan</label>
+        </div>
+        <div class="col-md-1 d-flex justify-content-end">
+          <label for="status_kedatangan_distribusi">:</label>
+        </div>
+        <div class="col-md-2">
+          <select name="status_kedatangan_distribusi" id="status_kedatangan_distribusi" class="form-control">
+            <option value='all' selected>-- Semua Status --</option>
+            <option value='1'>Sudah Datang</option>
+            <option value='2'>Belum Datang</option>
+          </select>
         </div>
       </div>
       <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">

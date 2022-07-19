@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light sticky-top">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -6,13 +6,13 @@
   </ul>
   <table width="100%">
     <tr>
-      <td align="center" style="font-weight: bold; font-size: 20px;">Selamat Datang Di Aplikasi <span style="color : green;">PT PANCURAN KAAPIT SENDANG</span> - Anda Login Sebagai <span style="color: red;"><?= $_SESSION['jabatan'] ?></span></td>
+      <td align="center" style="font-weight: bold; font-size: 20px;">Selamat Datang Di Aplikasi Penggajian <span style="color : green;">PT PANCURAN KAAPIT SENDANG</span> - Saat Ini Anda Login Sebagai <span style="color: red;"><?= $_SESSION['jabatan'] ?></span></td>
     </tr>
   </table>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
-        <i class="nav-icon fas fa-gear"></i>
+        <i class="fas fa-gear"></i>
         <!-- <p>Pengaturan</p> -->
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
