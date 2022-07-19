@@ -17,6 +17,7 @@
   <script src="../plugins/tempusdominus-bootstrap-4/js/tempus-dominus.min.js"></script>
   <link rel="stylesheet" href="../plugins/tempusdominus-bootstrap-4/css/tempus-dominus.min.css">
   <link rel="stylesheet" href="../plugins/cropper/cropper.min.css">
+  <script src="../plugins/cropper/cropper.min.js"></script>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />

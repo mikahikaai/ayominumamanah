@@ -3,7 +3,7 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if(!isset($_SESSION['foto_upload'])){
+if (!isset($_SESSION['foto_upload'])) {
   $_SESSION['foto_upload'] = $_SESSION['foto'];
 }
 
@@ -34,8 +34,8 @@ if (isset($_POST['upload'])) {
 
   .preview {
     overflow: hidden;
-    width: 220px;
-    height: 220px;
+    width: 160px;
+    height: 160px;
     margin: 10px;
     border: 1px solid red;
   }
@@ -104,7 +104,6 @@ if (isset($_POST['upload'])) {
       <div class="col-md-4">
         <div class="image_area">
           <label for="upload_image">
-            <!-- <img src="upload/user.png" id="uploaded_image" class="img-responsive img-circle" /> -->
             <img src="../dist/img/<?= file_exists("../dist/img/" . ($_SESSION['foto'] == NULL ? 'null' : $_SESSION['foto'])) ? $_SESSION['foto'] : 'avatarm.png'; ?>" id="uploaded_image" class="img-responsive img-circle" alt="User Image">
             <div class="overlay">
               <div class="text">Klik untuk Mengubah Foto Profil Anda</div>
@@ -119,7 +118,7 @@ if (isset($_POST['upload'])) {
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Crop Image Before Upload</h5>
+          <h5 class="modal-title" id="modalLabel">Crop Image Before Upload</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -128,7 +127,7 @@ if (isset($_POST['upload'])) {
           <div class="img-container">
             <div class="row">
               <div class="col-lg-7 col-7">
-                <img src="" id="sample_image" />
+                <img src="" id="image" />
               </div>
               <div class="col-lg-5 col-5">
                 <div class="preview"></div>
@@ -137,8 +136,8 @@ if (isset($_POST['upload'])) {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="crop" class="btn btn-primary">Crop</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" id="crop" class="btn btn-primary">Crop</button>
         </div>
       </div>
     </div>
@@ -156,30 +155,34 @@ include_once "../partials/scriptdatatables.php";
       $("#simpan").show();
     });
 
-    var $modal = $('#modal');
+    var bs_modal = $('#modal');
+    var image = document.getElementById('image');
+    var cropper, reader, file;
 
-    var image = document.getElementById('sample_image');
-
-    var cropper;
-
-    $('#upload_image').change(function(event) {
-      var files = event.target.files;
-
+    $("body").on("change", ".image", function(e) {
+      var files = e.target.files;
       var done = function(url) {
         image.src = url;
-        $modal.modal('show');
+        bs_modal.modal('show');
       };
 
+
       if (files && files.length > 0) {
-        reader = new FileReader();
-        reader.onload = function(event) {
-          done(reader.result);
-        };
-        reader.readAsDataURL(files[0]);
+        file = files[0];
+
+        if (URL) {
+          done(URL.createObjectURL(file));
+        } else if (FileReader) {
+          reader = new FileReader();
+          reader.onload = function(e) {
+            done(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     });
 
-    $modal.on('shown.bs.modal', function() {
+    bs_modal.on('shown.bs.modal', function() {
       cropper = new Cropper(image, {
         aspectRatio: 1,
         viewMode: 3,
@@ -190,10 +193,10 @@ include_once "../partials/scriptdatatables.php";
       cropper = null;
     });
 
-    $('#crop').click(function() {
+    $("#crop").click(function() {
       canvas = cropper.getCroppedCanvas({
-        width: 400,
-        height: 400
+        width: 160,
+        height: 160,
       });
 
       canvas.toBlob(function(blob) {
@@ -209,7 +212,7 @@ include_once "../partials/scriptdatatables.php";
               image: base64data
             },
             success: function(data) {
-              $modal.modal('hide');
+              bs_modal.modal('hide');
               $('#uploaded_image').attr('src', data);
             }
           });
