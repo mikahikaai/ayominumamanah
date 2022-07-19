@@ -91,8 +91,24 @@ $db = $database->getConnection();
               <td><?= $row['tgl_pengajuan'] ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
-              <td><?= $row['tgl_verifikasi'] ?></td>
-              <td><?= $row['nama_verifikator'] ?></td>
+              <td>
+                <?php
+                if (empty($row['tgl_verifikasi'])) {
+                  echo "<div style='color: red;'>BELUM VERIFIKASI</div>";
+                } else {
+                  echo $row['tgl_verifikasi'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['nama_verifikator'])) {
+                  echo "<div style='color: red;'>BELUM VERIFIKASI</div>";
+                } else {
+                  echo $row['nama_verifikator'];
+                }
+                ?>
+              </td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {

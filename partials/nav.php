@@ -1,3 +1,15 @@
+<?php
+$jabatan = '';
+if ($_SESSION['jabatan'] == 'ADMINKEU') {
+  $jabatan = 'ADMIN KEUANGAN';
+} else if ($_SESSION['jabatan'] == 'SPVDISTRIBUSI') {
+  $jabatan = 'SUPERVISOR DISTRIBUSI';
+} else if ($_SESSION['jabatan'] == 'DRIVER' OR $_SESSION['jabatan'] == 'HELPER') {
+  $jabatan = 'KARYAWAN';
+} else if ($_SESSION['jabatan'] == 'MGRDISTRIBUSI') {
+  $jabatan = 'MANAGER DISTRIBUSI';
+}
+?>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <ul class="navbar-nav">
     <li class="nav-item">
@@ -6,7 +18,7 @@
   </ul>
   <table width="100%">
     <tr>
-      <td align="center" style="font-weight: bold; font-size: 20px;">Selamat Datang Di Aplikasi Penggajian <span style="color : green;">PT PANCURAN KAAPIT SENDANG</span> - Saat Ini Anda Login Sebagai <span style="color: red;"><?= $_SESSION['jabatan'] ?></span></td>
+      <td align="center" style="font-weight: bold; font-size: 20px;">>>> Selamat Datang Di Aplikasi Penggajian <span style="color : green;">PT PANCURAN KAAPIT SENDANG</span> - Saat Ini Anda Login Sebagai <span style="color: red;"><?= $jabatan ?></span> <<<</td>
     </tr>
   </table>
   <ul class="navbar-nav ml-auto">
