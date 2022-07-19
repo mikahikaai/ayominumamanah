@@ -27,10 +27,10 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah Terverifikasi<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a>
+      </a> -->
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -56,11 +56,13 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)";
+          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)";
           $stmt = $db->prepare($selectSql);
           $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
           $stmt->bindParam(2, $tgl_awal);
           $stmt->bindParam(3, $tgl_akhir);
+          $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_upah']);
+          $stmt->bindParam(5, $_SESSION['status_rekap_pengajuan_upah']);
           $stmt->execute();
           // $stmt->debugDumpParams();
           // die();
@@ -70,15 +72,17 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
-          WHERE p.terbayar='2' AND u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
+          WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan ASC";
             $stmt = $db->prepare($selectSql);
-            $stmt->bindValue(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
+            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->bindParam(2, $tgl_awal);
             $stmt->bindParam(3, $tgl_akhir);
+            $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_upah']);
+            $stmt->bindParam(5, $_SESSION['status_rekap_pengajuan_upah']);
             $stmt->execute();
           }
-          
+
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           ?>

@@ -173,6 +173,7 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Jam Datang :<br> <?= date('l, d-m-Y H:i:s', strtotime($row['jam_datang'])); ?> </p>
                     <p class="card-text">Lama Perjalanan :<br> <?= $lama_perjalanan; ?> </p>
                   </div>
+                  <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-info d-block">Detail <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
             <?php
