@@ -1,8 +1,8 @@
 <!-- footer -->
 <hr style="color: blue;">
-<table style="width: 100%; border-collapse: collapse;">
+<table style="border-collapse: collapse;" align="center">
   <tr>
-    <td align="right" width="17%" rowspan="4" style="padding-right: 10px;"><img src="../../images/logooo cropped resized compressed.png" height="50px" alt=""></td>
+    <td align="left" rowspan="4" style="padding-right: 10px;"><img src="../../images/logooo cropped resized compressed.png" height="50px" alt=""></td>
     <td></td>
   </tr>
   <tr>

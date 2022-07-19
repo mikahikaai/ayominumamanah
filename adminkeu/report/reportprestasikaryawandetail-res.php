@@ -153,11 +153,11 @@ if (isset($_GET['id'])) {
 <table style="page-break-inside: avoid; padding-left: 40px;" autosize="1">
   <tr>
     <td align="right">Kesimpulan :</td>
-    <td align="left">Jumlah Tepat Waktu : <?= $jumlah_tepat_waktu . "x (" . round($jumlah_tepat_waktu / $jumlah_data, 2) * 100 . " %)" ?></td>
+    <td align="left">Jumlah Tepat Waktu = <?= $jumlah_tepat_waktu . "x (" . round($jumlah_tepat_waktu / $jumlah_data, 2) * 100 . " %)" ?></td>
   </tr>
   <tr>
     <td></td>
-    <td align="left">Jumlah Terlambat : <?= $jumlah_terlambat . "x (" . round($jumlah_terlambat / $jumlah_data, 2) * 100 . " %)" ?></td>
+    <td align="left">Jumlah Terlambat = <?= $jumlah_terlambat . "x (" . round($jumlah_terlambat / $jumlah_data, 2) * 100 . " %)" ?></td>
   </tr>
   <tr>
     <td align="right">Hasil :</td>
