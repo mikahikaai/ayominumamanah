@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
   }
 
   table#content tbody tr:nth-child(even) {
-    background-color: whitesmoke;
+    background-color: #e4ede4;
   }
 
   table#content1 {

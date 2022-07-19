@@ -47,7 +47,7 @@ GROUP BY k.nama ORDER BY k.nama ASC";
   }
 
   table#content tbody tr:nth-child(even) {
-    background-color: whitesmoke;
+    background-color: #e4ede4;
   }
 
   table#content1 {
@@ -101,7 +101,7 @@ GROUP BY k.nama ORDER BY k.nama ASC";
     <?php } ?>
   </tbody>
   <tfoot>
-    <tr>
+    <tr style="background-color: blanchedalmond">
       <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>

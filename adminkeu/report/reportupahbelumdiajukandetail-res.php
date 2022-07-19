@@ -47,7 +47,7 @@ if (isset($_GET['id'])) {
   }
 
   table#content tbody tr:nth-child(even) {
-    background-color: whitesmoke;
+    background-color: #e4ede4;
   }
 
   table#content1 {
@@ -115,7 +115,7 @@ if (isset($_GET['id'])) {
     <?php } ?>
   </tbody>
   <tfoot>
-    <tr>
+    <tr style="background-color: blanchedalmond">
       <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>

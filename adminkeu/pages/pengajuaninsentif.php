@@ -4,13 +4,6 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE pengajuan_upah_borongan SET terbayar = '2' WHERE terbayar='1' AND  ";
-  $stmt_update = $db->prepare($update_ajukan);
-  $stmt_update->bindParam(1, $_SESSION['id']);
-  $stmt_update->execute();
-}
-
 $tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
 $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
 ?>
@@ -37,7 +30,7 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Insentif Belum Pengajuan<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" target="_blank" class="btn btn-warning btn-sm float-right">
+      <a href="report/reportinsentifbelumdiajukan.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>
     </div>
@@ -48,14 +41,13 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
             <th>No.</th>
             <th>Nama</th>
             <th>Status</th>
-            <th>Total Ontime</th>
             <th>Total Bongkar</th>
+            <th>Total Ontime</th>
             <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php
-
 
           $selectSql = "SELECT * FROM gaji i
           LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = i.id
@@ -95,11 +87,13 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
                 }
                 ?>
               </td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=detailpengajuaninsentif&idk=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-primary">
                   <i class="fa fa-eye"></i> Lihat</a>
+                <a href="report/reportinsentifbelumdiajukandetail.php?idk=<?= $row['id_karyawan']; ?>" target="_blank" class="btn btn-sm btn-success">
+                  <i class="fa fa-download"></i> Unduh</a>
               </td>
             </tr>
           <?php } ?>

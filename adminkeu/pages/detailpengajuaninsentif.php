@@ -68,8 +68,8 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Insentif Belum Terbayar<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Detail Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
+      <a href="report/reportinsentifbelumdiajukandetail.php?idk=<?= $_GET['idk'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
     </div>
@@ -83,8 +83,8 @@ if (isset($_POST['ajukan'])) {
               <th>Tanggal & Jam Berangkat</th>
               <th>No Perjalanan</th>
               <th>Nama</th>
-              <th>Ontime</th>
               <th>Bongkar</th>
+              <th>Ontime</th>
             </tr>
           </thead>
           <tbody>
@@ -99,8 +99,8 @@ if (isset($_POST['ajukan'])) {
                 <td><?= $row['tanggal'] ?></td>
                 <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
                 <td><?= $row['nama'] ?></td>
-                <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>
+                <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
               </tr>
             <?php } ?>
           </tbody>

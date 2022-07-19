@@ -73,7 +73,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   }
 
   table#content tbody tr:nth-child(even) {
-    background-color: whitesmoke;
+    background-color: #e4ede4;
   }
 
   table#content1 {

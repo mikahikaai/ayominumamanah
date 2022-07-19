@@ -54,7 +54,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   }
 
   table#content tbody tr:nth-child(even) {
-    background-color: whitesmoke;
+    background-color: #e4ede4;
   }
 
   table#content1 {
@@ -126,7 +126,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     <?php } ?>
   </tbody>
   <tfoot>
-    <tr style="background-color: #e4ede4">
+    <tr style="background-color: blanchedalmond">
       <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>

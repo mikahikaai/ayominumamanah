@@ -5,29 +5,19 @@ include "../../database/database.php";
 $database = new Database;
 $db = $database->getConnection();
 
-$tgl_rekap_awal = $_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d H:i:s');
-$tgl_rekap_akhir = $_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d H:i:s');
+$tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
+$tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
 
-$selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(u.bongkar) total_bongkar, SUM(u.ontime) total_ontime FROM gaji u
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          LEFT JOIN pengajuan_insentif_borongan p on p.id_insentif = u.id
-          INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND p.terbayar='2' AND u.id_pengirim = IF (? = 'all', u.id_pengirim, ?)
-          GROUP BY k.nama ORDER BY k.nama";
+$selectSql = "SELECT p.*, i.*,k.*, k.id id_karyawan, d.*, SUM(i.ontime) total_ontime, sum(i.bongkar) total_bongkar FROM pengajuan_insentif_borongan p
+    RIGHT JOIN gaji i on p.id_insentif = i.id
+    INNER JOIN karyawan k on i.id_pengirim = k.id
+    INNER JOIN distribusi d on i.id_distribusi = d.id
+    WHERE p.terbayar IS NULL AND (d.jam_berangkat BETWEEN ? AND ?) AND d.jam_datang IS NOT NULL
+    GROUP BY k.nama ORDER BY k.nama ASC";
 $stmt = $db->prepare($selectSql);
-$stmt->bindParam(1, $tgl_rekap_awal);
-$stmt->bindParam(2, $tgl_rekap_akhir);
-$stmt->bindParam(3, $_SESSION['id_karyawan_rekap_insentif']);
-$stmt->bindParam(4, $_SESSION['id_karyawan_rekap_insentif']);
+$stmt->bindParam(1, $tgl_pengajuan_insentif_awal);
+$stmt->bindParam(2, $tgl_pengajuan_insentif_akhir);
 $stmt->execute();
-
-$stmt1 = $db->prepare($selectSql);
-$stmt1->bindParam(1, $tgl_rekap_awal);
-$stmt1->bindParam(2, $tgl_rekap_akhir);
-$stmt1->bindParam(3, $_SESSION['id_karyawan_rekap_insentif']);
-$stmt1->bindParam(4, $_SESSION['id_karyawan_rekap_insentif']);
-$stmt1->execute();
-$row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 ?>
 <style>
   table#content {
@@ -78,7 +68,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 
 <table style="width: 100%; margin-bottom: 10px;">
   <tr>
-    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP INSENTIF</u></td>
+    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA INSENTIF BELUM PENGAJUAN</u></td>
   </tr>
 </table>
 
@@ -91,9 +81,9 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     <td width="25%" align="right"></td>
   </tr> -->
   <tr>
-    <td width="20%">Periode Insentif</td>
+    <td width="20%">Periode Data</td>
     <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d')) ?></td>
+    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d')) ?></td>
     <td width="25%" align="right"></td>
   </tr>
 </table>
@@ -123,7 +113,17 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
       <tr>
         <td><?= $no++ ?></td>
         <td><?= $row['nama'] ?></td>
-        <td>Terverifikasi</td>
+        <td>
+          <?php
+          if ($row['terbayar'] == NULL) {
+            echo 'Belum Mengajukan';
+          } else if ($row['terbayar'] == '1') {
+            echo 'Mengajukan';
+          } else if ($row['terbayar'] == '2') {
+            echo 'Terverifikasi';
+          }
+          ?>
+        </td>
         <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
         <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
       </tr>
@@ -137,7 +137,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     </tr>
     <tr style="background-color: blanchedalmond">
       <td colspan="3" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
-      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar+$total_ontime, 0, ',', '.') ?></td>
+      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
 </table>
