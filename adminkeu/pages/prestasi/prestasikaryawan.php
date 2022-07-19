@@ -24,7 +24,7 @@ include_once "../partials/cssdatatables.php";
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Rekap Prestasi<br>
-        Periode : <?= $_SESSION['tgl_prestasi_awal']->format('d-M-Y') . " sd " .  $_SESSION['tgl_prestasi_akhir']->format('d-M-Y'); ?>
+        Periode : <?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " .  tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')); ?>
       </h3>
       <a href="report/reportprestasikaryawan.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF

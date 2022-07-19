@@ -49,7 +49,7 @@ if (isset($_GET['id'])) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Data Detail Rekap Prestasi<br>
-        Periode : <?= $_SESSION['tgl_prestasi_awal']->format('d-M-Y') . " sd " .  $_SESSION['tgl_prestasi_akhir']->format('d-M-Y'); ?>
+        Periode : <?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " .  tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')); ?>
       </h3>
       <a href="report/reportprestasikaryawandetail.php?id=<?= $_GET['id'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
@@ -80,12 +80,12 @@ if (isset($_GET['id'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td><?= $row['jam_berangkat'] ?></td>
-              <td><?= $row['estimasi_jam_datang'] ?></td>
-              <td><?= $row['jam_datang'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
+              <td><?= tanggal_indo($row['estimasi_jam_datang']) ?></td>
+              <td><?= tanggal_indo($row['jam_datang']) ?></td>
               <td>
                 <?php
                 if (strtotime($row['jam_datang']) <= strtotime($row['estimasi_jam_datang']) + 900) {

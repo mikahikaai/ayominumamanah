@@ -25,7 +25,7 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Rekap Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></h3>
       <a href="report/reportrekapupah.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>

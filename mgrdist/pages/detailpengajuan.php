@@ -28,7 +28,7 @@ if (isset($_POST['verif'])) {
     $checkbox_id_pengajuan_upah = $_POST['cid'];
 
     $id_qr_code = uniqid();
-      $text_qrcode = "http://" .$_SERVER['HTTP_HOST'] . "/verify.php?code=$id_qr_code";
+      $text_qrcode = "http://" . "adisasoftwaredev.com" . "/verify.php?code=$id_qr_code";
       $tempdir = "../dist/verif/";
       $namafile = $id_qr_code . ".png";
       $quality = "H";
@@ -83,6 +83,7 @@ if (isset($_POST['verif'])) {
       
 
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuanupah"/>';
+    exit;
   }
 }
 ?>

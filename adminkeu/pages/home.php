@@ -136,7 +136,7 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
                     <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
                   </div>
-                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-info d-block" style="opacity: 0.5;">Ubah</a>
+                  <a href="?page=distribusiupdate&id=<?= $row['id']; ?>" class="btn btn-info d-block">Ubah <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
             <?php

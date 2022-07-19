@@ -89,6 +89,23 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   </tr>
 </table>
 
+<!-- content dibawah header -->
+<table id="content1">
+  <!-- <tr>
+    <td width="20%">Nama Karyawan</td>
+    <td width="5%" align="right">:</td>
+    <td width="50%" align="left"><?= $row1['nama_pengirim'] ?></td>
+    <td width="25%" align="right"></td>
+  </tr> -->
+  <tr>
+    <td width="15%">Periode Rekap Pengajuan</td>
+    <td width="1%" align="center">:</td>
+    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></td>
+    <td width="25%" align="right"></td>
+  </tr>
+</table>
+<!-- end content diatas header -->
+
 <!-- content -->
 <table id="content">
   <thead>
@@ -119,7 +136,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td>
           <?php
           if (empty($row['nama_verifikator'])) {
-            echo "<div style='color: red;'>Belum Diverifikasi</div>";
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
           } else {
             echo $row['nama_verifikator'];
           }
@@ -129,7 +146,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td>
           <?php
           if (empty($row['tgl_verifikasi'])) {
-            echo "<div style='color: red;'>Belum Diverifikasi</div>";
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
           } else {
             echo tanggal_indo($row['tgl_verifikasi']);
           }
@@ -140,7 +157,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
           if ($row['terbayar'] == '1') {
             echo "<div style='color: red;'>Mengajukan</div>";
           } else if ($row['terbayar'] == '2') {
-            echo "Terbayar";
+            echo "Terverifikasi";
           }
           ?>
         </td>
@@ -186,7 +203,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 <!-- end footer -->
 
 <?php
-function tanggal_indo($tanggal, $cetak_hari = false)
+function tanggal_indo($date, $cetak_hari = false)
 {
   $hari = array(
     1 =>    'Senin',
@@ -212,11 +229,17 @@ function tanggal_indo($tanggal, $cetak_hari = false)
     'November',
     'Desember'
   );
-  $split     = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
 
   if ($cetak_hari) {
-    $num = date('N', strtotime($tanggal));
+    $num = date('N', strtotime($date));
     return $hari[$num] . ', ' . $tgl_indo;
   }
   return $tgl_indo;

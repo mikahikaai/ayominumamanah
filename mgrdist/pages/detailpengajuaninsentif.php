@@ -24,63 +24,66 @@ if (isset($_GET['no_pengajuan'])) {
 }
 
 if (isset($_POST['verif'])) {
-  $checkbox_id_pengajuan_insentif = $_POST['cid'];
+  if (!empty($_POST['cid'])) {
+    $checkbox_id_pengajuan_insentif = $_POST['cid'];
 
-  $id_qr_code_insentif = uniqid();
-      $text_qrcode = "http://" .$_SERVER['HTTP_HOST'] . "/verifyinsentif.php?code=$id_qr_code_insentif";
-      $tempdir = "../dist/verif/";
-      $namafile = $id_qr_code_insentif . ".png";
-      $quality = "H";
-      $ukuran = 10;
-      $padding = 2;
-    
-      QRcode::png($text_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
+    $id_qr_code_insentif = uniqid();
+    $text_qrcode = "http://" . "adisasoftwaredev.com" . "/verifyinsentif.php?code=$id_qr_code_insentif";
+    $tempdir = "../dist/verif/";
+    $namafile = $id_qr_code_insentif . ".png";
+    $quality = "H";
+    $ukuran = 10;
+    $padding = 2;
 
-  for ($i = 0; $i < sizeof($checkbox_id_pengajuan_insentif); $i++) {
-    $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, qrcode=? WHERE id=?";
-    $tgl_verifikasi = date('Y-m-d');
-    $stmt_update = $db->prepare($updateSql);
-    $stmt_update->bindParam(1, $tgl_verifikasi);
-    $stmt_update->bindParam(2, $_SESSION['id']);
-    $stmt_update->bindParam(3, $id_qr_code_insentif);
-    $stmt_update->bindParam(4, $checkbox_id_pengajuan_insentif[$i]);
-    $stmt_update->execute();
+    QRcode::png($text_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
+
+    for ($i = 0; $i < sizeof($checkbox_id_pengajuan_insentif); $i++) {
+      $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, qrcode=? WHERE id=?";
+      $tgl_verifikasi = date('Y-m-d');
+      $stmt_update = $db->prepare($updateSql);
+      $stmt_update->bindParam(1, $tgl_verifikasi);
+      $stmt_update->bindParam(2, $_SESSION['id']);
+      $stmt_update->bindParam(3, $id_qr_code_insentif);
+      $stmt_update->bindParam(4, $checkbox_id_pengajuan_insentif[$i]);
+      $stmt_update->execute();
+    }
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $emailTo = $row["email"]; //email kamu atau email penerima link reset
+
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+    try {
+      //Server settings
+      //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'smtp.gmail.com';                     // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = "mikahikaai100@gmail.com";             // SMTP username
+      $mail->Password = 'khjjztrrumnocaav';                         // SMTP password
+      $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+      $mail->Port = 587;                                    // TCP port to connect to
+
+      //Recipients
+      $mail->setFrom("admin@gmail.com", "Admin PKS"); //email pengirim
+      $mail->addAddress($emailTo); // Email penerima
+      $mail->addReplyTo("no-reply@gmail.com");
+
+      //Content
+      $mail->isHTML(true);                                  // Set email format to HTML
+      $mail->Subject = "Pemberitahuan Pengambilan Insentif";
+      $mail->Body    = "<h1>Perhitungan insentif sudah terverifikasi</h1><p> Silahkan ambil insentif Anda diloket pengambilan gaji</p>";
+      //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+      $mail->send();
+    } catch (Exception $e) {
+      echo 'Message could not be sent.';
+      echo 'Mailer Error: ' . $mail->ErrorInfo;
+    }
+
+    echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
+    exit;
   }
-
-  $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  $emailTo = $row["email"]; //email kamu atau email penerima link reset
-
-  $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
-
-  try {
-    //Server settings
-    //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
-    $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'smtp.gmail.com';                     // Specify main and backup SMTP servers
-    $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = "mikahikaai100@gmail.com";             // SMTP username
-    $mail->Password = 'khjjztrrumnocaav';                         // SMTP password
-    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 587;                                    // TCP port to connect to
-
-    //Recipients
-    $mail->setFrom("admin@gmail.com", "Admin PKS"); //email pengirim
-    $mail->addAddress($emailTo); // Email penerima
-    $mail->addReplyTo("no-reply@gmail.com");
-
-    //Content
-    $mail->isHTML(true);                                  // Set email format to HTML
-    $mail->Subject = "Pemberitahuan Pengambilan Insentif";
-    $mail->Body    = "<h1>Perhitungan insentif sudah terverifikasi</h1><p> Silahkan ambil insentif Anda diloket pengambilan gaji</p>";
-    //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-    $mail->send();
-  } catch (Exception $e) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-  }
-
-  echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
 }
 ?>
 

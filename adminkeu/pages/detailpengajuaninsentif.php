@@ -68,7 +68,7 @@ if (isset($_POST['ajukan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_pengajuan_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_pengajuan_insentif_akhir']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d')) ?></h3>
       <a href="report/reportinsentifbelumdiajukandetail.php?idk=<?= $_GET['idk'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a>
@@ -96,7 +96,7 @@ if (isset($_POST['ajukan'])) {
               <tr>
                 <td><input type="checkbox" name="cid[]" value="<?= $row['id_insentif']; ?>"></td>
                 <td><?= $no++ ?></td>
-                <td><?= $row['tanggal'] ?></td>
+                <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
                 <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
                 <td><?= $row['nama'] ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>

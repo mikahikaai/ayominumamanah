@@ -14,10 +14,6 @@ if (isset($_GET['page'])) {
       file_exists('pages/pengajuanupah.php') ? include 'pages/pengajuanupah.php' : include '../pages/404.php';
       $title = 'Pengajuan Upah';
       break;
-    case 'detailpengajuanupahdistribusi':
-      file_exists('pages/detailpengajuanupahdistribusi.php') ? include 'pages/detailpengajuanupahdistribusi.php' : include '../pages/404.php';
-      $title = 'Detail Distribusi';
-      break;
     case 'rangerekappengajuanupah':
       file_exists('pages/rangerekappengajuanupah.php') ? include 'pages/rangerekappengajuanupah.php' : include '../pages/404.php';
       $title = 'Rekap Pengajuan Upah';
@@ -29,6 +25,18 @@ if (isset($_GET['page'])) {
     case 'rekapdetailpengajuanupah':
       file_exists('pages/rekapdetailpengajuanupah.php') ? include 'pages/rekapdetailpengajuanupah.php' : include '../pages/404.php';
       $title = 'Rekap Pengajuan Upah';
+      break;
+    case 'rangerekappengajuaninsentif':
+      file_exists('pages/rangerekappengajuaninsentif.php') ? include 'pages/rangerekappengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
+    case 'rekappengajuaninsentif':
+      file_exists('pages/rekappengajuaninsentif.php') ? include 'pages/rekappengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
+      break;
+    case 'rekapdetailpengajuaninsentif':
+      file_exists('pages/rekapdetailpengajuaninsentif.php') ? include 'pages/rekapdetailpengajuaninsentif.php' : include '../pages/404.php';
+      $title = 'Rekap Pengajuan Insentif';
       break;
     case 'rangerekapupah':
       file_exists('pages/rangerekapupah.php') ? include 'pages/rangerekapupah.php' : include '../pages/404.php';

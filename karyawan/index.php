@@ -212,6 +212,10 @@ include_once "../partials/scripts.php";
       $("a#rekappengajuanupah").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Pengajuan Insentif") {
+      $("a#rekappengajuaninsentif").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Distribusi") {
       $("a#distribusi").addClass("active");
       $("li#master_distribusi").addClass("menu-open");

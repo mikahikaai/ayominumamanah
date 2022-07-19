@@ -123,7 +123,7 @@ if (isset($_GET['id'])) {
     ?>
       <tr>
         <td><?= $no++ ?></td>
-        <td><?= $row['jam_berangkat'] ?></td>
+        <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
         <td><?= $row['no_perjalanan'] ?></td>
         <td><?= $row['nama_pengirim'] ?></td>
         <td><?= $row['no_pengajuan'] ?></td>
@@ -166,7 +166,7 @@ if (isset($_GET['id'])) {
 <!-- end footer -->
 
 <?php
-function tanggal_indo($tanggal, $cetak_hari = false)
+function tanggal_indo($date, $cetak_hari = false)
 {
   $hari = array(
     1 =>    'Senin',
@@ -192,11 +192,17 @@ function tanggal_indo($tanggal, $cetak_hari = false)
     'November',
     'Desember'
   );
-  $split     = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
 
   if ($cetak_hari) {
-    $num = date('N', strtotime($tanggal));
+    $num = date('N', strtotime($date));
     return $hari[$num] . ', ' . $tgl_indo;
   }
   return $tgl_indo;

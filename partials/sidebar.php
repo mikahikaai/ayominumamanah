@@ -88,6 +88,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="?page=rangerekappengajuaninsentif" class="nav-link" id="rekappengajuaninsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Pengajuan Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="?page=rangerekapupah" class="nav-link" id="rekapupah">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Upah</p>

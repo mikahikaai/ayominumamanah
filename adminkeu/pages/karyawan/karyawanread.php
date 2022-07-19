@@ -92,7 +92,7 @@ if (isset($_SESSION['hasil'])) {
             <th>SIM</th>
             <th>Email</th>
             <th>Status Karyawan</th>
-            <th>Tanggal Registrasi</th>
+            <th>Tanggal Bergabung</th>
             <th>Status Keaktifan</th>
             <th>Upah</th>
             <th style="display: flex;">Opsi</th>
@@ -117,7 +117,7 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['username'] ?></td>
               <td><?= $row['nik'] ?></td>
               <td><?= $row['tempat_lahir'] ?></td>
-              <td><?= date('d-m-Y', strtotime($row['tanggal_lahir'])) ?></td>
+              <td><?= tanggal_indo($row['tanggal_lahir']) ?></td>
               <td><?= $row['jenis_kelamin'] ?></td>
               <td><?= strtoupper($row['alamat']) ?></td>
               <td><?= $row['agama'] ?></td>
@@ -128,7 +128,7 @@ if (isset($_SESSION['hasil'])) {
               <td><?= $row['sim'] ?></td>
               <td><?= $row['email'] ?></td>
               <td><?= $row['status_karyawan'] ?></td>
-              <td><?= date('d-m-Y', strtotime($row['tanggal_registrasi'])) ?></td>
+              <td><?= tanggal_indo($row['tanggal_registrasi']) ?></td>
               <td><?= $row['status_keaktifan'] ?></td>
               <td><?= number_format($row['upah_borongan'], 0, ",", ".") ?></td>
               <td>

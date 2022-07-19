@@ -27,7 +27,7 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></h3>
       <a href="report/reportpengajuanupah.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>
@@ -91,22 +91,22 @@ $db = $database->getConnection();
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tgl_pengajuan'] ?></td>
+              <td><?= tanggal_indo($row['tgl_pengajuan']) ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td>
                 <?php
                 if (empty($row['tgl_verifikasi'])) {
-                  echo "<div style='color: red;'>BELUM VERIFIKASI</div>";
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
                 } else {
-                  echo $row['tgl_verifikasi'];
+                  echo tanggal_indo($row['tgl_verifikasi']);
                 }
                 ?>
               </td>
               <td>
                 <?php
                 if (empty($row['nama_verifikator'])) {
-                  echo "<div style='color: red;'>BELUM VERIFIKASI</div>";
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
                 } else {
                   echo $row['nama_verifikator'];
                 }

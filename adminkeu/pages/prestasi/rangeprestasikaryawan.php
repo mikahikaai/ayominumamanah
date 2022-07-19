@@ -18,56 +18,60 @@ if (isset($_POST['button_show'])) {
 ?>
 
 <div class="content-header">
-  <div class="container-fluid">
-    <h3>Pilih Periode Prestasi Karyawan</h3>
-    <form action="" method="POST">
-      <div class="row mb-2 mt-2 align-items-center">
-        <div class="col-md-2">
-          <label for="nama">Nama Karyawan</label>
+  <div class="card col-md-6">
+    <div class="card-header">
+      <h3 class="card-title font-weight-bold">Pilih Periode Prestasi Karyawan</h3>
+    </div>
+    <div class="card-body">
+      <form action="" method="POST">
+        <div class="row mb-2 mt-2 align-items-center">
+          <div class="col-md-2">
+            <label for="nama">Nama Karyawan</label>
+          </div>
+          <div class="col-md-1 d-flex justify-content-end">
+            <label for="nama">:</label>
+          </div>
+          <div class="col-md-4">
+            <select name="id_karyawan_prestasi" id="nama_karyawan" class="form-control">
+              <option value="all" selected>-- Semua Karyawan --</option>
+              <?php
+              $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
+              $stmt_select_karyawan = $db->prepare($select_karyawan);
+              $stmt_select_karyawan->execute();
+              while ($row_select_karyawan = $stmt_select_karyawan->fetch(PDO::FETCH_ASSOC)) {
+              ?>
+                <option value="<?= $row_select_karyawan['id']; ?>"><?= $row_select_karyawan['nama']; ?></option>
+              <?php } ?>
+            </select>
+          </div>
         </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="nama">:</label>
+        <div class="row align-items-center">
+          <div class="col-md-2">
+            <label for="tgl_prestasi_awal">Tanggal Awal</label>
+          </div>
+          <div class="col-md-1 d-flex justify-content-end">
+            <label for="tgl_prestasi_awal">:</label>
+          </div>
+          <div class="col-md-4">
+            <input id='datetimepicker2' type='text' class='form-control' data-td-target='#datetimepicker2' placeholder="dd/mm/yyyy" name="tgl_prestasi_awal" required>
+          </div>
         </div>
-        <div class="col-md-2">
-          <select name="id_karyawan_prestasi" id="nama_karyawan" class="form-control">
-          <option value="all" selected>-- Semua Karyawan --</option>
-            <?php
-            $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
-            $stmt_select_karyawan = $db->prepare($select_karyawan);
-            $stmt_select_karyawan->execute();
-            while ($row_select_karyawan = $stmt_select_karyawan->fetch(PDO::FETCH_ASSOC)) {
-            ?>
-              <option value="<?= $row_select_karyawan['id']; ?>"><?= $row_select_karyawan['nama']; ?></option>
-            <?php } ?>
-          </select>
+        <div class="row align-items-center mt-2">
+          <div class="col-md-2">
+            <label for="tgl_prestasi_akhir">Tanggal Akhir</label>
+          </div>
+          <div class="col-md-1 d-flex justify-content-end">
+            <label for="tgl_prestasi_akhir">:</label>
+          </div>
+          <div class="col-md-4">
+            <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_prestasi_akhir" required>
+          </div>
         </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-md-2">
-          <label for="tgl_prestasi_awal">Tanggal Awal</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_prestasi_awal">:</label>
-        </div>
-        <div class="col-md-2">
-          <input id='datetimepicker2' type='text' class='form-control' data-td-target='#datetimepicker2' placeholder="dd/mm/yyyy" name="tgl_prestasi_awal" required>
-        </div>
-      </div>
-      <div class="row align-items-center mt-2">
-        <div class="col-md-2">
-          <label for="tgl_prestasi_akhir">Tanggal Akhir</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_prestasi_akhir">:</label>
-        </div>
-        <div class="col-md-2">
-          <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_prestasi_akhir" required>
-        </div>
-      </div>
-      <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">
-        <i class="fa fa-eye"></i> Tampilkan
-      </button>
-    </form>
+        <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">
+          <i class="fa fa-eye"></i> Tampilkan
+        </button>
+      </form>
+    </div>
   </div>
 </div>
 

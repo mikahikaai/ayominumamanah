@@ -131,6 +131,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   <thead>
     <tr>
       <th>No.</th>
+      <th>Jam Berangkat</th>
       <th>No Perjalanan</th>
       <th>Plat | Armada</th>
       <th>Driver</th>
@@ -180,6 +181,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     ?>
       <tr>
         <td><?= $no++ ?></td>
+        <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
         <td><?= $row['no_perjalanan'] ?></td>
         <td><?= $row['plat'], ' - ', $row['jenis_mobil']; ?></td>
         <td><?= $supir ?></td>
@@ -193,19 +195,10 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td><?= $row['a5001'] + $row['a5002'] + $row['a5003'] ?></td>
         <td><?= $row['a6001'] + $row['a6002'] + $row['a6003'] ?></td>
         <td><?= $row['refill1'] + $row['refill2'] + $row['refill3'] ?></td>
-        <!-- <td><?= $row['jam_berangkat'] ?></td>
-        <td><?= $row['estimasi_jam_datang'] ?></td>
-        <td><?= $estimasi_lama_perjalanan ?></td>
-        <td><?= $jam_datang ?></td>
-        <td><?= $keterangan ?></td>
-        <td><?= $tgl_validasi ?></td>
-        <td><?= $validasi_oleh ?></td> -->
       </tr>
     <?php } ?>
   </tbody>
 </table>
-<p>Jumlah Data : <?= $stmt->rowCount() ?></p>
-
 <!-- end content -->
 
 <!-- summary -->
@@ -231,7 +224,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 <!-- end footer -->
 
 <?php
-function tanggal_indo($tanggal, $cetak_hari = false)
+function tanggal_indo($date, $cetak_hari = false)
 {
   $hari = array(
     1 =>    'Senin',
@@ -257,11 +250,17 @@ function tanggal_indo($tanggal, $cetak_hari = false)
     'November',
     'Desember'
   );
-  $split     = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
 
   if ($cetak_hari) {
-    $num = date('N', strtotime($tanggal));
+    $num = date('N', strtotime($date));
     return $hari[$num] . ', ' . $tgl_indo;
   }
   return $tgl_indo;

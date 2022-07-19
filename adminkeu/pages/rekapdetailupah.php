@@ -43,7 +43,7 @@ if (isset($_GET['id'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></h3>
       <a href="report/reportrekapupahdetail.php?id=<?= $_GET['id'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>
@@ -70,7 +70,7 @@ if (isset($_GET['id'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['jam_berangkat'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
@@ -135,40 +135,3 @@ include_once "../partials/scriptdatatables.php";
     });
   });
 </script>
-<?php
-function tanggal_indo($tanggal, $cetak_hari = false)
-{
-  $hari = array(
-    1 =>    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu'
-  );
-
-  $bulan = array(
-    1 =>   'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember'
-  );
-  $split     = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
-
-  if ($cetak_hari) {
-    $num = date('N', strtotime($tanggal));
-    return $hari[$num] . ', ' . $tgl_indo;
-  }
-  return $tgl_indo;
-}
-?>

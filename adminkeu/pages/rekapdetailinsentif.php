@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d')) ?></h3>
       <a href="report/reportrekapinsentifdetail.php?id=<?= $_GET['id'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>
@@ -67,7 +67,7 @@ if (isset($_GET['id'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.') ?></td>
@@ -131,3 +131,46 @@ include_once "../partials/scriptdatatables.php";
     });
   });
 </script>
+<?php
+function tanggal_indo($date, $cetak_hari = false)
+{
+  $hari = array(
+    1 =>    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+    'Minggu'
+  );
+
+  $bulan = array(
+    1 =>   'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  );
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
+
+  if ($cetak_hari) {
+    $num = date('N', strtotime($date));
+    return $hari[$num] . ', ' . $tgl_indo;
+  }
+  return $tgl_indo;
+}
+?>

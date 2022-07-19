@@ -42,7 +42,7 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d')) ?></h3>
+    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
     <?php
       if ($row1['terbayar'] != '1') { ?>
         <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
@@ -70,7 +70,7 @@ if (isset($_GET['no_pengajuan'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
+              <td><?= $row['tanggal'] ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>

@@ -26,11 +26,12 @@ if (isset($_POST['button_edit'])) {
     $updatesql = "UPDATE karyawan SET password=?, nama=?, nik=?, tempat_lahir=?, tanggal_lahir=?, jenis_kelamin=?,
         alamat=?, agama=?, status=?, gol_darah=?, jabatan=?, no_telepon=?, sim=?, status_karyawan=?,
         status_keaktifan=?, upah_borongan=?, email=?  where id=?";
+    $nama = strtoupper($_POST['nama']);
     $alamat = strtoupper($_POST['alamat']);
     $tempat_lahir = strtoupper($_POST['tempat_lahir']);
     $stmt = $db->prepare($updatesql);
     $stmt->bindParam(1, $password);
-    $stmt->bindParam(2, $_POST['nama']);
+    $stmt->bindParam(2, $nama);
     $stmt->bindParam(3, $_POST['nik']);
     $stmt->bindParam(4, $tempat_lahir);
     $stmt->bindParam(5, $tanggal_lahir);

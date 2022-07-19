@@ -66,7 +66,7 @@ if (isset($_GET['id'])) {
             ?>
               <tr>
                 <td><?= $no++ ?></td>
-                <td><?= $row['jam_berangkat'] ?></td>
+                <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
                 <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
                 <td><?= $row['nama'] ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
