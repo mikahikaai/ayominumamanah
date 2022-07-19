@@ -7,11 +7,12 @@ $tgl_rekap_awal_upah = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
 $tgl_rekap_akhir_upah = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
 
 if (isset($_SESSION['id_karyawan_rekap_upah'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
-  INNER JOIN gaji u ON p.id_upah = u.id
+  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+  RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k ON k.id = u.id_pengirim
-  WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
+  INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
+  INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
+  WHERE k1.id=? AND (d.jam_datang BETWEEN ? AND ?) AND terbayar='2'";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
   $stmt->bindParam(2, $tgl_rekap_awal_upah);
@@ -42,10 +43,10 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
+      <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
-      </a>
+      </a> -->
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -55,6 +56,9 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
             <th>Nama</th>
+            <th>No Pengajuan</th>
+            <th>Nama Verifikator</th>
+            <th>Tanggal Verifikasi</th>
             <th>Upah</th>
           </tr>
         </thead>
@@ -66,16 +70,19 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $row['nama'] ?></td>
+              <td><?= $row['nama_pengirim'] ?></td>
+              <td><?= $row['no_pengajuan'] ?></td>
+              <td><?= $row['nama_verifikator'] ?></td>
+              <td><?= tanggal_indo($row['tgl_verifikasi']) ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
           </tr>
         </tfoot>
@@ -101,7 +108,7 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 4;
+        var j = 7;
         while (j < nb_cols) {
           total = api
             .column(j)
@@ -128,3 +135,46 @@ include_once "../partials/scriptdatatables.php";
     });
   });
 </script>
+<?php
+function tanggal_indo($date, $cetak_hari = false)
+{
+  $hari = array(
+    1 =>    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+    'Minggu'
+  );
+
+  $bulan = array(
+    1 =>   'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  );
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
+
+  if ($cetak_hari) {
+    $num = date('N', strtotime($date));
+    return $hari[$num] . ', ' . $tgl_indo;
+  }
+  return $tgl_indo;
+}
+?>

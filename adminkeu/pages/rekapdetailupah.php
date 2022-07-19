@@ -70,7 +70,7 @@ if (isset($_GET['id'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= $row['jam_berangkat'] ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama_pengirim'] ?></td>
               <td><?= $row['no_pengajuan'] ?></td>

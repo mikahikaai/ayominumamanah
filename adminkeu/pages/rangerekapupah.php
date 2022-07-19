@@ -32,7 +32,7 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="col-md-2">
           <select name="id_karyawan_rekap_upah" id="nama_karyawan" class="form-control">
-          <option value="all">-- Semua Karyawan --</option>
+          <option value="all" selected>-- Semua Karyawan --</option>
             <?php
             $select_karyawan = "SELECT * FROM karyawan WHERE (jabatan = 'DRIVER' OR jabatan = 'HELPER') AND nama != 'HELPER LUAR' ORDER BY nama ASC";
             $stmt_select_karyawan = $db->prepare($select_karyawan);
