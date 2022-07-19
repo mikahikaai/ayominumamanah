@@ -255,7 +255,7 @@
               <li class="nav-item">
                 <a href="?page=upahbelumdiajukan" class="nav-link" id="upahbelumdiajukan">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Upah Belum Diajukan</p>
+                  <p>Upah Belum Pengajuan</p>
                 </a>
               </li>
               <li class="nav-item">

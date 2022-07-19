@@ -10,12 +10,12 @@ $db = $database->getConnection();
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pengajuan Upah</h1>
+        <h1 class="m-0">Upah Belum Pengajuan</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Verifikasi Upah</li>
+          <li class="breadcrumb-item active">Upah Belum Pengajuan</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -27,8 +27,8 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Upah Belum Terbayar</h3>
-      <a href="report/reportupahbelumdiajukan.php" class="btn btn-warning btn-sm float-right">
+      <h3 class="card-title">Data Upah Belum Pengajuan</h3>
+      <a href="report/reportupahbelumdiajukan.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a>
     </div>
@@ -47,10 +47,8 @@ $db = $database->getConnection();
           <?php
           $selectSql = "SELECT * FROM gaji u
           LEFT JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
-          WHERE p.terbayar='1'";
-          // var_dump($tgl_rekap_awal);
-          // var_dump($tgl_rekap_akhir);
-          // die();
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          WHERE p.terbayar IS NULL AND d.jam_datang IS NOT NULL";
           $stmt = $db->prepare($selectSql);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
@@ -74,11 +72,18 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=upahbelumdiajukandetail&id=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
-                <a href="report/reportupahbelumdiajukandetail.php?id=<?= $row['id_karyawan']; ?>" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Unduh</a>
+                <a href="report/reportupahbelumdiajukandetail.php?id=<?= $row['id_karyawan']; ?>" target="_blank" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Unduh</a>
               </td>
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
       <!-- <form action="" method="post">
         <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
@@ -92,6 +97,41 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable();
+    $('#mytable').DataTable({
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function(i) {
+          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
+        };
+
+        // Total over all pages
+        nb_cols = api.columns().nodes().length;
+        var j = 3;
+        while (j < nb_cols && j < 4) {
+          total = api
+            .column(j)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+          j++
+        }
+        // Total over this page
+        // pageTotal = api
+        //   .column(4, {
+        //     page: 'current'
+        //   })
+        //   .data()
+        //   .reduce(function(a, b) {
+        //     return intVal(a) + intVal(b);
+        //   }, 0);
+
+        // Update footer
+        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
+      }
+    });
   });
 </script>
