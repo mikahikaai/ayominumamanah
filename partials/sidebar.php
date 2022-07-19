@@ -15,7 +15,7 @@
   }
   ?>
   <a href="/<?= $indexurl; ?>" class="brand-link">
-    <img src="../dist/img/AdminLTELogo.png" alt="AMDK Amanah" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="../images/logooo cropped resized compressed.png" alt="AMDK Amanah" class="brand-image">
     <span class="brand-text font-weight-light">AMDK Amanah</span>
   </a>
   <a href="#" class="brand-link">
