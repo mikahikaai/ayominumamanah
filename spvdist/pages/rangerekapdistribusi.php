@@ -25,7 +25,7 @@ if (isset($_POST['button_show'])) {
     </div>
     <div class="card-body">
       <form action="" method="POST">
-        <div class="row mb-2 mt-2 align-items-center">
+        <div class="row align-items-center">
           <div class="col-md-2">
             <label for="nama">Nama Karyawan</label>
           </div>
@@ -53,7 +53,7 @@ if (isset($_POST['button_show'])) {
           <div class="col-md-1 d-flex justify-content-end">
             <label for="tgl_rekap_awal">:</label>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
             <input id='datetimepicker2' type='text' class='form-control' data-td-target='#datetimepicker2' placeholder="dd/mm/yyyy" name="tgl_rekap_awal" required>
           </div>
         </div>
