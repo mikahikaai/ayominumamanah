@@ -7,8 +7,8 @@ if (isset($_GET['no_pengajuan'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
   RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
-  INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
+  LEFT JOIN karyawan k1 ON k1.id = u.id_pengirim
+  LEFT JOIN karyawan k2 ON k2.id = p.id_verifikator
   WHERE no_pengajuan=?";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
@@ -18,6 +18,8 @@ if (isset($_GET['no_pengajuan'])) {
   $stmt1->bindParam(1, $_GET['no_pengajuan']);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+  // $stmt1->debugDumpParams();
+  // die();
 }
 ?>
 

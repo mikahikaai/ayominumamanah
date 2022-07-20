@@ -25,10 +25,7 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
-        <i class="fa fa-plus-circle"></i> Export PDF
-      </a>
+      <h3 class="card-title font-weight-bold">Data Rekap Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></h3>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -46,54 +43,31 @@ $db = $database->getConnection();
           $tgl_rekap_awal = $_SESSION['tgl_rekap_awal_upah']->format('Y-m-d H:i:s');
           $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d H:i:s');
 
-          if ($_SESSION['id_karyawan_rekap_upah'] == 'all') {
-            $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji u
+          $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji u
           INNER JOIN distribusi d on u.id_distribusi = d.id
           LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
           INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
+          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2' AND u.id_pengirim = IF (? = 'all', u.id_pengirim, ?)";
+          $stmt = $db->prepare($selectSql);
+          $stmt->bindParam(1, $tgl_rekap_awal);
+          $stmt->bindParam(2, $tgl_rekap_akhir);
+          $stmt->bindParam(3, $_SESSION['id_karyawan_rekap_upah']);
+          $stmt->bindParam(4, $_SESSION['id_karyawan_rekap_upah']);
+          $stmt->execute();
+          if ($stmt->rowCount() > 0) {
+            $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(upah) total_upah FROM gaji u
+          INNER JOIN distribusi d on u.id_distribusi = d.id
+          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
+          INNER JOIN karyawan k ON k.id = u.id_pengirim
+          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND p.terbayar='2' AND u.id_pengirim = IF (? = 'all', u.id_pengirim, ?)
+          GROUP BY k.nama ORDER BY k.nama";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_rekap_awal);
             $stmt->bindParam(2, $tgl_rekap_akhir);
+            $stmt->bindParam(3, $_SESSION['id_karyawan_rekap_upah']);
+            $stmt->bindParam(4, $_SESSION['id_karyawan_rekap_upah']);
             $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(upah) total_upah FROM gaji u
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
-          INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE (d.jam_berangkat BETWEEN ? AND ?) AND p.terbayar='2'
-          GROUP BY k.nama ORDER BY k.nama";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $tgl_rekap_awal);
-              $stmt->bindParam(2, $tgl_rekap_akhir);
-              $stmt->execute();
-            }
-          } else {
-            $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan FROM gaji u
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
-          INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE u.id_pengirim = ? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'";
-            $stmt = $db->prepare($selectSql);
-            $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
-            $stmt->bindParam(2, $tgl_rekap_awal);
-            $stmt->bindParam(3, $tgl_rekap_akhir);
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-              $selectSql = "SELECT u.*, d.*, p.*, k.*, k.id id_karyawan, SUM(upah) total_upah FROM gaji u
-          INNER JOIN distribusi d on u.id_distribusi = d.id
-          LEFT JOIN pengajuan_upah_borongan p on p.id_upah = u.id
-          INNER JOIN karyawan k ON k.id = u.id_pengirim
-          WHERE u.id_pengirim = ? AND (d.jam_berangkat BETWEEN ? AND ?) AND terbayar='2'
-          GROUP BY k.nama ORDER BY jam_berangkat ASC, no_perjalanan ASC";
-              $stmt = $db->prepare($selectSql);
-              $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
-              $stmt->bindParam(2, $tgl_rekap_awal);
-              $stmt->bindParam(3, $tgl_rekap_akhir);
-              $stmt->execute();
-            }
           }
-
           $no = 1;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           ?>
@@ -114,7 +88,7 @@ $db = $database->getConnection();
               </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailupah&id=<?= $row['id_karyawan']; ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailupah&id=<?= $row['id_karyawan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
