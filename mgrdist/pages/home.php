@@ -106,6 +106,11 @@ $stmtPengajuanInsentif = $db->prepare($selectPengajuanInsentif);
 $stmtPengajuanInsentif->execute();
 $jumlahDataPengajuanInsentif = $stmtPengajuanInsentif->rowCount();
 
+$selectBelumDatang = "SELECT * FROM distribusi WHERE jam_datang IS NULL";
+$stmtBelumDatang = $db->prepare($selectBelumDatang);
+$stmtBelumDatang->execute();
+$jumlahDataBelumDatang = $stmtBelumDatang->rowCount();
+
 if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
 ?>
@@ -133,7 +138,7 @@ if (isset($_SESSION['login_sukses'])) {
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-info">
+        <div class="small-box bg-danger">
           <div class="inner">
             <h3><?= $jumlahDataPengajuanUpah ?></h3>
             <p>Jumlah Pengajuan Upah</p>
@@ -147,7 +152,7 @@ if (isset($_SESSION['login_sukses'])) {
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-success">
+        <div class="small-box bg-warning">
           <div class="inner">
             <h3><?= $jumlahDataPengajuanInsentif ?></h3>
             <p>Jumlah Pengajuan Insentif</p>
@@ -159,10 +164,38 @@ if (isset($_SESSION['login_sukses'])) {
         </div>
       </div>
       <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3><?= $jumlahDataBelumDatang ?></h3>
+            <p>Jumlah Armada Belum Datang</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#armadabelumdatang" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3>-</h3>
+            <p>Tidak Ada Informasi</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
     </div>
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-3"># Dalam Perjalanan </h3>
+        <h3 class="mb-3" id="armadabelumdatang"># Dalam Perjalanan </h3>
       </div>
       <div class="col-6 text-right">
         <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">

@@ -137,7 +137,7 @@ if (isset($_POST['verif'])) {
               <tr>
                 <td><input type="checkbox" name="cid[]" value="<?= $row['id_pengajuan_upah']; ?>"></td>
                 <td><?= $no++ ?></td>
-                <td><?= $row['tanggal'] ?></td>
+                <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
                 <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
                 <td><?= $row['nama'] ?></td>
                 <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>

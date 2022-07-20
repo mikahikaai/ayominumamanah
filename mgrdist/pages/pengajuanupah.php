@@ -70,7 +70,7 @@ $db = $database->getConnection();
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tgl_pengajuan'] ?></td>
+              <td><?= tanggal_indo($row['tgl_pengajuan']) ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
