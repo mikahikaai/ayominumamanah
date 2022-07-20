@@ -24,7 +24,7 @@ if (isset($_POST['button_show'])) {
     </div>
     <div class="card-body">
       <form action="" method="POST">
-        <div class="row align-items-center">
+        <div class="row mb-2 align-items-center">
           <div class="col-md-2">
             <label for="nama">Nama Karyawan</label>
           </div>
