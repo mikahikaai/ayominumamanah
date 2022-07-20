@@ -65,9 +65,13 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -100,10 +104,10 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     <td width="25%" align="right"></td>
   </tr> -->
   <tr>
-    <td width="15%">Periode Rekap Pengajuan</td>
-    <td width="1%" align="center">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></td>
-    <td width="25%" align="right"></td>
+    <td>Periode Rekap Pengajuan</td>
+    <td align="center">:</td>
+    <td align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->

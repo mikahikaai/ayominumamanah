@@ -43,7 +43,7 @@ if (isset($_SESSION['id_karyawan_rekap_upah'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= $_SESSION['tgl_rekap_awal_upah']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_upah']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -135,46 +135,3 @@ include_once "../partials/scriptdatatables.php";
     });
   });
 </script>
-<?php
-function tanggal_indo($date, $cetak_hari = false)
-{
-  $hari = array(
-    1 =>    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu'
-  );
-
-  $bulan = array(
-    1 =>   'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember'
-  );
-  $split = explode(' ', $date);
-  $split_tanggal = explode('-', $split[0]);
-  if (count($split) == 1) {
-    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
-  } else {
-    $split_waktu = explode(':', $split[1]);
-    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
-  }
-
-  if ($cetak_hari) {
-    $num = date('N', strtotime($date));
-    return $hari[$num] . ', ' . $tgl_indo;
-  }
-  return $tgl_indo;
-}
-?>

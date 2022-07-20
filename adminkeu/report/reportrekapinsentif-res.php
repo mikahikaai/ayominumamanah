@@ -60,9 +60,13 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -93,10 +97,10 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     <td width="25%" align="right"></td>
   </tr> -->
   <tr>
-    <td width="20%">Periode Insentif</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d')) ?></td>
-    <td width="25%" align="right"></td>
+    <td>Periode Insentif</td>
+    <td align="right">:</td>
+    <td align="left"><?= tanggal_indo($_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d')) ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->
@@ -139,7 +143,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
     </tr>
     <tr style="background-color: blanchedalmond">
       <td colspan="3" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
-      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar+$total_ontime, 0, ',', '.') ?></td>
+      <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
 </table>

@@ -6,7 +6,7 @@ include_once "../partials/cssdatatables.php";
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Prestasi Karyawan</h1>
+        <h1 class="m-0">Rekap Prestasi Keberangkatan</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -23,7 +23,7 @@ include_once "../partials/cssdatatables.php";
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Prestasi<br>
+      <h3 class="card-title font-weight-bold">Data Rekap Prestasi Keberangkatan<br>
         Periode : <?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " .  tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')); ?>
       </h3>
       <a href="report/reportprestasikaryawan.php" target="_blank" class="btn btn-warning btn-sm float-right">

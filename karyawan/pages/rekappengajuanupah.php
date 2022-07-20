@@ -73,7 +73,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE u.id_pengirim=? AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan ASC";
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->bindParam(2, $tgl_awal);
@@ -96,7 +96,7 @@ $db = $database->getConnection();
                 if (empty($row['tgl_verifikasi'])) {
                   echo "<div style='color: red;'>BELUM VERIFIKASI</div>";
                 } else {
-                  echo $row['tgl_verifikasi'];
+                  echo tanggal_indo($row['tgl_verifikasi']);
                 }
                 ?>
               </td>

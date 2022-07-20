@@ -53,7 +53,7 @@ $db = $database->getConnection();
           $tgl_awal = $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d H:i:s');
           $tgl_akhir = $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d H:i:s');
           $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
+          RIGHT JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -68,12 +68,12 @@ $db = $database->getConnection();
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
+          RIGHT JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
           WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?) AND i.id_pengirim = IF (? = 'all', i.id_pengirim, ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_awal);
             $stmt->bindParam(2, $tgl_akhir);
@@ -118,7 +118,6 @@ $db = $database->getConnection();
                 } else {
                   echo 'Terverifikasi';
                 }
-
                 ?>
               </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>

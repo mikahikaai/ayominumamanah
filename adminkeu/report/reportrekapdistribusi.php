@@ -23,7 +23,8 @@ $mpdf = new \Mpdf\Mpdf([
   'margin_bottom' => '30'
 ]);
 
+$mpdf->SetTitle('Amanah | Report Rekap Distribusi');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output();
+$mpdf->Output('Report Rekap Distribusi.pdf', 'I');

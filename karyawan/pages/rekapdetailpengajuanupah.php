@@ -4,10 +4,11 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k.* FROM pengajuan_upah_borongan p
-  INNER JOIN gaji u ON p.id_upah = u.id
+  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+  RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
-  INNER JOIN karyawan k ON k.id = u.id_pengirim
+  INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
+  INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
   WHERE no_pengajuan=?";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
@@ -37,7 +38,7 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></h3>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
@@ -50,6 +51,9 @@ if (isset($_GET['no_pengajuan'])) {
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
             <th>Nama</th>
+            <th>Tanggal Verifikasi</th>
+            <th>Nama Verifikator</th>
+            <th>Status</th>
             <th>Upah</th>
           </tr>
         </thead>
@@ -63,14 +67,43 @@ if (isset($_GET['no_pengajuan'])) {
               <td><?= $no++ ?></td>
               <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $row['nama'] ?></td>
+              <td><?= $row['nama_pengirim'] ?></td>
+              <td>
+                <?php
+                if (empty($row['tgl_verifikasi'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo tanggal_indo($row['tgl_verifikasi']);
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['nama_verifikator'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['nama_verifikator'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if ($row['terbayar'] == '0') {
+                  echo 'Belum';
+                } else if ($row['terbayar'] == '1') {
+                  echo 'Mengajukan';
+                } else {
+                  echo 'Terverifikasi';
+                }
+                ?>
+              </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
           </tr>
         </tfoot>
@@ -96,7 +129,7 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 4;
+        var j = 7;
         while (j < nb_cols) {
           total = api
             .column(j)

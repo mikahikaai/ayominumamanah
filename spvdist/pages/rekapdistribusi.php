@@ -30,7 +30,7 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Distribusi<br>Periode : <?= $_SESSION['tgl_rekap_awal_distribusi']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_distribusi']->format('d-M-Y') ?></h3>
+      <h3 class="card-title font-weight-bold">Data Rekap Distribusi<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_distribusi']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d')) ?></h3>
       <!-- <a href="report/reportrekapdistribusi.php" target="_blank" class="btn btn-warning btn-sm float-right">
         <i class="fa fa-file-pdf"></i> Export PDF
       </a> -->
@@ -40,8 +40,8 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
         <thead>
           <tr>
             <th>No.</th>
+            <th>Tanggal Input</th>
             <th>No. Perjalanan</th>
-            <th>Tanggal</th>
             <th>Plat</th>
             <th>Nama Driver</th>
             <th>Nama Helper 1</th>
@@ -108,8 +108,8 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
             $distro3 = $row['distro3'] == NULL ? '-' : $row['distro3'];
             $bongkar = $row['bongkar'] == 0 ? 'TIDAK' : 'YA';
             $keterangan = $row['keterangan'] == NULL ? '-' : $row['keterangan'];
-            $jam_datang = $row['jam_datang'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['jam_datang']));
-            $tgl_validasi = $row['tgl_validasi'] == NULL ? '-' : date('d-m-Y H:i:s', strtotime($row['tgl_validasi']));
+            $jam_datang = $row['jam_datang'] == NULL ? '-' : tanggal_indo($row['jam_datang']);
+            $tgl_validasi = $row['tgl_validasi'] == NULL ? '-' : tanggal_indo($row['tgl_validasi']);
             $validasi_oleh = $row['validator'] == NULL ? '-' : $row['validator'];
             $estimasi_lama_perjalanan = date_diff(date_create($row['jam_berangkat']), date_create($row['estimasi_jam_datang']))->format('%d Hari %h Jam %i Menit %s Detik');
             switch ($row['status']) {
@@ -129,8 +129,8 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
           ?>
             <tr>
               <td><?= $no++ ?></td>
+              <td><?= tanggal_indo($row['tanggal']) ?></td>
               <td><?= $row['no_perjalanan'] ?></td>
-              <td><?= date('d-m-Y H:i:s', strtotime($row['tanggal'])) ?></td>
               <td><?= $row['plat'], ' - ', $row['jenis_mobil']; ?></td>
               <td><?= $supir ?></td>
               <td><?= $helper1 ?></td>
@@ -144,8 +144,8 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
               <td><?= $row['a5001'] + $row['a5002'] + $row['a5003'] ?></td>
               <td><?= $row['a6001'] + $row['a6002'] + $row['a6003'] ?></td>
               <td><?= $row['refill1'] + $row['refill2'] + $row['refill3'] ?></td>
-              <td><?= $row['jam_berangkat'] ?></td>
-              <td><?= $row['estimasi_jam_datang'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
+              <td><?= tanggal_indo($row['estimasi_jam_datang']) ?></td>
               <td><?= $estimasi_lama_perjalanan ?></td>
               <td><?= $jam_datang ?></td>
               <td><?= $keterangan ?></td>

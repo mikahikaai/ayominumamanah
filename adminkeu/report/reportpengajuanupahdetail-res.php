@@ -8,7 +8,7 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengaju, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+  $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
   RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
@@ -58,6 +58,10 @@ if (isset($_GET['no_pengajuan'])) {
     margin-bottom: 10px;
   }
 
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
+  }
+
   table#content1 td {
     /* border: 1px solid black; */
     padding-bottom: 10px;
@@ -80,28 +84,28 @@ if (isset($_GET['no_pengajuan'])) {
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">No Pengajuan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $_GET['no_pengajuan'] ?></td>
-    <td width="25%" align="right"><?= tanggal_indo($row1['tgl_pengajuan'], true); ?></td>
+    <td>No Pengajuan</td>
+    <td align="right">:</td>
+    <td align="left"><?= $_GET['no_pengajuan'] ?></td>
+    <td align="right" colspan="2"><?= tanggal_indo($row1['tgl_pengajuan'], true); ?></td>
   </tr>
   <tr>
-    <td width="20%">Nama Pengaju</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_pengaju'] ?></td>
-    <td width="25%" align="right"></td>
+    <td>Nama Pengaju</td>
+    <td align="right">:</td>
+    <td align="left"><?= $row1['nama_pengirim'] ?></td>
+    <td align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Nama Verifikator</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_verifikator'] ?></td>
-    <td width="25%" align="right"></td>
+    <td>Nama Verifikator</td>
+    <td align="right">:</td>
+    <td align="left"><?= $row1['nama_verifikator'] ?></td>
+    <td align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Tanggal Verifikasi</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($row1['tgl_verifikasi'], true) ?></td>
-    <td width="25%" align="right"></td>
+    <td>Tanggal Verifikasi</td>
+    <td align="right">:</td>
+    <td align="left"><?= tanggal_indo($row1['tgl_verifikasi'], true) ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->
@@ -114,6 +118,9 @@ if (isset($_GET['no_pengajuan'])) {
       <th>Tanggal & Jam Berangkat</th>
       <th>No Perjalanan</th>
       <th>Nama</th>
+      <th>Tanggal Verifikasi</th>
+      <th>Nama Verifikator</th>
+      <th>Status</th>
       <th>Upah</th>
     </tr>
   </thead>
@@ -129,14 +136,43 @@ if (isset($_GET['no_pengajuan'])) {
         <td><?= $no++ ?></td>
         <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
         <td><?= $row['no_perjalanan'] ?></td>
-        <td><?= $row['nama_pengaju'] ?></td>
+        <td><?= $row['nama_pengirim'] ?></td>
+        <td>
+          <?php
+          if (empty($row['tgl_verifikasi'])) {
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+          } else {
+            echo tanggal_indo($row['tgl_verifikasi']);
+          }
+          ?>
+        </td>
+        <td>
+          <?php
+          if (empty($row['nama_verifikator'])) {
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+          } else {
+            echo $row['nama_verifikator'];
+          }
+          ?>
+        </td>
+        <td>
+          <?php
+          if ($row['terbayar'] == '0') {
+            echo 'Belum';
+          } else if ($row['terbayar'] == '1') {
+            echo 'Mengajukan';
+          } else {
+            echo 'Terverifikasi';
+          }
+          ?>
+        </td>
         <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
       </tr>
     <?php } ?>
   </tbody>
   <tfoot>
-    <tr style="background-color: blanchedalmond">
-      <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+    <tr style="background-color: blanchedalmond;">
+      <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
     </tr>
   </tfoot>

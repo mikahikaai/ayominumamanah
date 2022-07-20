@@ -40,8 +40,8 @@ $db = $database->getConnection();
             <th>Tanggal Pengajuan</th>
             <th>No. Pengajuan</th>
             <th>Nama Karyawan</th>
-            <th>Nama Verifikator</th>
             <th>Tanggal Verifikasi</th>
+            <th>Nama Verifikator</th>
             <th>Status</th>
             <th>Total Upah</th>
             <th>Opsi</th>
@@ -52,7 +52,7 @@ $db = $database->getConnection();
           $tgl_awal = $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d H:i:s');
           $tgl_akhir = $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d H:i:s');
           $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
-          INNER JOIN gaji u on p.id_upah = u.id
+          RIGHT JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
@@ -69,7 +69,7 @@ $db = $database->getConnection();
           // die();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
-          INNER JOIN gaji u on p.id_upah = u.id
+          RIGHT JOIN gaji u on p.id_upah = u.id
           LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id

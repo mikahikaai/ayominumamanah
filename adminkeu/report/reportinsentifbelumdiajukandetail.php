@@ -23,8 +23,8 @@ $mpdf = new \Mpdf\Mpdf([
   'margin_bottom' => '30'
 ]);
 
-$mpdf->SetTitle('Amanah | Report Upah Belum Pengajuan Per Karyawan');
+$mpdf->SetTitle('Amanah | Report Insentif Belum Pengajuan Per Karyawan');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output('Report Upah Belum Pengajuan Per Karyawan.pdf', 'I');
+$mpdf->Output('Report Insentif Belum Pengajuan Per Karyawan.pdf', 'I');

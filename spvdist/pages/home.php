@@ -118,8 +118,9 @@ if (isset($_SESSION['login_sukses'])) {
                     <p class="card-text">Tujuan :<br> <?= implode(", ", array_filter(array($row['distro1'], $row['distro2'], $row['distro3']))); ?></p>
                     <p class="card-text">Tim Pengirim :<br> <?= implode(", ", array_filter(array($row['supir'], $row['helper1'], $row['helper2']))); ?> </p>
                     <p class="card-text">Muatan :<br>Cup = <?= $total_cup; ?>, A330 = <?= $total_330 ?>, A500 = <?= $total_500 ?>, A600 = <?= $total_600 ?>, Refill = <?= $total_refill ?> </p>
+                    <p class="card-text">Jam Berangkat :<br> <?= tanggal_indo($row['jam_berangkat']); ?> </p>
                     <p class="card-text">Estimasi Lama Perjalanan : <br> <?= $estimasi_lama_perjalanan; ?></p>
-                    <p class="card-text">Estimasi Datang :<br> <?= date('d-m-Y H:i:s', strtotime($row['estimasi_jam_datang'])); ?> </p>
+                    <p class="card-text">Estimasi Datang :<br> <?= tanggal_indo($row['estimasi_jam_datang']); ?> </p>
                   </div>
                   <a href="?page=distribusivalidasi&id=<?= $row['id']; ?>" class="btn btn-info d-block">Validasi <i class="fas fa-arrow-circle-right"></i></a>
                 </div>

@@ -30,13 +30,13 @@ if (isset($_GET['id'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Detail Prestasi Karyawan</h1>
+        <h1 class="m-0">Detail Rekap Prestasi Keberangkatan</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item"><a href="?page=prestasikaryawan">Rekap Prestasi</a></li>
-          <li class="breadcrumb-item active">Detail Rekap Prestasi</li>
+          <li class="breadcrumb-item"><a href="?page=prestasikaryawan">Rekap Prestasi Keberangkatan</a></li>
+          <li class="breadcrumb-item active">Detail Rekap Prestasi Keberangkatan</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -48,12 +48,9 @@ if (isset($_GET['id'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Rekap Prestasi<br>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Prestasi Keberangkatan<br>
         Periode : <?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " .  tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')); ?>
       </h3>
-      <a href="report/reportprestasikaryawandetail.php?id=<?= $_GET['id'] ?>" target="_blank" class="btn btn-warning btn-sm float-right">
-        <i class="fa fa-file-pdf"></i> Export PDF
-      </a>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">

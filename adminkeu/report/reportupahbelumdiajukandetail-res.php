@@ -53,9 +53,13 @@ if (isset($_GET['id'])) {
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -80,10 +84,10 @@ if (isset($_GET['id'])) {
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">Nama Karyawan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama'] ?></td>
-    <td width="25%" align="right"></td>
+    <td>Nama Karyawan</td>
+    <td align="right">:</td>
+    <td align="left"><?= $row1['nama'] ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->

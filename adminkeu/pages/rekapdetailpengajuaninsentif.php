@@ -4,10 +4,11 @@ $database = new Database;
 $db = $database->getConnection();
 
 if (isset($_GET['no_pengajuan'])) {
-  $selectSql = "SELECT d.*, i.*, p.*, k.* FROM pengajuan_insentif_borongan p
-  INNER JOIN gaji i ON p.id_insentif = i.id
+  $selectSql = "SELECT d.*, i.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
+  RIGHT JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
-  INNER JOIN karyawan k ON k.id = i.id_pengirim
+  LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
+  LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
   WHERE no_pengajuan=?";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['no_pengajuan']);
@@ -42,8 +43,8 @@ if (isset($_GET['no_pengajuan'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-    <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d')) ?></h3>
-    <?php
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d')) ?></h3>
+      <?php
       if ($row1['terbayar'] != '1') { ?>
         <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
           <i class="fa fa-file-pdf"></i> Export PDF
@@ -57,7 +58,10 @@ if (isset($_GET['no_pengajuan'])) {
             <th>No.</th>
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
-            <th>Nama</th>
+            <th>Nama Karyawan</th>
+            <th>Tanggal Verifikasi</th>
+            <th>Nama Verifikator</th>
+            <th>Status</th>
             <th>Bongkar</th>
             <th>Ontime</th>
           </tr>
@@ -72,7 +76,36 @@ if (isset($_GET['no_pengajuan'])) {
               <td><?= $no++ ?></td>
               <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-              <td><?= $row['nama'] ?></td>
+              <td><?= $row['nama_pengirim'] ?></td>
+              <td>
+                <?php
+                if (empty($row['tgl_verifikasi'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo tanggal_indo($row['tgl_verifikasi']);
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['nama_verifikator'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['nama_verifikator'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if ($row['terbayar'] == '0') {
+                  echo 'Belum';
+                } else if ($row['terbayar'] == '1') {
+                  echo 'Mengajukan';
+                } else {
+                  echo 'Terverifikasi';
+                }
+                ?>
+              </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
             </tr>
@@ -80,7 +113,7 @@ if (isset($_GET['no_pengajuan'])) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td style="text-align: right; font-weight: bold;"></td>
           </tr>
@@ -107,7 +140,7 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 4;
+        var j = 7;
         while (j < nb_cols) {
           total = api
             .column(j)

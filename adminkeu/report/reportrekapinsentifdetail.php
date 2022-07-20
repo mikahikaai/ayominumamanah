@@ -23,8 +23,8 @@ $mpdf = new \Mpdf\Mpdf([
   'margin_bottom' => '30'
 ]);
 
-$mpdf->SetTitle('Amanah | Cetak Rekap Insentif Per Karyawan');
+$mpdf->SetTitle('Amanah | Report Rekap Insentif Per Karyawan');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output('Rekap Insentif Per Karyawan.pdf', 'I');
+$mpdf->Output('Report Insentif Per Karyawan.pdf', 'I');

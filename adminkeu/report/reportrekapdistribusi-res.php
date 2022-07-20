@@ -22,7 +22,7 @@ $selectsql = "SELECT a.*, d.*, k1.nama supir, k1.upah_borongan usupir1, k2.nama 
       LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
       LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
       WHERE (IF (? = 'all',d.jam_datang IS NULL OR d.jam_datang IS NOT NULL, IF(? = '1',d.jam_datang IS NOT NULL, d.jam_datang IS NULL))) AND (d.driver = IF (? = 'all', d.driver, ?) OR d.helper_1 = IF (? = 'all', d.helper_1, ?) OR d.helper_2 = IF (? = 'all', d.helper_2, ?)) AND (d.jam_berangkat BETWEEN ? AND ?)
-      ORDER BY tanggal DESC; ";
+      ORDER BY jam_berangkat ASC; ";
 $stmt = $db->prepare($selectsql);
 $stmt->bindParam(1, $_SESSION['status_kedatangan_distribusi']);
 $stmt->bindParam(2, $_SESSION['status_kedatangan_distribusi']);
@@ -79,9 +79,13 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -106,9 +110,9 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="15%">Status Kedatangan</td>
-    <td width="1%" align="right">:</td>
-    <td width="50%" align="left">
+    <td>Status Kedatangan</td>
+    <td align="right">:</td>
+    <td align="left">
       <?php if ($_SESSION['status_kedatangan_distribusi'] == 'all') {
         echo 'Semua';
       } else if ($_SESSION['status_kedatangan_distribusi'] == '1') {
@@ -117,7 +121,11 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         echo 'Belum Datang';
       } ?>
     </td>
-    <td width="25%" align="right">Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_distribusi']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d')) ?></td>
+  <tr>
+    <td>Periode</td>
+    <td align="right">:</td>
+    <td align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_distribusi']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d')) ?></td>
+  </tr>
   </tr>
   <!-- <tr>
     <td width="20%"></td>
@@ -147,6 +155,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
       <th>Muatan A500</th>
       <th>Muatan A600</th>
       <th>Muatan Galon</th>
+      <th>Status Kedatangan</th>
     </tr>
   </thead>
   <tbody>
@@ -197,6 +206,15 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td><?= $row['a5001'] + $row['a5002'] + $row['a5003'] ?></td>
         <td><?= $row['a6001'] + $row['a6002'] + $row['a6003'] ?></td>
         <td><?= $row['refill1'] + $row['refill2'] + $row['refill3'] ?></td>
+        <td>
+          <?php
+          if (empty($row['jam_datang'])){
+            echo "Belum";
+          } else {
+            echo "Sudah";
+          }
+          ?>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

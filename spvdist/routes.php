@@ -74,6 +74,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/prestasi/prestasikaryawan.php') ? include 'pages/prestasi/prestasikaryawan.php' : include '../pages/404.php';
       $title = 'Prestasi';
       break;
+    case 'prestasikaryawandetail':
+      file_exists('pages/prestasi/prestasikaryawandetail.php') ? include 'pages/prestasi/prestasikaryawandetail.php' : include '../pages/404.php';
+      $title = 'Prestasi';
+      break;
     case 'gantiprofil':
       file_exists('../pages/gantiprofil.php') ? include '../pages/gantiprofil.php' : include '../pages/404.php';
       $title = 'Ubah profil';

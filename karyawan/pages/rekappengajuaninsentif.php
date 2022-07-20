@@ -27,10 +27,7 @@ $db = $database->getConnection();
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Insentif<br>Periode : <?= $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('d-M-Y') ?></h3>
-      <a href="report/reportpengajuaninsentif.php" target="_blank" class="btn btn-warning btn-sm float-right">
-        <i class="fa fa-file-pdf"></i> Export PDF
-      </a>
+      <h3 class="card-title font-weight-bold">Data Rekap Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d')) ?></h3>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -53,30 +50,33 @@ $db = $database->getConnection();
           $tgl_awal = $_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d H:i:s');
           $tgl_akhir = $_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d H:i:s');
           $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
+          RIGHT JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)";
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?) AND i.id_pengirim = ?";
           $stmt = $db->prepare($selectSql);
           $stmt->bindParam(1, $tgl_awal);
           $stmt->bindParam(2, $tgl_akhir);
           $stmt->bindParam(3, $_SESSION['status_rekap_pengajuan_insentif']);
           $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_insentif']);
+          $stmt->bindParam(5, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
             $selectSql = "SELECT p.*, i.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM pengajuan_insentif_borongan p
-          INNER JOIN gaji i on p.id_insentif = i.id
+          RIGHT JOIN gaji i on p.id_insentif = i.id
           LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
-          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
+          WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?) AND i.id_pengirim = ?
+          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_awal);
             $stmt->bindParam(2, $tgl_akhir);
             $stmt->bindParam(3, $_SESSION['status_rekap_pengajuan_insentif']);
             $stmt->bindParam(4, $_SESSION['status_rekap_pengajuan_insentif']);
+            $stmt->bindParam(5, $_SESSION['id_karyawan_rekap_pengajuan_insentif']);
+            $stmt->execute();
             $stmt->execute();
           }
           $no = 1;
@@ -84,11 +84,27 @@ $db = $database->getConnection();
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tgl_pengajuan'] ?></td>
+              <td><?= tanggal_indo($row['tgl_pengajuan']) ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama_pengirim'] ?></td>
-              <td><?= $row['tgl_verifikasi'] ?></td>
-              <td><?= $row['nama_verifikator'] ?></td>
+              <td>
+                <?php
+                if (empty($row['tgl_verifikasi'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo tanggal_indo($row['tgl_verifikasi']);
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['nama_verifikator'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['nama_verifikator'];
+                }
+                ?>
+              </td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
@@ -105,13 +121,6 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
-                <?php if ($row['terbayar'] == '2') { ?>
-                  <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $row['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm">
-                    <i class="fa fa-download"></i> Unduh
-                  </a>
-                <?php } else { ?>
-                  <button class="btn btn-sm btn-secondary" disabled><i class="fa fa-download"></i> Unduh</button>
-                <?php } ?>
               </td>
             </tr>
           <?php } ?>

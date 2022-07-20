@@ -23,8 +23,8 @@ $mpdf = new \Mpdf\Mpdf([
   'margin_bottom' => '30'
 ]);
 
-$mpdf->SetTitle('Amanah | Cetak Rekap Insentif');
+$mpdf->SetTitle('Amanah | Report Rekap Insentif');
 $mpdf->SetHTMLHeader($header);
 $mpdf->SetHTMLFooter($footer);
 $mpdf->WriteHTML($html);
-$mpdf->Output('Rekap Insentif.pdf', 'I');
+$mpdf->Output('Report Rekap Insentif.pdf', 'I');

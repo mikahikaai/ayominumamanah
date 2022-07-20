@@ -60,9 +60,13 @@ if (isset($_GET['id'])) {
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -80,23 +84,23 @@ if (isset($_GET['id'])) {
 
 <table style="width: 100%; margin-bottom: 10px;">
   <tr>
-    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP UPAH</u></td>
+    <td align="center" style="font-weight: bold; padding-bottom: 20px; font-size: x-large;"><u>DATA REKAP UPAH PER KARYAWAN</u></td>
   </tr>
 </table>
 
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">Nama Karyawan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama_pengirim'] ?></td>
-    <td width="25%" align="right"></td>
+    <td>Nama Karyawan</td>
+    <td align="right">:</td>
+    <td align="left"><?= $row1['nama_pengirim'] ?></td>
+    <td align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Periode Upah</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></td>
-    <td width="25%" align="right"></td>
+    <td>Periode Upah</td>
+    <td align="right">:</td>
+    <td align="left"><?= tanggal_indo($_SESSION['tgl_rekap_awal_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_upah']->format('Y-m-d')) ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->

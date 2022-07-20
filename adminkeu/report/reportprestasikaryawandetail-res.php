@@ -64,9 +64,13 @@ if (isset($_GET['id'])) {
   }
 
   table#content1 {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
     margin-bottom: 10px;
+  }
+
+  table#content1 tr td:nth-child(n+2) {
+    padding-left: 10px;
   }
 
   table#content1 td {
@@ -91,16 +95,16 @@ if (isset($_GET['id'])) {
 <!-- content dibawah header -->
 <table id="content1">
   <tr>
-    <td width="20%">Nama Karyawan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= $row1['nama'] ?></td>
-    <td width="25%" align="right"></td>
+    <td>Nama Karyawan</td>
+    <td align="right">:</td>
+    <td align="left"><?= $row1['nama'] ?></td>
+    <td align="right"></td>
   </tr>
   <tr>
-    <td width="20%">Periode Keberangkatan</td>
-    <td width="5%" align="right">:</td>
-    <td width="50%" align="left"><?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')) ?></td>
-    <td width="25%" align="right"></td>
+    <td>Periode Keberangkatan</td>
+    <td align="right">:</td>
+    <td align="left"><?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')) ?></td>
+    <td align="right"></td>
   </tr>
 </table>
 <!-- end content diatas header -->
@@ -110,9 +114,8 @@ if (isset($_GET['id'])) {
   <thead>
     <tr>
       <th>No.</th>
-      <th>Tanggal & Jam Berangkat</th>
-      <th>No Perjalanan</th>
       <th>Nama</th>
+      <th>No Perjalanan</th>
       <th>Jam Berangkat</th>
       <th>Estimasi Jam Datang</th>
       <th>Aktual Jam Datang</th>
@@ -129,9 +132,8 @@ if (isset($_GET['id'])) {
     ?>
       <tr>
         <td><?= $no++ ?></td>
-        <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
-        <td><?= $row['no_perjalanan'] ?></td>
         <td><?= $row['nama'] ?></td>
+        <td><?= $row['no_perjalanan'] ?></td>
         <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
         <td><?= tanggal_indo($row['estimasi_jam_datang']) ?></td>
         <td><?= tanggal_indo($row['jam_datang']) ?></td>

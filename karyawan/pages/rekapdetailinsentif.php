@@ -13,7 +13,7 @@ if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
   INNER JOIN karyawan k ON k.id = i.id_pengirim
   WHERE k.id=? AND (d.jam_berangkat BETWEEN ? AND ?)";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_upah']);
+  $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_insentif']);
   $stmt->bindParam(2, $tgl_rekap_awal_insentif);
   $stmt->bindParam(3, $tgl_rekap_akhir_insentif);
   $stmt->execute();
