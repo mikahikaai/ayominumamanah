@@ -42,10 +42,7 @@ if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= $_SESSION['tgl_rekap_insentif_awal']->format('d-M-Y') . " sd " . $_SESSION['tgl_rekap_insentif_akhir']->format('d-M-Y') ?></h3>
-      <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
-        <i class="fa fa-plus-circle"></i> Export PDF
-      </a>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_insentif_awal']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_insentif_akhir']->format('Y-m-d')) ?></h3>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -67,7 +64,7 @@ if (isset($_SESSION['id_karyawan_rekap_insentif'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar2'], 0, ',', '.') ?></td>

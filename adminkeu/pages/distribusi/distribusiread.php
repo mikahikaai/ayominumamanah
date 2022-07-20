@@ -72,8 +72,8 @@ if (isset($_SESSION['hasil'])) {
         <thead>
           <tr>
             <th>No.</th>
-            <th>Tanggal</th>
             <th>No. Perjalanan</th>
+            <th>Tanggal Input</th>
             <th>Plat</th>
             <th>Nama Driver</th>
             <th>Nama Helper 1</th>
@@ -147,8 +147,8 @@ if (isset($_SESSION['hasil'])) {
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= tanggal_indo($row['tanggal']) ?></td>
               <td><?= $row['no_perjalanan'] ?></td>
+              <td><?= tanggal_indo($row['tanggal']) ?></td>
               <td><?= $row['plat'], ' - ', $row['jenis_mobil']; ?></td>
               <td><?= $supir ?></td>
               <td><?= $helper1 ?></td>

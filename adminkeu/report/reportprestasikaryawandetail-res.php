@@ -164,7 +164,7 @@ if (isset($_GET['id'])) {
     <td align="left">Jumlah Terlambat = <?= $jumlah_terlambat . "x (" . round($jumlah_terlambat / $jumlah_data, 2) * 100 . " %)" ?></td>
   </tr>
   <tr>
-    <td align="right">Hasil :</td>
+    <td align="right">Nilai :</td>
     <td style="font-weight: bold;">
       <?php
       if ($jumlah_tepat_waktu / $jumlah_berangkat >= 0.8) {

@@ -6,12 +6,12 @@ include_once "../partials/cssdatatables.php";
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Prestasi Karyawan</h1>
+        <h1 class="m-0">Detail Rekap Prestasi</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item active">Rekap Prestasi</li>
+          <li class="breadcrumb-item active">Detail Rekap Prestasi</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -23,10 +23,8 @@ include_once "../partials/cssdatatables.php";
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Rekap Prestasi</h3>
-      <span class="float-right font-weight-bold">
-        Periode : <?= $_SESSION['tgl_prestasi_awal']->format('d-M-Y') . " sd " .  $_SESSION['tgl_prestasi_akhir']->format('d-M-Y'); ?>
-      </span>
+      <h3 class="card-title font-weight-bold">Data Detail Rekap Prestasi<br>
+        Periode : <?= tanggal_indo($_SESSION['tgl_prestasi_awal']->format('Y-m-d')) . " sd " .  tanggal_indo($_SESSION['tgl_prestasi_akhir']->format('Y-m-d')); ?></h3>
     </div>
     <div class="card-body">
       <table id="mytable" class="table table-bordered table-hover">
@@ -72,19 +70,19 @@ include_once "../partials/cssdatatables.php";
           ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= $row['tanggal'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
               <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
               <td><?= $row['nama'] ?></td>
-              <td><?= $row['jam_berangkat'] ?></td>
-              <td><?= $row['estimasi_jam_datang'] ?></td>
-              <td><?= $row['jam_datang'] ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
+              <td><?= tanggal_indo($row['estimasi_jam_datang']) ?></td>
+              <td><?= tanggal_indo($row['jam_datang']) ?></td>
               <td>
                 <?php
                 if (strtotime($row['jam_datang']) <= strtotime($row['estimasi_jam_datang']) + 900) {
-                  echo "Tepat Waktu";
+                  echo "<div style='color: green;'>Tepat Waktu</div>";
                   $jumlah_tepat_waktu += 1;
                 } else {
-                  echo "Terlambat";
+                  echo "<div style='color: red;'>Terlambat</div>";
                   $jumlah_terlambat += 1;
                 }
                 ?>
