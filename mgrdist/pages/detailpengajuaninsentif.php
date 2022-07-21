@@ -12,14 +12,14 @@ require '../plugins/php-mailer/src/Exception.php';
 require '../plugins/php-mailer/src/PHPMailer.php';
 require '../plugins/php-mailer/src/SMTP.php';
 
-if (isset($_GET['no_pengajuan'])) {
+if (isset($_GET['acc_code'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k.*, p.id id_pengajuan_insentif FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
-  WHERE no_pengajuan=? AND terbayar='1'";
+  WHERE acc_code=? AND terbayar='1'";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
 }
 
@@ -37,14 +37,17 @@ if (isset($_POST['verif'])) {
 
     QRcode::png($text_qrcode, $tempdir . $namafile, $quality, $ukuran, $padding);
 
+    $acc_code = uniqid();
+
     for ($i = 0; $i < sizeof($checkbox_id_pengajuan_insentif); $i++) {
-      $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, qrcode=? WHERE id=?";
+      $updateSql = "UPDATE pengajuan_insentif_borongan SET terbayar='2', tgl_verifikasi=?, id_verifikator=?, acc_code=?, qrcode=? WHERE id=?";
       $tgl_verifikasi = date('Y-m-d');
       $stmt_update = $db->prepare($updateSql);
       $stmt_update->bindParam(1, $tgl_verifikasi);
       $stmt_update->bindParam(2, $_SESSION['id']);
-      $stmt_update->bindParam(3, $id_qr_code_insentif);
-      $stmt_update->bindParam(4, $checkbox_id_pengajuan_insentif[$i]);
+      $stmt_update->bindParam(3, $acc_code);
+      $stmt_update->bindParam(4, $id_qr_code_insentif);
+      $stmt_update->bindParam(5, $checkbox_id_pengajuan_insentif[$i]);
       $stmt_update->execute();
     }
 
@@ -61,7 +64,7 @@ if (isset($_POST['verif'])) {
       $mail->Host = 'smtp.gmail.com';                     // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
       $mail->Username = "mikahikaai100@gmail.com";             // SMTP username
-      $mail->Password = 'khjjztrrumnocaav';                         // SMTP password
+      $mail->Password = 'sorydvrpfvncnxmc';                         // SMTP password
       $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
       $mail->Port = 587;                                    // TCP port to connect to
 

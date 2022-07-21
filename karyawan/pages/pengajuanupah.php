@@ -20,31 +20,17 @@ if (isset($_POST['ajukan'])) {
   }
   $no_pengajuan_upah_new = "PJU/" . date('Y/') . date('m/') . $no_pengajuan_upah;
 
-  //ambil ID upah
-
-  // $select_id_upah = "SELECT u.id id_upah_belum_terbayar FROM upah u LEFT JOIN pengajuan_upah_borongan p ON u.id = p.id_upah WHERE id_pengirim=? AND p.terbayar IS NULL AND u.upah<>'0'";
-  // $stmt_select_id_upah = $db->prepare($select_id_upah);
-  // $stmt_select_id_upah->bindParam(1, $_SESSION['id']);
-  // $stmt_select_id_upah->execute();
-  // // $jumlah_id_pengajuan = $stmt_select_id_upah->rowCount();
-  // while ($row_select_id_upah = $stmt_select_id_upah->fetch(PDO::FETCH_ASSOC)) {
-  //   $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, terbayar) VALUES (?,?,?,'1') ";
-  //   $tgl_pengajuan = date("Y-m-d");
-  //   $stmt_insert = $db->prepare($insert_ajukan);
-  //   $stmt_insert->bindParam(1, $tgl_pengajuan);
-  //   $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
-  //   $stmt_insert->bindParam(3, $row_select_id_upah['id_upah_belum_terbayar']);
-  //   $stmt_insert->execute();
-  // }
   if (!empty($_POST['cid'])) {
     $checkbox_id_upah = $_POST['cid'];
+    $acc_code = uniqid();
     for ($i = 0; $i < sizeof($checkbox_id_upah); $i++) {
-      $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, terbayar) VALUES (?,?,?,'1') ";
+      $insert_ajukan = "INSERT INTO pengajuan_upah_borongan (tgl_pengajuan, no_pengajuan, id_upah, acc_code, terbayar) VALUES (?,?,?,?,'1') ";
       $tgl_pengajuan = date("Y-m-d");
       $stmt_insert = $db->prepare($insert_ajukan);
       $stmt_insert->bindParam(1, $tgl_pengajuan);
       $stmt_insert->bindParam(2, $no_pengajuan_upah_new);
       $stmt_insert->bindParam(3, $checkbox_id_upah[$i]);
+      $stmt_insert->bindParam(4, $acc_code);
       $stmt_insert->execute();
     }
   }

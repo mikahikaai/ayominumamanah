@@ -87,7 +87,7 @@ $db = $database->getConnection();
                 ?>
               </td>
               <td>
-                <a href="?page=detailpengajuan&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=detailpengajuan&acc_code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>

@@ -67,7 +67,7 @@ if (isset($_POST['button_show'])) {
         </div>
         <div class="row mb-2 mt-2 align-items-center">
           <div class="col-md-2">
-            <label for="status_rekap_pengajuan_insentif">Status Pembayaran</label>
+            <label for="status_rekap_pengajuan_insentif">Status Pengajuan</label>
           </div>
           <div class="col-md-1 d-flex justify-content-end">
             <label for="status_rekap_pengajuan_insentif">:</label>

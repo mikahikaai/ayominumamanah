@@ -81,7 +81,7 @@ if (isset($_GET['idk'])) {
 </table>
 
 <!-- content dibawah header -->
-<table id="content1" border="1">
+<table id="content1">
   <tr>
     <td>Nama Karyawan</td>
     <td align="right">:</td>

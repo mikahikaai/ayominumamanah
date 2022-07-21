@@ -3,19 +3,19 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
+if (isset($_GET['acc_code'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
   RIGHT JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   LEFT JOIN karyawan k1 on i.id_pengirim = k1.id
   LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
-  WHERE no_pengajuan=?";
+  WHERE acc_code=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
 
   $stmt1 = $db->prepare($selectSql);
-  $stmt1->bindParam(1, $_GET['no_pengajuan']);
+  $stmt1->bindParam(1, $_GET['acc_code']);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 }
@@ -46,7 +46,7 @@ if (isset($_GET['no_pengajuan'])) {
       <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Insentif<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_insentif']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_insentif']->format('Y-m-d')) ?></h3>
       <?php
       if ($row1['terbayar'] != '1') { ?>
-        <a href="report/reportpengajuaninsentifdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
+        <a href="report/reportpengajuaninsentifdetail.php?acc_code=<?= $_GET['acc_code']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
           <i class="fa fa-file-pdf"></i> Export PDF
         </a>
       <?php } ?>

@@ -3,19 +3,19 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
+if (isset($_GET['acc_code'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
   RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   LEFT JOIN karyawan k1 ON k1.id = u.id_pengirim
   LEFT JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE no_pengajuan=?";
+  WHERE acc_code=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
 
   $stmt1 = $db->prepare($selectSql);
-  $stmt1->bindParam(1, $_GET['no_pengajuan']);
+  $stmt1->bindParam(1, $_GET['acc_code']);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   // $stmt1->debugDumpParams();
@@ -48,7 +48,7 @@ if (isset($_GET['no_pengajuan'])) {
       <h3 class="card-title font-weight-bold">Data Detail Rekap Pengajuan Upah<br>Periode : <?= tanggal_indo($_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d')) . " sd " . tanggal_indo($_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d')) ?></h3>
       <?php
       if ($row1['terbayar'] != '1') { ?>
-        <a href="report/reportpengajuanupahdetail.php?no_pengajuan=<?= $_GET['no_pengajuan']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
+        <a href="report/reportpengajuanupahdetail.php?acc_code=<?= $_GET['acc_code']; ?>" target="_blank" class="btn btn-warning btn-sm float-right">
           <i class="fa fa-file-pdf"></i> Export PDF
         </a>
       <?php } ?>

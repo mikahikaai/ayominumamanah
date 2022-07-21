@@ -4,12 +4,6 @@
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_POST['ajukan'])) {
-  $update_ajukan = "UPDATE pengajuan_upah_borongan SET terbayar = '2' WHERE terbayar='1' AND  ";
-  $stmt_update = $db->prepare($update_ajukan);
-  $stmt_update->bindParam(1, $_SESSION['id']);
-  $stmt_update->execute();
-}
 ?>
 
 <div class="content-header">
@@ -92,7 +86,7 @@ if (isset($_POST['ajukan'])) {
                 ?>
               </td>
               <td>
-                <a href="?page=detailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=detailpengajuaninsentif&acc_code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>

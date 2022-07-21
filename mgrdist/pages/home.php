@@ -4,6 +4,15 @@ $database = new Database;
 $db = $database->getConnection();
 
 $tahun = date('Y');
+$tanggal_awal = date_create($tahun . '-01-01')->setTime(0, 0, 0);
+$tanggal_akhir = date_create($tahun . '-12-31')->setTime(23, 59, 59);
+
+//Jumlah Data Pengajuan Upah Terverif
+$_SESSION['tgl_rekap_awal_pengajuan_upah'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_pengajuan_upah'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_pengajuan_upah'] = 'all';
+$_SESSION['status_rekap_pengajuan_upah'] = '2';
+
 $arrayChartUpah = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
@@ -106,10 +115,16 @@ $stmtPengajuanInsentif = $db->prepare($selectPengajuanInsentif);
 $stmtPengajuanInsentif->execute();
 $jumlahDataPengajuanInsentif = $stmtPengajuanInsentif->rowCount();
 
-$selectBelumDatang = "SELECT * FROM distribusi WHERE jam_datang IS NULL";
-$stmtBelumDatang = $db->prepare($selectBelumDatang);
-$stmtBelumDatang->execute();
-$jumlahDataBelumDatang = $stmtBelumDatang->rowCount();
+$tanggalAkumulasiPengajuanUpahVerifAwal = $tanggal_awal->format('Y-m-d');
+$tanggalAkumulasiPengajuanUpahVerifAkhir = $tanggal_akhir->format('Y-m-d');
+$selectAkumulasiPengajuanUpahVerif = "SELECT * FROM pengajuan_upah_borongan
+WHERE (tgl_verifikasi BETWEEN ? AND ? AND tgl_verifikasi IS NOT NULL)
+GROUP BY qrcode";
+$stmtAkumulasiPengajuanUpahVerif = $db->prepare($selectAkumulasiPengajuanUpahVerif);
+$stmtAkumulasiPengajuanUpahVerif->bindParam(1, $tanggalAkumulasiPengajuanUpahVerifAwal);
+$stmtAkumulasiPengajuanUpahVerif->bindParam(2, $tanggalAkumulasiPengajuanUpahVerifAkhir);
+$stmtAkumulasiPengajuanUpahVerif->execute();
+$jumlahDataAkumulasiPengajuanUpahVerif = $stmtAkumulasiPengajuanUpahVerif->rowCount();
 
 if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
@@ -134,7 +149,7 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
-    <h3># Informasi Saat Ini</h3>
+    <h3># Rangkuman Informasi Saat Ini (Tahun <?= date('Y') ?>)</h3>
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -168,13 +183,13 @@ if (isset($_SESSION['login_sukses'])) {
         <!-- small box -->
         <div class="small-box bg-primary">
           <div class="inner">
-            <h3><?= $jumlahDataBelumDatang ?></h3>
-            <p>Jumlah Armada Dalam Perjalanan</p>
+            <h3><?= $jumlahDataAkumulasiPengajuanUpahVerif ?></h3>
+            <p>Akumulasi Pengajuan Upah Terferifikasi</p>
           </div>
           <div class="icon">
-            <i class="fas fa-truck"></i>
+            <i class="fa-solid fa-file-circle-check"></i>
           </div>
-          <button class="small-box-footer" onclick="toArmadaBelumDatang()" style="border: none; width: 100%;">Detail <i class="fas fa-arrow-circle-right"></i></button>
+          <a href="?page=rekappengajuanupah" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -183,7 +198,7 @@ if (isset($_SESSION['login_sukses'])) {
         <div class="small-box bg-warning">
           <div class="inner">
             <h3>-</h3>
-            <p>Tidak Ada Informasi</p>
+            <p>Akumulasi Pengajuan Upah Terferifikasi</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -283,7 +298,7 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
     </div>
   </div>
-  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
+
 </div><!-- /.container-fluid -->
 
 <?php
@@ -485,31 +500,5 @@ include_once "../partials/scriptdatatables.php";
       },
     }
   });
-
-  //Get the button
-  var mybutton = document.getElementById("tothetop");
-
-  // When the user scrolls down 20px from the top of the document, show the button
-  window.onscroll = function() {
-    scrollFunction()
-  };
-
-  function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      mybutton.style.display = "block";
-    } else {
-      mybutton.style.display = "none";
-    }
-  }
-
-  function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }
-
-  function toArmadaBelumDatang() {
-    const element = document.getElementById("armadabelumdatang");
-    element.scrollIntoView();
-  }
 </script>
 <!-- /.content -->

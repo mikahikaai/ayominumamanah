@@ -74,7 +74,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on u.id_distribusi = d.id
           WHERE u.id_pengirim = IF (? = 'all', u.id_pengirim, ?) AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan ASC";
+          GROUP BY acc_code ORDER BY tgl_pengajuan DESC, no_pengajuan ASC, terbayar ASC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
             $stmt->bindParam(2, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
@@ -126,9 +126,9 @@ $db = $database->getConnection();
               </td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailpengajuanupah&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-sm btn-primary mr-1"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailpengajuanupah&acc_code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-primary mr-1"><i class="fa fa-eye"></i> Lihat</a>
                 <?php if ($row['terbayar'] == '2') { ?>
-                  <a href="report/reportpengajuanupahdetail.php?no_pengajuan=<?= $row['no_pengajuan']; ?>" target="_blank" class="btn btn-success btn-sm">
+                  <a href="report/reportpengajuanupahdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-success btn-sm">
                     <i class="fa fa-download"></i> Unduh
                   </a>
                 <?php } else { ?>

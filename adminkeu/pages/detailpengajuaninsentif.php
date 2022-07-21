@@ -31,13 +31,15 @@ $no_pengajuan_insentif_new = "PJI/" . date('Y/') . date('m/') . $no_pengajuan_in
 if (isset($_POST['ajukan'])) {
   if (!empty($_POST['cid'])) {
     $checkbox_id_pengajuan_insentif = $_POST['cid'];
+    $acc_code = uniqid();
     for ($i = 0; $i < sizeof($checkbox_id_pengajuan_insentif); $i++) {
-      $insertSql = "INSERT INTO pengajuan_insentif_borongan (tgl_pengajuan, no_pengajuan, id_insentif, terbayar) VALUES (?,?,?,'1')";
+      $insertSql = "INSERT INTO pengajuan_insentif_borongan (tgl_pengajuan, no_pengajuan, id_insentif, acc_code, terbayar) VALUES (?,?,?,?,'1')";
       $tgl_pengajuan = date('Y-m-d');
       $stmt_insert = $db->prepare($insertSql);
       $stmt_insert->bindParam(1, $tgl_pengajuan);
       $stmt_insert->bindParam(2, $no_pengajuan_insentif_new);
       $stmt_insert->bindParam(3, $checkbox_id_pengajuan_insentif[$i]);
+      $stmt_insert->bindParam(4, $acc_code);
       $stmt_insert->execute();
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';

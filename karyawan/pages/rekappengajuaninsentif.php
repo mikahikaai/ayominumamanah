@@ -69,7 +69,7 @@ $db = $database->getConnection();
           LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
           WHERE (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?) AND i.id_pengirim = ?
-          GROUP BY no_pengajuan ORDER BY tgl_pengajuan DESC, no_pengajuan DESC";
+          GROUP BY acc_code ORDER BY tgl_pengajuan DESC, no_pengajuan DESC, terbayar ASC";
             $stmt = $db->prepare($selectSql);
             $stmt->bindParam(1, $tgl_awal);
             $stmt->bindParam(2, $tgl_akhir);
@@ -120,7 +120,7 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailpengajuaninsentif&no_pengajuan=<?= $row['no_pengajuan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailpengajuaninsentif&acc_code=<?= $row['acc_code']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>

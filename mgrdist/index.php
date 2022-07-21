@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+date_default_timezone_set("Asia/Kuala_Lumpur");
+
 if (!isset($_SESSION['jabatan'])) {
   echo '<meta http-equiv="refresh" content="0;url=/login.php">';
   exit;
@@ -104,8 +107,9 @@ include_once "../partials/scripts.php";
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
-  <script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
+  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
 </body>
+<script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
 
 <script>
   $("title").html("Amanah | <?= $title ?>");
@@ -249,6 +253,26 @@ include_once "../partials/scripts.php";
       $("a#link_rekapitulasi").addClass("active");
     }
   });
+
+  var mybutton = document.getElementById("tothetop");
+
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {
+    scrollFunction()
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 </script>
 
 <?php

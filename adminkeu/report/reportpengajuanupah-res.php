@@ -16,7 +16,7 @@ $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifika
   LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
   INNER JOIN distribusi d on u.id_distribusi = d.id
   WHERE u.id_pengirim = IF (? = 'all', u.id_pengirim, ?) AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
-  GROUP BY no_pengajuan ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
+  GROUP BY qrcode ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
 $stmt = $db->prepare($selectSql);
 $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
 $stmt->bindParam(2, $_SESSION['id_karyawan_rekap_pengajuan_upah']);

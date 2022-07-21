@@ -7,19 +7,19 @@ date_default_timezone_set("Asia/Kuala_Lumpur");
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['no_pengajuan'])) {
+if (isset($_GET['acc_code'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
   RIGHT JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE no_pengajuan=?";
+  WHERE acc_code=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['no_pengajuan']);
+  $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
 
   $stmt1 = $db->prepare($selectSql);
-  $stmt1->bindParam(1, $_GET['no_pengajuan']);
+  $stmt1->bindParam(1, $_GET['acc_code']);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 }
@@ -86,7 +86,7 @@ if (isset($_GET['no_pengajuan'])) {
   <tr>
     <td>No Pengajuan</td>
     <td align="right">:</td>
-    <td align="left"><?= $_GET['no_pengajuan'] ?></td>
+    <td align="left"><?= $row1['no_pengajuan'] ?></td>
     <td align="right" colspan="2"><?= tanggal_indo($row1['tgl_pengajuan'], true); ?></td>
   </tr>
   <tr>

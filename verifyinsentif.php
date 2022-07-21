@@ -1,54 +1,18 @@
 <?php
-function tanggal_indo($tanggal, $cetak_hari = false)
-{
-  $hari = array(
-    1 =>    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu'
-  );
-
-  $bulan = array(
-    1 =>   'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember'
-  );
-  $split     = explode('-', $tanggal);
-  $tgl_indo = $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
-
-  if ($cetak_hari) {
-    $num = date('N', strtotime($tanggal));
-    return $hari[$num] . ', ' . $tgl_indo;
-  }
-  return $tgl_indo;
-}
-
 include 'database/database.php';
 
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['code'])) {
+if (isset($_GET['acc_code'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k1.*, k2.nama nama_verifikator, SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = i.id_pengirim
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE qrcode=?";
+  WHERE acc_code=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['code']);
+  $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   // var_dump($stmt->fetch(PDO::FETCH_ASSOC));
@@ -221,3 +185,47 @@ if (isset($_GET['code'])) {
 </body>
 
 </html>
+
+<?php
+function tanggal_indo($date, $cetak_hari = false)
+{
+  $hari = array(
+    1 =>    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+    'Minggu'
+  );
+
+  $bulan = array(
+    1 =>   'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  );
+  $split = explode(' ', $date);
+  $split_tanggal = explode('-', $split[0]);
+  if (count($split) == 1) {
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0];
+  } else {
+    $split_waktu = explode(':', $split[1]);
+    $tgl_indo = $split_tanggal[2] . ' ' . $bulan[(int)$split_tanggal[1]] . ' ' . $split_tanggal[0] . ' ' . $split_waktu[0] . ':' . $split_waktu[1] . ':' . $split_waktu[2];
+  }
+
+  if ($cetak_hari) {
+    $num = date('N', strtotime($date));
+    return $hari[$num] . ', ' . $tgl_indo;
+  }
+  return $tgl_indo;
+}
+?>
