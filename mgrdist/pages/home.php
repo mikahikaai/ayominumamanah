@@ -13,6 +13,12 @@ $_SESSION['tgl_rekap_akhir_pengajuan_upah'] = $tanggal_akhir;
 $_SESSION['id_karyawan_rekap_pengajuan_upah'] = 'all';
 $_SESSION['status_rekap_pengajuan_upah'] = '2';
 
+//Jumlah Data Pengajuan Upah Terverif
+$_SESSION['tgl_rekap_awal_pengajuan_insentif'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_pengajuan_insentif'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_pengajuan_insentif'] = 'all';
+$_SESSION['status_rekap_pengajuan_insentif'] = '2';
+
 $arrayChartUpah = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
@@ -119,12 +125,23 @@ $tanggalAkumulasiPengajuanUpahVerifAwal = $tanggal_awal->format('Y-m-d');
 $tanggalAkumulasiPengajuanUpahVerifAkhir = $tanggal_akhir->format('Y-m-d');
 $selectAkumulasiPengajuanUpahVerif = "SELECT * FROM pengajuan_upah_borongan
 WHERE (tgl_verifikasi BETWEEN ? AND ? AND tgl_verifikasi IS NOT NULL)
-GROUP BY qrcode";
+GROUP BY acc_code";
 $stmtAkumulasiPengajuanUpahVerif = $db->prepare($selectAkumulasiPengajuanUpahVerif);
 $stmtAkumulasiPengajuanUpahVerif->bindParam(1, $tanggalAkumulasiPengajuanUpahVerifAwal);
 $stmtAkumulasiPengajuanUpahVerif->bindParam(2, $tanggalAkumulasiPengajuanUpahVerifAkhir);
 $stmtAkumulasiPengajuanUpahVerif->execute();
 $jumlahDataAkumulasiPengajuanUpahVerif = $stmtAkumulasiPengajuanUpahVerif->rowCount();
+
+$tanggalAkumulasiPengajuanInsentifVerifAwal = $tanggal_awal->format('Y-m-d');
+$tanggalAkumulasiPengajuanInsentifVerifAkhir = $tanggal_akhir->format('Y-m-d');
+$selectAkumulasiPengajuanInsentifVerif = "SELECT * FROM pengajuan_insentif_borongan
+WHERE (tgl_verifikasi BETWEEN ? AND ? AND tgl_verifikasi IS NOT NULL)
+GROUP BY acc_code";
+$stmtAkumulasiPengajuanInsentifVerif = $db->prepare($selectAkumulasiPengajuanInsentifVerif);
+$stmtAkumulasiPengajuanInsentifVerif->bindParam(1, $tanggalAkumulasiPengajuanInsentifVerifAwal);
+$stmtAkumulasiPengajuanInsentifVerif->bindParam(2, $tanggalAkumulasiPengajuanInsentifVerifAkhir);
+$stmtAkumulasiPengajuanInsentifVerif->execute();
+$jumlahDataAkumulasiPengajuanInsentifVerif = $stmtAkumulasiPengajuanInsentifVerif->rowCount();
 
 if (isset($_SESSION['hasil_update_pw'])) {
   if ($_SESSION['hasil_update_pw']) {
@@ -149,7 +166,7 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
-    <h3># Rangkuman Informasi Saat Ini (Tahun <?= date('Y') ?>)</h3>
+    <h3># Rangkuman Informasi Sampai Saat Ini (Tahun <?= date('Y') ?>)</h3>
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -184,7 +201,7 @@ if (isset($_SESSION['login_sukses'])) {
         <div class="small-box bg-primary">
           <div class="inner">
             <h3><?= $jumlahDataAkumulasiPengajuanUpahVerif ?></h3>
-            <p>Akumulasi Pengajuan Upah Terferifikasi</p>
+            <p>Akumulasi Pengajuan Upah Terverifikasi</p>
           </div>
           <div class="icon">
             <i class="fa-solid fa-file-circle-check"></i>
@@ -197,13 +214,13 @@ if (isset($_SESSION['login_sukses'])) {
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>-</h3>
-            <p>Akumulasi Pengajuan Upah Terferifikasi</p>
+            <h3><?= $jumlahDataAkumulasiPengajuanInsentifVerif ?></h3>
+            <p>Akumulasi Pengajuan Insentif Terverifikasi</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fa-solid fa-file-circle-check"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekappengajuaninsentif" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
