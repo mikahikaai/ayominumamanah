@@ -141,7 +141,7 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Akumulasi Upah Diterima</p>
           </div>
           <div class="icon">
-            <i class="ion ion-bag"></i>
+            <i class="fas fa-sack-dollar"></i>
           </div>
           <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -155,7 +155,7 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Akumulasi Insentif Diterima</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fas fa-sack-dollar"></i>
           </div>
           <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -169,9 +169,9 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Akumulasi Jumlah Keberangkatan</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fas fa-truck"></i>
           </div>
-          <button class="small-box-footer" onclick="toArmadaBelumDatang()" style="border: none; width: 100%;">Detail <i class="fas fa-arrow-circle-right"></i></button>
+          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->

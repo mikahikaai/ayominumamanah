@@ -144,7 +144,7 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Jumlah Pengajuan Upah</p>
           </div>
           <div class="icon">
-            <i class="ion ion-bag"></i>
+            <i class="fas fa-envelope-open-text"></i>
           </div>
           <a href="?page=pengajuanupah" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -158,7 +158,7 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Jumlah Pengajuan Insentif</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fas fa-envelope-open-text"></i>
           </div>
           <a href="?page=pengajuaninsentif" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
@@ -172,7 +172,7 @@ if (isset($_SESSION['login_sukses'])) {
             <p>Jumlah Armada Belum Datang</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fas fa-truck"></i>
           </div>
           <button class="small-box-footer" onclick="toArmadaBelumDatang()" style="border: none; width: 100%;">Detail <i class="fas fa-arrow-circle-right"></i></button>
         </div>
