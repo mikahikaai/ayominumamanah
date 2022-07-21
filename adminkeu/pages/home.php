@@ -4,6 +4,23 @@ $database = new Database;
 $db = $database->getConnection();
 
 $tahun = date('Y');
+$tanggal_awal = date_create($tahun . '-01-01')->setTime(0, 0, 0);
+$tanggal_akhir = date_create($tahun . '-12-31')->setTime(23, 59, 59);
+
+//rekap upah
+$_SESSION['tgl_rekap_awal_upah'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_upah'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_upah'] = 'all';
+
+//rekap insentif
+$_SESSION['tgl_rekap_insentif_awal'] = $tanggal_awal;
+$_SESSION['tgl_rekap_insentif_akhir'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_insentif'] = 'all';
+
+//pengajuan insentif
+$_SESSION['tgl_pengajuan_insentif_awal'] = $tanggal_awal;
+$_SESSION['tgl_pengajuan_insentif_akhir'] = $tanggal_akhir;
+
 $arrayChartUpah = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
@@ -46,6 +63,45 @@ for ($i = 1; $i <= 12; $i++) {
   }
 }
 
+$tanggalBatasAwal = $tanggal_awal->format('Y-m-d H:i:s');
+$tanggalBatasAkhir = $tanggal_akhir->format('Y-m-d H:i:s');
+
+$selectAkumulasiUpah = "SELECT SUM(upah) total_upah FROM gaji g
+LEFT JOIN pengajuan_upah_borongan p ON g.id = p.id_upah
+INNER JOIN distribusi d ON d.id = g.id_distribusi
+WHERE terbayar='2' AND (jam_berangkat BETWEEN ? AND ?)";
+$stmtAkumulasiUpah = $db->prepare($selectAkumulasiUpah);
+$stmtAkumulasiUpah->bindParam(1, $tanggalBatasAwal);
+$stmtAkumulasiUpah->bindParam(2, $tanggalBatasAkhir);
+$stmtAkumulasiUpah->execute();
+$rowAkumulasiUpah = $stmtAkumulasiUpah->fetch(PDO::FETCH_ASSOC);
+
+$selectAkumulasiInsentif = "SELECT SUM(g.bongkar+g.ontime) total_insentif FROM gaji g
+LEFT JOIN pengajuan_insentif_borongan p ON g.id = p.id_insentif
+INNER JOIN distribusi d ON d.id = g.id_distribusi
+WHERE terbayar='2' AND (jam_berangkat BETWEEN ? AND ?)";
+$stmtAkumulasiInsentif = $db->prepare($selectAkumulasiInsentif);
+$stmtAkumulasiInsentif->bindParam(1, $tanggalBatasAwal);
+$stmtAkumulasiInsentif->bindParam(2, $tanggalBatasAkhir);
+$stmtAkumulasiInsentif->execute();
+$rowAkumulasiInsentif = $stmtAkumulasiInsentif->fetch(PDO::FETCH_ASSOC);
+
+$selectAkumulasiUpahBelumPengajuan = "SELECT p.*, u.*, d.*, SUM(upah) total_upah FROM pengajuan_upah_borongan p
+RIGHT JOIN gaji u on p.id_upah = u.id
+INNER JOIN distribusi d on u.id_distribusi = d.id
+WHERE p.terbayar IS NULL AND d.jam_datang IS NOT NULL";
+$stmtAkumulasiUpahBelumPengajuan = $db->prepare($selectAkumulasiUpahBelumPengajuan);
+$stmtAkumulasiUpahBelumPengajuan->execute();
+$rowAkumulasiUpahBelumPengajuan = $stmtAkumulasiUpahBelumPengajuan->fetch(PDO::FETCH_ASSOC);
+
+$selectAkumulasiInsentifBelumPengajuan = "SELECT p.*, u.*, d.*, SUM(u.bongkar+u.ontime) total_insentif FROM pengajuan_insentif_borongan p
+RIGHT JOIN gaji u on p.id_insentif = u.id
+INNER JOIN distribusi d on u.id_distribusi = d.id
+WHERE p.terbayar IS NULL AND d.jam_datang IS NOT NULL";
+$stmtAkumulasiInsentifBelumPengajuan = $db->prepare($selectAkumulasiInsentifBelumPengajuan);
+$stmtAkumulasiInsentifBelumPengajuan->execute();
+$rowAkumulasiInsentifBelumPengajuan = $stmtAkumulasiInsentifBelumPengajuan->fetch(PDO::FETCH_ASSOC);
+
 $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
 FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
 LEFT JOIN karyawan k1 on d.driver = k1.id
@@ -85,6 +141,65 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
+    <h3># Rangkuman Informasi (Tahun <?= date('Y') ?>)</h3>
+    <div class="row mt-3">
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiUpah['total_upah'], 0, ',', '.') ?></h3>
+            <p>Akumulasi Upah Diterima</p>
+          </div>
+          <div class="icon">
+            <i class="fa-solid fa-money-check-dollar"></i>
+          </div>
+          <a href="?page=rekapupah" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiInsentif['total_insentif'], 0, ',', '.') ?></h3>
+            <p>Akumulasi Insentif Diterima</p>
+          </div>
+          <div class="icon">
+            <i class="fa-solid fa-money-check-dollar"></i>
+          </div>
+          <a href="?page=rekapinsentif" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiUpahBelumPengajuan['total_upah'], 0, ',', '.') ?></h3>
+            <p>Akumulasi Belum Pengajuan Upah</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-sack-dollar"></i>
+          </div>
+          <a href="?page=upahbelumdiajukan" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiInsentifBelumPengajuan['total_insentif'], 0, ',', '.') ?></h3>
+            <p>Akumulasi Belum Pengajuan Insentif</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-sack-dollar"></i>
+          </div>
+          <a href="?page=pengajuaninsentif" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
     <div class="row">
       <div class="col-6">
         <h3 class="mb-3"># Dalam Perjalanan </h3>

@@ -6,9 +6,11 @@ if (isset($_POST['button_edit'])) {
 
   $updatesql = "UPDATE distributor SET nama=?, paket=?, alamat_dropping=?, no_telepon=?, jarak=?, status_keaktifan=?, lat=?, lng=?  WHERE id=?";
   $stmt = $db->prepare($updatesql);
-  $stmt->bindParam(1, $_POST['nama']);
+  $nama_distributor = strtoupper($_POST['nama']);
+  $alamat_dropping_distributor = strtoupper($_POST['alamat_dropping']);
+  $stmt->bindParam(1, $nama_distributor);
   $stmt->bindParam(2, $_POST['paket']);
-  $stmt->bindParam(3, $_POST['alamat_dropping']);
+  $stmt->bindParam(3, $alamat_dropping_distributor);
   $stmt->bindParam(4, $_POST['no_telepon']);
   $stmt->bindParam(5, $_POST['jarak']);
   $stmt->bindParam(6, $_POST['status_keaktifan']);
@@ -62,9 +64,6 @@ if (isset($_GET['id'])) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Data Ubah Distributor</h3>
-      <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-arrow-left"></i> Kembali
-      </a>
     </div>
     <div class="card-body">
       <form action="" method="post">
@@ -404,7 +403,7 @@ if (isset($_GET['id'])) {
 
   var control = L.Routing.control({
     waypoints: [latLangPabrik, latLangDistro],
-    language : 'id'
+    language: 'id'
   }).on("routesfound", function(e) {
     var jarak = e.routes[0].summary.totalDistance / 1000;
     document.getElementById('jarak').value = jarak.toFixed(2);

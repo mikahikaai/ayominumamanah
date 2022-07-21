@@ -71,7 +71,11 @@ $db = $database->getConnection();
           }
 
           $no = 1;
+          $total_bongkar = 0;
+          $total_ontime = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_bongkar += $row['total_bongkar'];
+            $total_ontime += $row['total_ontime'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
@@ -92,6 +96,7 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=rekapdetailinsentif&id=<?= $row['id_karyawan']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="report/reportrekapinsentifdetail.php?id=<?= $row['id_karyawan']; ?>" target="_blank" class="btn btn-success btn-sm"><i class="fa fa-download"></i> Unduh</a>
               </td>
             </tr>
           <?php } ?>
@@ -99,8 +104,13 @@ $db = $database->getConnection();
         <tfoot>
           <tr>
             <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
-            <td style="text-align: right; font-weight: bold;"></td>
-            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
             <td></td>
           </tr>
         </tfoot>
@@ -114,41 +124,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable({
-      footerCallback: function(row, data, start, end, display) {
-        var api = this.api();
-
-        // Remove the formatting to get integer data for summation
-        var intVal = function(i) {
-          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
-        };
-
-        // Total over all pages
-        nb_cols = api.columns().nodes().length;
-        var j = 3;
-        while (j < nb_cols && j < 5) {
-          total = api
-            .column(j)
-            .data()
-            .reduce(function(a, b) {
-              return intVal(a) + intVal(b);
-            }, 0);
-          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-          j++
-        }
-        // Total over this page
-        // pageTotal = api
-        //   .column(4, {
-        //     page: 'current'
-        //   })
-        //   .data()
-        //   .reduce(function(a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0);
-
-        // Update footer
-        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      }
-    });
+    $('#mytable').DataTable();
   });
 </script>

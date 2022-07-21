@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
   RIGHT JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k ON k.id = i.id_pengirim
-  WHERE k.id=? AND (d.jam_datang BETWEEN ? AND ?)";
+  WHERE k.id=? AND (d.jam_datang BETWEEN ? AND ?) AND terbayar='2'";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['id']);
   $stmt->bindParam(2, $tgl_rekap_awal);
@@ -60,7 +60,11 @@ if (isset($_GET['id'])) {
           <?php
 
           $no = 1;
+          $total_bongkar = 0;
+          $total_ontime = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_bongkar += $row['bongkar2'];
+            $total_ontime += $row['ontime'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
@@ -75,12 +79,16 @@ if (isset($_GET['id'])) {
         <tfoot>
           <tr>
             <td colspan="4" style="text-align: center; font-weight: bold;">TOTAL</td>
-            <td style="text-align: right; font-weight: bold;"></td>
-            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+          </tr>
+          <tr>
+            <td colspan="4" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
           </tr>
         </tfoot>
       </table>
-      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
     </div>
   </div>
 </div>
@@ -90,41 +98,6 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable({
-      footerCallback: function(row, data, start, end, display) {
-        var api = this.api();
-
-        // Remove the formatting to get integer data for summation
-        var intVal = function(i) {
-          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
-        };
-
-        // Total over all pages
-        nb_cols = api.columns().nodes().length;
-        var j = 4;
-        while (j < nb_cols && j < 6) {
-          total = api
-            .column(j)
-            .data()
-            .reduce(function(a, b) {
-              return intVal(a) + intVal(b);
-            }, 0);
-          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-          j++
-        }
-        // Total over this page
-        // pageTotal = api
-        //   .column(4, {
-        //     page: 'current'
-        //   })
-        //   .data()
-        //   .reduce(function(a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0);
-
-        // Update footer
-        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      }
-    });
+    $('#mytable').DataTable();
   });
 </script>

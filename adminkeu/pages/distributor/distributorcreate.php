@@ -67,9 +67,6 @@ if ($stmt->rowCount() > 0) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Data Tambah Distributor</h3>
-      <a href="?page=distributorread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-arrow-left"></i> Kembali
-      </a>
     </div>
     <div class="card-body">
       <form action="" method="post">

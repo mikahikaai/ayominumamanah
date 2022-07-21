@@ -4,10 +4,33 @@ $database = new Database;
 $db = $database->getConnection();
 
 $tahun = date('Y');
+$tanggal_awal = date_create($tahun . '-01-01')->setTime(0, 0, 0);
+$tanggal_akhir = date_create($tahun . '-12-31')->setTime(23, 59, 59);
+
+//rekap upah
+$_SESSION['tgl_rekap_awal_upah'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_upah'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_upah'] = $_SESSION['id'];
+
+//rekap insentif
+$_SESSION['tgl_rekap_insentif_awal'] = $tanggal_awal;
+$_SESSION['tgl_rekap_insentif_akhir'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_insentif'] = $_SESSION['id'];
+
+//rekap distribusi
+$_SESSION['tgl_rekap_awal_distribusi'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_distribusi'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_distribusi'] = $_SESSION['id'];
+
+$_SESSION['tgl_rekap_awal_pengajuan_upah'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_pengajuan_upah'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_pengajuan_upah'] = $_SESSION['id'];
+$_SESSION['status_rekap_pengajuan_upah'] = '1';
+
 $arrayChartUpah = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT MONTH(d.jam_berangkat), k.nama, SUM(u.upah) total_upah FROM gaji u
-  INNER JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
+  LEFT JOIN pengajuan_upah_borongan p ON p.id_upah = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
   WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = '2'
@@ -28,7 +51,7 @@ for ($i = 1; $i <= 12; $i++) {
 $arrayChartInsentif = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartInsentif = "SELECT MONTH(d.jam_berangkat), k.nama, sum(u.bongkar+u.ontime) total_insentif FROM gaji u
-  INNER JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
+  LEFT JOIN pengajuan_insentif_borongan p ON p.id_insentif = u.id
   INNER JOIN karyawan k ON u.id_pengirim = k.id
   INNER JOIN distribusi d ON u.id_distribusi = d.id
   WHERE u.id_pengirim = ? AND MONTH(d.jam_berangkat) = ? AND YEAR(d.jam_berangkat) = ? AND p.terbayar = '2'
@@ -77,19 +100,51 @@ $rowKetepatanWaktuDistribusi = $stmtKetepatanWaktuDistribusi->fetch(PDO::FETCH_A
 $jumlahDataTepatWaktu = $rowKetepatanWaktuDistribusi['tepat_waktu'];
 $jumlahDataTidakTepatWaktu = $rowKetepatanWaktuDistribusi['tidak_tepat_waktu'];
 
-$selectAkumulasiGaji = "SELECT SUM(upah) total_upah, SUM(bongkar+ontime) total_insentif FROM gaji WHERE id_pengirim=?";
-$stmtAkumulasiGaji = $db->prepare($selectAkumulasiGaji);
-$stmtAkumulasiGaji->bindParam(1, $_SESSION['id']);
-$stmtAkumulasiGaji->execute();
-$rowAkumulasiGaji = $stmtAkumulasiGaji->fetch(PDO::FETCH_ASSOC);
+$tanggalBatasAwal = $tanggal_awal->format('Y-m-d H:i:s');
+$tanggalBatasAkhir = $tanggal_akhir->format('Y-m-d H:i:s');
 
-$selectAkumulasiKeberangkatan = "SELECT * FROM distribusi WHERE jam_datang IS NOT NULL AND (driver=? OR helper_1 =? OR helper_2=?)";
+$selectAkumulasiUpah = "SELECT SUM(upah) total_upah FROM gaji g
+LEFT JOIN pengajuan_upah_borongan p ON g.id = p.id_upah
+INNER JOIN distribusi d ON d.id = g.id_distribusi
+WHERE id_pengirim=? AND terbayar='2' AND (jam_berangkat BETWEEN ? AND ?)";
+$stmtAkumulasiUpah = $db->prepare($selectAkumulasiUpah);
+$stmtAkumulasiUpah->bindParam(1, $_SESSION['id']);
+$stmtAkumulasiUpah->bindParam(2, $tanggalBatasAwal);
+$stmtAkumulasiUpah->bindParam(3, $tanggalBatasAkhir);
+$stmtAkumulasiUpah->execute();
+$rowAkumulasiUpah = $stmtAkumulasiUpah->fetch(PDO::FETCH_ASSOC);
+
+$selectAkumulasiInsentif = "SELECT SUM(g.bongkar+g.ontime) total_insentif FROM gaji g
+LEFT JOIN pengajuan_insentif_borongan p ON g.id = p.id_insentif
+INNER JOIN distribusi d ON d.id = g.id_distribusi
+WHERE id_pengirim=? AND terbayar='2' AND (jam_berangkat BETWEEN ? AND ?)";
+$stmtAkumulasiInsentif = $db->prepare($selectAkumulasiInsentif);
+$stmtAkumulasiInsentif->bindParam(1, $_SESSION['id']);
+$stmtAkumulasiInsentif->bindParam(2, $tanggalBatasAwal);
+$stmtAkumulasiInsentif->bindParam(3, $tanggalBatasAkhir);
+$stmtAkumulasiInsentif->execute();
+$rowAkumulasiInsentif = $stmtAkumulasiInsentif->fetch(PDO::FETCH_ASSOC);
+
+$selectAkumulasiKeberangkatan = "SELECT * FROM distribusi WHERE jam_datang IS NOT NULL AND (driver=? OR helper_1 =? OR helper_2=?) AND (jam_berangkat BETWEEN ? AND ?)";
 $stmtAkumulasiKeberangkatan = $db->prepare($selectAkumulasiKeberangkatan);
 $stmtAkumulasiKeberangkatan->bindParam(1, $_SESSION['id']);
 $stmtAkumulasiKeberangkatan->bindParam(2, $_SESSION['id']);
 $stmtAkumulasiKeberangkatan->bindParam(3, $_SESSION['id']);
+$stmtAkumulasiKeberangkatan->bindParam(4, $tanggalBatasAwal);
+$stmtAkumulasiKeberangkatan->bindParam(5, $tanggalBatasAkhir);
 $stmtAkumulasiKeberangkatan->execute();
 $rowAkumulasiKeberangkatan = $stmtAkumulasiKeberangkatan->rowCount();
+
+$selectUpahBelumVerif = "SELECT * FROM gaji g
+LEFT JOIN pengajuan_upah_borongan p ON g.id = p.id_upah
+INNER JOIN distribusi d ON d.id = g.id_distribusi
+WHERE id_pengirim=? AND terbayar='1' AND (jam_berangkat BETWEEN ? AND ?)";
+$stmtUpahBelumVerif = $db->prepare($selectUpahBelumVerif);
+$stmtUpahBelumVerif->bindParam(1, $_SESSION['id']);
+$stmtUpahBelumVerif->bindParam(2, $tanggalBatasAwal);
+$stmtUpahBelumVerif->bindParam(3, $tanggalBatasAkhir);
+$stmtUpahBelumVerif->execute();
+$rowUpahBelumVerif = $stmtUpahBelumVerif->rowCount();
 
 $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
 FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
@@ -131,19 +186,19 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
-    <h3># Informasi Saat Ini</h3>
+    <h3># Rangkuman Informasi (Tahun <?= date('Y') ?>)</h3>
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3><?= 'Rp. ' . number_format($rowAkumulasiGaji['total_upah'], 0, ',', '.') ?></h3>
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiUpah['total_upah'], 0, ',', '.') ?></h3>
             <p>Akumulasi Upah Diterima</p>
           </div>
           <div class="icon">
             <i class="fas fa-sack-dollar"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekapdetailupah" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -151,13 +206,13 @@ if (isset($_SESSION['login_sukses'])) {
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3><?= 'Rp. ' . number_format($rowAkumulasiGaji['total_insentif'], 0, ',', '.') ?></h3>
+            <h3><?= 'Rp. ' . number_format($rowAkumulasiInsentif['total_insentif'], 0, ',', '.') ?></h3>
             <p>Akumulasi Insentif Diterima</p>
           </div>
           <div class="icon">
             <i class="fas fa-sack-dollar"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekapdetailinsentif" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -171,7 +226,7 @@ if (isset($_SESSION['login_sukses'])) {
           <div class="icon">
             <i class="fas fa-truck"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekapdistribusi" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -179,13 +234,13 @@ if (isset($_SESSION['login_sukses'])) {
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>-</h3>
-            <p>Tidak Ada Informasi</p>
+            <h3><?= $rowUpahBelumVerif ?></h3>
+            <p>Total Pengajuan Upah Belum Verifikasi</p>
           </div>
           <div class="icon">
-            <i class="ion ion-stats-bars"></i>
+            <i class="fas fa-envelope-open-text"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekappengajuanupah" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -279,7 +334,6 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
     </div>
   </div>
-  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
 </div>
 
 <?php
@@ -457,25 +511,5 @@ include_once "../partials/scriptdatatables.php";
       },
     }
   });
-
-  var mybutton = document.getElementById("tothetop");
-
-  // When the user scrolls down 20px from the top of the document, show the button
-  window.onscroll = function() {
-    scrollFunction()
-  };
-
-  function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      mybutton.style.display = "block";
-    } else {
-      mybutton.style.display = "none";
-    }
-  }
-
-  function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }
 </script>
 <!-- /.content -->

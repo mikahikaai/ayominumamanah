@@ -6,6 +6,14 @@ $db = $database->getConnection();
 
 $tgl_pengajuan_insentif_awal = $_SESSION['tgl_pengajuan_insentif_awal']->format('Y-m-d H:i:s');
 $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->format('Y-m-d H:i:s');
+
+if (isset($_SESSION['hasil_create'])) {
+  if ($_SESSION['hasil_create']) {
+?>
+    <div id='hasil_create'></div>
+<?php }
+  unset($_SESSION['hasil_create']);
+}
 ?>
 
 <div class="content-header">
@@ -71,7 +79,11 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
           }
 
           $no = 1;
+          $total_bongkar = 0;
+          $total_ontime = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_bongkar += $row['total_bongkar'];
+            $total_ontime += $row['total_ontime'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
@@ -101,8 +113,13 @@ $tgl_pengajuan_insentif_akhir = $_SESSION['tgl_pengajuan_insentif_akhir']->forma
         <tfoot>
           <tr>
             <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL</td>
-            <td style="text-align: right; font-weight: bold;"></td>
-            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
             <td></td>
           </tr>
         </tfoot>
@@ -119,41 +136,15 @@ include_once "../partials/scriptdatatables.php";
 ?>
 <script>
   $(function() {
-    $('#mytable').DataTable({
-      footerCallback: function(row, data, start, end, display) {
-        var api = this.api();
-
-        // Remove the formatting to get integer data for summation
-        var intVal = function(i) {
-          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
-        };
-
-        // Total over all pages
-        nb_cols = api.columns().nodes().length;
-        var j = 3;
-        while (j < nb_cols && j < 5) {
-          total = api
-            .column(j)
-            .data()
-            .reduce(function(a, b) {
-              return intVal(a) + intVal(b);
-            }, 0);
-          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-          j++
-        }
-        // Total over this page
-        // pageTotal = api
-        //   .column(4, {
-        //     page: 'current'
-        //   })
-        //   .data()
-        //   .reduce(function(a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0);
-
-        // Update footer
-        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      }
-    });
+    $('#mytable').DataTable();
   });
+
+  if ($('div#hasil_create').length) {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Upah berhasil diajukan',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  }
 </script>

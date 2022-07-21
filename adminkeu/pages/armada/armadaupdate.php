@@ -92,9 +92,6 @@ if (isset($_GET['id'])) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Ubah Data Armada</h3>
-      <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-arrow-left"></i> Kembali
-      </a>
     </div>
     <div class="card-body">
       <form action="" method="post"" id=" updateForm">
@@ -130,7 +127,7 @@ if (isset($_GET['id'])) {
         </div>
 
         <a href="?page=armadaread" class="btn btn-danger btn-sm float-right">
-          <i class="fa fa-times"></i> Batal
+          <i class="fa fa-arrow-left"></i> Kembali
         </a>
         <button type="submit" name="button_edit" id="updatearmada" class="btn btn-primary btn-sm float-right mr-1">
           <i class="fa fa-save"></i> Ubah

@@ -73,16 +73,16 @@ $tgl_rekap_akhir = $_SESSION['tgl_rekap_akhir_distribusi']->format('Y-m-d H:i:s'
           // die();
 
           $selectsql = "SELECT a.*, d.*, k1.nama supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, v.nama validator, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
-                      FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
-                      LEFT JOIN karyawan k1 on d.driver = k1.id
-                      LEFT JOIN karyawan k2 on d.helper_1 = k2.id
-                      LEFT JOIN karyawan k3 on d.helper_2 = k3.id
-                      LEFT JOIN karyawan v on d.validasi_oleh = v.id
-                      LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
-                      LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
-                      LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
-                      WHERE (IF (? = 'all',d.jam_datang IS NULL OR d.jam_datang IS NOT NULL, IF(? = '1',d.jam_datang IS NOT NULL, d.jam_datang IS NULL))) AND (d.driver = IF (? = 'all', d.driver, ?) OR d.helper_1 = IF (? = 'all', d.helper_1, ?) OR d.helper_2 = IF (? = 'all', d.helper_2, ?)) AND (d.jam_berangkat BETWEEN ? AND ?)
-                      ORDER BY tanggal DESC; ";
+              FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
+              LEFT JOIN karyawan k1 on d.driver = k1.id
+              LEFT JOIN karyawan k2 on d.helper_1 = k2.id
+              LEFT JOIN karyawan k3 on d.helper_2 = k3.id
+              LEFT JOIN karyawan v on d.validasi_oleh = v.id
+              LEFT JOIN distributor do1 on d.nama_pel_1 = do1.id
+              LEFT JOIN distributor do2 on d.nama_pel_2 = do2.id
+              LEFT JOIN distributor do3 on d.nama_pel_3 = do3.id
+              WHERE (IF (? = 'all',d.jam_datang IS NULL OR d.jam_datang IS NOT NULL, IF(? = '1',d.jam_datang IS NOT NULL, d.jam_datang IS NULL))) AND (d.driver = IF (? = 'all', d.driver, ?) OR d.helper_1 = IF (? = 'all', d.helper_1, ?) OR d.helper_2 = IF (? = 'all', d.helper_2, ?)) AND (d.jam_berangkat BETWEEN ? AND ?)
+              ORDER BY tanggal DESC; ";
           $stmt = $db->prepare($selectsql);
           $stmt->bindParam(1, $_SESSION['status_kedatangan_distribusi']);
           $stmt->bindParam(2, $_SESSION['status_kedatangan_distribusi']);

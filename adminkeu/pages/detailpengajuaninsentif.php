@@ -40,7 +40,11 @@ if (isset($_POST['ajukan'])) {
       $stmt_insert->bindParam(2, $no_pengajuan_insentif_new);
       $stmt_insert->bindParam(3, $checkbox_id_pengajuan_insentif[$i]);
       $stmt_insert->bindParam(4, $acc_code);
-      $stmt_insert->execute();
+      if ($stmt_insert->execute()) {
+        $_SESSION['hasil_create'] = true;
+      } else {
+        $_SESSION['hasil_create'] = false;
+      }
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
     exit;
@@ -93,7 +97,11 @@ if (isset($_POST['ajukan'])) {
             <?php
 
             $no = 1;
+            $total_bongkar = 0;
+            $total_ontime = 0;
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              $total_bongkar += $row['bongkar'];
+              $total_ontime += $row['ontime'];
             ?>
               <tr>
                 <td><input type="checkbox" name="cid[]" value="<?= $row['id_insentif']; ?>"></td>
@@ -109,8 +117,12 @@ if (isset($_POST['ajukan'])) {
           <tfoot>
             <tr>
               <td colspan="5" style="text-align: center; font-weight: bold;">TOTAL</td>
-              <td style="text-align: right; font-weight: bold;"></td>
-              <td style="text-align: right; font-weight: bold;"></td>
+              <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+              <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+              <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
             </tr>
           </tfoot>
         </table>
@@ -130,40 +142,6 @@ include_once "../partials/scriptdatatables.php";
       $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
     });
     $('#mytable').DataTable({
-      footerCallback: function(row, data, start, end, display) {
-        var api = this.api();
-
-        // Remove the formatting to get integer data for summation
-        var intVal = function(i) {
-          return typeof i === 'string' ? i.replace(/[^0-9]+/g, "") * 1 : typeof i === 'number' ? i : 0;
-        };
-
-        // Total over all pages
-        nb_cols = api.columns().nodes().length;
-        var j = 5;
-        while (j < nb_cols && j != 7) {
-          total = api
-            .column(j)
-            .data()
-            .reduce(function(a, b) {
-              return intVal(a) + intVal(b);
-            }, 0);
-          $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-          j++
-        }
-        // Total over this page
-        // pageTotal = api
-        //   .column(4, {
-        //     page: 'current'
-        //   })
-        //   .data()
-        //   .reduce(function(a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0);
-
-        // Update footer
-        // $(api.column(j).footer()).html('Rp. ' + total.toLocaleString('id-ID'));
-      },
       "columnDefs": [{
         "orderable": false,
         "targets": [0]

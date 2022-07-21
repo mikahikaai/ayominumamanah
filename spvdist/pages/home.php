@@ -4,6 +4,15 @@ $database = new Database;
 $db = $database->getConnection();
 
 $tahun = date('Y');
+$tanggal_awal = date_create($tahun . '-01-01')->setTime(0, 0, 0);
+$tanggal_akhir = date_create($tahun . '-12-31')->setTime(23, 59, 59);
+
+//rekap distribusi
+$_SESSION['tgl_rekap_awal_distribusi'] = $tanggal_awal;
+$_SESSION['tgl_rekap_akhir_distribusi'] = $tanggal_akhir;
+$_SESSION['id_karyawan_rekap_distribusi'] = 'all';
+$_SESSION['status_kedatangan_distribusi'] = '1';
+
 $arrayChartJumlahKeberangkatan = [];
 for ($i = 1; $i <= 12; $i++) {
   $selectChartUpah = "SELECT COUNT(*) total_berangkat FROM distribusi d
@@ -35,8 +44,13 @@ $stmtBelumDatang = $db->prepare($selectBelumDatang);
 $stmtBelumDatang->execute();
 $jumlahDataBelumDatang = $stmtBelumDatang->rowCount();
 
-$selectAkumulasiKeberangkatan = "SELECT * FROM distribusi WHERE jam_datang IS NOT NULL";
+$tanggalBatasAwal = $tanggal_awal->format('Y-m-d H:i:s');
+$tanggalBatasAkhir = $tanggal_akhir->format('Y-m-d H:i:s');
+
+$selectAkumulasiKeberangkatan = "SELECT * FROM distribusi WHERE jam_datang IS NOT NULL AND (jam_berangkat BETWEEN ? AND ?)";
 $stmtAkumulasiKeberangkatan = $db->prepare($selectAkumulasiKeberangkatan);
+$stmtAkumulasiKeberangkatan->bindParam(1, $tanggalBatasAwal);
+$stmtAkumulasiKeberangkatan->bindParam(2, $tanggalBatasAkhir);
 $stmtAkumulasiKeberangkatan->execute();
 $jumlahDataAkumulasiKeberangkatan = $stmtAkumulasiKeberangkatan->rowCount();
 
@@ -105,7 +119,7 @@ if (isset($_SESSION['login_sukses'])) {
           <div class="icon">
             <i class="fas fa-truck"></i>
           </div>
-          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="?page=rekapdistribusi" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -217,7 +231,6 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
     </div>
   </div>
-  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
 </div>
 
 <?php
@@ -354,26 +367,7 @@ include_once "../partials/scriptdatatables.php";
     }
   });
 
-  //Get the button
-  var mybutton = document.getElementById("tothetop");
-
-  // When the user scrolls down 20px from the top of the document, show the button
-  window.onscroll = function() {
-    scrollFunction()
-  };
-
-  function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      mybutton.style.display = "block";
-    } else {
-      mybutton.style.display = "none";
-    }
-  }
-
-  function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }
+  
 
   function toArmadaBelumDatang() {
     const element = document.getElementById("armadabelumdatang");

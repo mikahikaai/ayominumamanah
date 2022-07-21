@@ -106,7 +106,7 @@ $stmt->execute();
 $num_rows = $stmt->rowCount();
 
 $selectPengajuanUpah = "SELECT p.*, u.* FROM pengajuan_upah_borongan p
-INNER JOIN gaji u on p.id_upah = u.id
+RIGHT JOIN gaji u on p.id_upah = u.id
 WHERE p.terbayar='1'
 GROUP BY no_pengajuan";
 $stmtPengajuanUpah = $db->prepare($selectPengajuanUpah);
@@ -114,32 +114,31 @@ $stmtPengajuanUpah->execute();
 $jumlahDataPengajuanUpah = $stmtPengajuanUpah->rowCount();
 
 $selectPengajuanInsentif = "SELECT p.*, i.* FROM pengajuan_insentif_borongan p
-INNER JOIN gaji i on p.id_insentif = i.id
+RIGHT JOIN gaji i on p.id_insentif = i.id
 WHERE p.terbayar='1'
 GROUP BY no_pengajuan";
 $stmtPengajuanInsentif = $db->prepare($selectPengajuanInsentif);
 $stmtPengajuanInsentif->execute();
 $jumlahDataPengajuanInsentif = $stmtPengajuanInsentif->rowCount();
 
-$tanggalAkumulasiPengajuanUpahVerifAwal = $tanggal_awal->format('Y-m-d');
-$tanggalAkumulasiPengajuanUpahVerifAkhir = $tanggal_akhir->format('Y-m-d');
+$tanggalBatasAwal = $tanggal_awal->format('Y-m-d');
+$tanggalBatasAkhir = $tanggal_akhir->format('Y-m-d');
+
 $selectAkumulasiPengajuanUpahVerif = "SELECT * FROM pengajuan_upah_borongan
 WHERE (tgl_verifikasi BETWEEN ? AND ? AND tgl_verifikasi IS NOT NULL)
 GROUP BY acc_code";
 $stmtAkumulasiPengajuanUpahVerif = $db->prepare($selectAkumulasiPengajuanUpahVerif);
-$stmtAkumulasiPengajuanUpahVerif->bindParam(1, $tanggalAkumulasiPengajuanUpahVerifAwal);
-$stmtAkumulasiPengajuanUpahVerif->bindParam(2, $tanggalAkumulasiPengajuanUpahVerifAkhir);
+$stmtAkumulasiPengajuanUpahVerif->bindParam(1, $tanggalBatasAwal);
+$stmtAkumulasiPengajuanUpahVerif->bindParam(2, $tanggalBatasAkhir);
 $stmtAkumulasiPengajuanUpahVerif->execute();
 $jumlahDataAkumulasiPengajuanUpahVerif = $stmtAkumulasiPengajuanUpahVerif->rowCount();
 
-$tanggalAkumulasiPengajuanInsentifVerifAwal = $tanggal_awal->format('Y-m-d');
-$tanggalAkumulasiPengajuanInsentifVerifAkhir = $tanggal_akhir->format('Y-m-d');
 $selectAkumulasiPengajuanInsentifVerif = "SELECT * FROM pengajuan_insentif_borongan
 WHERE (tgl_verifikasi BETWEEN ? AND ? AND tgl_verifikasi IS NOT NULL)
 GROUP BY acc_code";
 $stmtAkumulasiPengajuanInsentifVerif = $db->prepare($selectAkumulasiPengajuanInsentifVerif);
-$stmtAkumulasiPengajuanInsentifVerif->bindParam(1, $tanggalAkumulasiPengajuanInsentifVerifAwal);
-$stmtAkumulasiPengajuanInsentifVerif->bindParam(2, $tanggalAkumulasiPengajuanInsentifVerifAkhir);
+$stmtAkumulasiPengajuanInsentifVerif->bindParam(1, $tanggalBatasAwal);
+$stmtAkumulasiPengajuanInsentifVerif->bindParam(2, $tanggalBatasAkhir);
 $stmtAkumulasiPengajuanInsentifVerif->execute();
 $jumlahDataAkumulasiPengajuanInsentifVerif = $stmtAkumulasiPengajuanInsentifVerif->rowCount();
 
@@ -166,7 +165,7 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
-    <h3># Rangkuman Informasi Sampai Saat Ini (Tahun <?= date('Y') ?>)</h3>
+    <h3># Rangkuman Informasi (Tahun <?= date('Y') ?>)</h3>
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->

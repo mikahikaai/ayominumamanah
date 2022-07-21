@@ -46,7 +46,7 @@ if (isset($_POST['button_show'])) {
             </select>
           </div>
         </div>
-        <div class="row align-items-center">
+        <div class="row align-items-center mt-2">
           <div class="col-md-2">
             <label for="tgl_rekap_awal">Tanggal Awal</label>
           </div>

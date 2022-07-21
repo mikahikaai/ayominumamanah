@@ -42,7 +42,7 @@ if ($stmt->rowCount() > 0) {
 
     $insertsql = "insert into karyawan (nama, username, password, nik, tempat_lahir, tanggal_lahir, jenis_kelamin,
         alamat, agama, status, jabatan, no_telepon, gol_darah, sim, email, status_karyawan, upah_borongan, foto) values
-        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $db->prepare($insertsql);
     $nama_upper = strtoupper($_POST['nama']);
     $username = strtolower($_POST['username']);
@@ -324,12 +324,12 @@ if ($stmt->rowCount() > 0) {
             </div>
           </div>
         </div>
-        <button type="submit" name="button_create" class="btn btn-success btn-sm float-right">
-          <i class="fa fa-save"></i> Simpan
-        </button>
-        <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right mr-1">
-          <i class="fa fa-times"></i> Batal
-        </a>
+      </button>
+      <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
+        <i class="fa fa-times"></i> Batal
+      </a>
+      <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1">
+        <i class="fa fa-save"></i> Simpan
       </form>
     </div>
   </div>

@@ -13,39 +13,6 @@ if (isset($_POST['button_show'])) {
 }
 ?>
 
-<!-- <div class="content-header">
-  <div class="container-fluid">
-    <h3>Pilih Periode Pengajuan Insentif</h3>
-    <form action="" method="POST">
-      <div class="row align-items-center">
-        <div class="col-md-2">
-          <label for="tgl_pengajuan_insentif_awal">Tanggal Awal</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_pengajuan_insentif_awal">:</label>
-        </div>
-        <div class="col-md-2">
-          <input id='datetimepicker2' type='text' class='form-control' data-td-target='#datetimepicker2' placeholder="dd/mm/yyyy" name="tgl_pengajuan_insentif_awal" required>
-        </div>
-      </div>
-      <div class="row align-items-center mt-2">
-        <div class="col-md-2">
-          <label for="tgl_pengajuan_insentif_akhir">Tanggal Akhir</label>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-          <label for="tgl_pengajuan_insentif_akhir">:</label>
-        </div>
-        <div class="col-md-2">
-          <input id='datetimepicker3' type='text' class='form-control' data-td-target='#datetimepicker3' placeholder="dd/mm/yyyy" name="tgl_pengajuan_insentif_akhir" required>
-        </div>
-      </div>
-      <button type="submit" name="button_show" class="btn btn-success btn-sm mt-3">
-        <i class="fa fa-eye"></i> Tampilkan
-      </button>
-    </form>
-  </div>
-</div> -->
-
 <div class="content-header">
   <div class="card col-md-6">
     <div class="card-header">
