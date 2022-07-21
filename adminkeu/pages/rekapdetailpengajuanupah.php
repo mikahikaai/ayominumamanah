@@ -71,7 +71,9 @@ if (isset($_GET['acc_code'])) {
           <?php
 
           $no = 1;
+          $total_upah = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_upah += $row['upah'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
@@ -107,14 +109,14 @@ if (isset($_GET['acc_code'])) {
                 }
                 ?>
               </td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['upah'], 1, ',', '.') ?></td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
             <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
-            <td style="text-align: right; font-weight: bold;"></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
           </tr>
         </tfoot>
       </table>
