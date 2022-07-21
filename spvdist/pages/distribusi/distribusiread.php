@@ -21,24 +21,20 @@ if (isset($_SESSION['hasil'])) {
   <?php }
   unset($_SESSION['hasil']);
   unset($_SESSION['pesan']);
-} elseif (isset($_SESSION['hasil_delete'])) {
-  if ($_SESSION['hasil_delete']) {
+}
+
+if (isset($_SESSION['hasil_validasi'])) {
+  if ($_SESSION['hasil_validasi']) {
   ?>
-    <div id='hasil_delete'></div>
+    <div id='hasil_validasi'></div>
   <?php }
-  unset($_SESSION['hasil_delete']);
-} elseif (isset($_SESSION['hasil_create'])) {
-  if ($_SESSION['hasil_create']) {
+  unset($_SESSION['hasil_validasi']);
+} else if (isset($_SESSION['hasil_batal'])) {
+  if ($_SESSION['hasil_batal']) {
   ?>
-    <div id='hasil_create'></div>
-  <?php }
-  unset($_SESSION['hasil_create']);
-} elseif (isset($_SESSION['hasil_update'])) {
-  if ($_SESSION['hasil_update']) {
-  ?>
-    <div id='hasil_update'></div>
+    <div id='hasil_batal'></div>
 <?php }
-  unset($_SESSION['hasil_update']);
+  unset($_SESSION['hasil_batal']);
 } ?>
 
 <div class="content-header">
@@ -218,4 +214,39 @@ include_once "../partials/scriptdatatables.php";
       },
     });
   });
+
+  $('a#distribusibatalvalidasi').click(function(e) {
+    e.preventDefault();
+    var urlToRedirect = e.currentTarget.getAttribute('href');
+    //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Keluar',
+      confirmButtonText: 'Ya'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = urlToRedirect;
+      }
+    })
+  });
+
+  if ($('div#hasil_validasi').length) {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Data berhasil divalidasi',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  } else if ($('div#hasil_batal').length) {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Validasi berhasil dibatalkan',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  }
 </script>
