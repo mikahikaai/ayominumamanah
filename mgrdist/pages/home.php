@@ -174,7 +174,7 @@ if (isset($_SESSION['login_sukses'])) {
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="#armadabelumdatang" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <button class="small-box-footer" onclick="toArmadaBelumDatang()" style="border: none; width: 100%;">Detail <i class="fas fa-arrow-circle-right"></i></button>
         </div>
       </div>
       <!-- ./col -->
@@ -188,7 +188,7 @@ if (isset($_SESSION['login_sukses'])) {
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="#" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -505,6 +505,11 @@ include_once "../partials/scriptdatatables.php";
   function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  }
+
+  function toArmadaBelumDatang() {
+    const element = document.getElementById("armadabelumdatang");
+    element.scrollIntoView();
   }
 </script>
 <!-- /.content -->
