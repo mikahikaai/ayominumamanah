@@ -283,6 +283,7 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
     </div>
   </div>
+  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
 </div><!-- /.container-fluid -->
 
 <?php
@@ -484,5 +485,26 @@ include_once "../partials/scriptdatatables.php";
       },
     }
   });
+
+  //Get the button
+  var mybutton = document.getElementById("tothetop");
+
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {
+    scrollFunction()
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 </script>
 <!-- /.content -->
