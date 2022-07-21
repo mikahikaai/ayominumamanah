@@ -152,7 +152,7 @@ if (isset($_SESSION['login_sukses'])) {
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-warning">
+        <div class="small-box bg-success">
           <div class="inner">
             <h3><?= $jumlahDataPengajuanInsentif ?></h3>
             <p>Jumlah Pengajuan Insentif</p>
@@ -166,7 +166,7 @@ if (isset($_SESSION['login_sukses'])) {
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-success">
+        <div class="small-box bg-primary">
           <div class="inner">
             <h3><?= $jumlahDataBelumDatang ?></h3>
             <p>Jumlah Armada Belum Datang</p>
@@ -180,7 +180,7 @@ if (isset($_SESSION['login_sukses'])) {
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-primary">
+        <div class="small-box bg-warning">
           <div class="inner">
             <h3>-</h3>
             <p>Tidak Ada Informasi</p>
