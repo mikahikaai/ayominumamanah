@@ -169,7 +169,7 @@ if (isset($_SESSION['login_sukses'])) {
         <div class="small-box bg-primary">
           <div class="inner">
             <h3><?= $jumlahDataBelumDatang ?></h3>
-            <p>Jumlah Armada Belum Datang</p>
+            <p>Jumlah Armada Dalam Perjalanan</p>
           </div>
           <div class="icon">
             <i class="fas fa-truck"></i>
