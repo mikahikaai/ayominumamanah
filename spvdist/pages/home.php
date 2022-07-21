@@ -30,6 +30,15 @@ $jumlahDataTidakTepatWaktu = $rowKetepatanWaktuDistribusi['tidak_tepat_waktu'];
 // var_dump($arrayChartUpah);
 // var_dump($arrayChartInsentif);
 // die();
+$selectBelumDatang = "SELECT * FROM distribusi WHERE jam_datang IS NULL";
+$stmtBelumDatang = $db->prepare($selectBelumDatang);
+$stmtBelumDatang->execute();
+$jumlahDataBelumDatang = $stmtBelumDatang->rowCount();
+
+$selectAkumulasiKeberangkatan = "SELECT * FROM distribusi WHERE jam_datang IS NOT NULL";
+$stmtAkumulasiKeberangkatan = $db->prepare($selectAkumulasiKeberangkatan);
+$stmtAkumulasiKeberangkatan->execute();
+$jumlahDataAkumulasiKeberangkatan = $stmtAkumulasiKeberangkatan->rowCount();
 
 $selectsql = "SELECT a.*, d.*, k1.nama as supir, k1.upah_borongan usupir1, k2.nama helper1, k2.upah_borongan uhelper2, k3.nama helper2, k3.upah_borongan uhelper2, do1.nama distro1, do1.jarak jdistro1, do2.nama distro2, do2.jarak jdistro2, do3.nama distro3, do3.jarak jdistro3
 FROM distribusi d INNER JOIN armada a on d.id_plat = a.id
@@ -70,9 +79,68 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
+    <h3># Informasi Saat Ini</h3>
+    <div class="row mt-3">
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3><?= $jumlahDataBelumDatang ?></h3>
+            <p>Jumlah Armada Belum Datang</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <button class="small-box-footer" onclick="toArmadaBelumDatang()" style="border: none; width: 100%;">Detail <i class="fas fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3><?= $jumlahDataAkumulasiKeberangkatan ?></h3>
+            <p>Akumulasi Keberangkatan</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3>-</h3>
+            <p>Tidak Ada Informasi</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>-</h3>
+            <p>Tidak Ada Informasi</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="javascript:void(0)" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-3">Dalam Perjalanan </h3>
+        <h3 class="mb-3" id="armadabelumdatang"># Dalam Perjalanan </h3>
       </div>
       <div class="col-6 text-right">
         <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
@@ -149,6 +217,7 @@ if (isset($_SESSION['login_sukses'])) {
       </div>
     </div>
   </div>
+  <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
 </div>
 
 <?php
@@ -284,5 +353,31 @@ include_once "../partials/scriptdatatables.php";
       },
     }
   });
+
+  //Get the button
+  var mybutton = document.getElementById("tothetop");
+
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {
+    scrollFunction()
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  function toArmadaBelumDatang() {
+    const element = document.getElementById("armadabelumdatang");
+    element.scrollIntoView();
+  }
 </script>
 <!-- /.content -->

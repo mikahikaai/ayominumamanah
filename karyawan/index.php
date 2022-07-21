@@ -20,7 +20,7 @@ $host = $_SERVER['REQUEST_URI'];
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 
 <?php
 include "../database/database.php";
