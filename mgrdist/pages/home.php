@@ -134,7 +134,7 @@ if (isset($_SESSION['login_sukses'])) {
 <!-- Main content -->
 <div class="content pt-3">
   <div class="container-fluid">
-    <h3># Pengajuan Upah dan Insentif</h3>
+    <h3># Informasi Saat Ini</h3>
     <div class="row mt-3">
       <div class="col-lg-3 col-6">
         <!-- small box -->
