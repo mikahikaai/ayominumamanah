@@ -9,19 +9,35 @@ session_start();
 // var_dump($_SERVER["HTTP_HOST"]);
 // die();
 
-if (isset($_SESSION['suksesreset'])){
+if (isset($_SESSION['suksesreset'])) {
   $suksesreset = true;
 } else {
   $suksesreset = false;
 }
 
-if (isset($_SESSION['errorakses'])){
+if (isset($_SESSION['errorakses'])) {
   $errorakses = true;
 } else {
   $errorakses = false;
 }
 
 $errorlogin = false;
+
+if (isset($_COOKIE['id']) && isset($_COOKIE['keylog'])) {
+  $loginsql = "SELECT * FROM karyawan WHERE id=?";
+  $stmt = $db->prepare($loginsql);
+  $stmt->bindParam(1, $_COOKIE['id']);
+  $stmt->execute();
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($_COOKIE['keylog'] === hash('sha256', $row['username'])) {
+    $_SESSION['id'] = $row['id'];
+    $_SESSION['username'] = $row['username'];
+    $_SESSION['jabatan'] = $row['jabatan'];
+    $_SESSION['nama'] = $row['nama'];
+    $_SESSION['foto'] = $row['foto'];
+    $_SESSION['login_sukses'] = true;
+  }
+}
 
 if (isset($_SESSION['jabatan'])) {
   if ($_SESSION['jabatan'] == "ADMINKEU") {
@@ -53,6 +69,12 @@ if (isset($_POST['login'])) {
     $_SESSION['nama'] = $row['nama'];
     $_SESSION['foto'] = $row['foto'];
     $_SESSION['login_sukses'] = true;
+
+    if (isset($_POST['remember'])) {
+      setcookie('id', $row['id'], time() + 60 * 60 * 24 * 7);
+      setcookie('keylog', hash('sha256', $row['username']), time() + 60 * 60 * 24 * 7);
+    }
+
     if ($_SESSION['jabatan'] == "ADMINKEU") {
       echo '<meta http-equiv="refresh" content="0;url=/adminkeu/"/>';
       die();
@@ -147,7 +169,7 @@ if (isset($_POST['login'])) {
               <div class="form-group d-md-flex">
                 <div class="w-50">
                   <label class="checkbox-wrap checkbox-primary">Ingat Saya
-                    <input type="checkbox" checked>
+                    <input type="checkbox" name="remember" checked>
                     <span class="checkmark"></span>
                   </label>
                 </div>
