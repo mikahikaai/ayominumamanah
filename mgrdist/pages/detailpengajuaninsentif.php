@@ -84,6 +84,14 @@ if (isset($_POST['verif'])) {
       echo 'Mailer Error: ' . $mail->ErrorInfo;
     }
 
+    $sukses = true;
+
+    if ($sukses) {
+      $_SESSION['hasil_verifikasi_insentif'] = true;
+    } else {
+      $_SESSION['hasil_verifikasi_insentif'] = false;
+    }
+
     echo '<meta http-equiv="refresh" content="0;url=?page=pengajuaninsentif"/>';
     exit;
   }
@@ -156,9 +164,9 @@ if (isset($_POST['verif'])) {
             </tr>
           </tfoot>
         </table>
-        <button type="submit" name="verif" class="btn btn-sm float-right btn-success mt-2"><i class="fa fa-check"></i> Verifikasi</button>
+        <button type="button" class="btn btn-sm mt-2 btn-danger float-right" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
+        <button type="submit" name="verif" class="btn btn-sm float-right btn-success mt-2 mr-1"><i class="fa fa-check"></i> Verifikasi</button>
     </form>
-    <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
   </div>
 </div>
 </div>

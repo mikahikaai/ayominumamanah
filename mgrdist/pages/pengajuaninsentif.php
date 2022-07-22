@@ -4,6 +4,14 @@
 $database = new Database;
 $db = $database->getConnection();
 
+if (isset($_SESSION['hasil_verifikasi_insentif'])) {
+  if ($_SESSION['hasil_verifikasi_insentif']) {
+?>
+    <div id='hasil_verifikasi_insentif'></div>
+<?php }
+  unset($_SESSION['hasil_verifikasi_insentif']);
+}
+
 ?>
 
 <div class="content-header">
@@ -106,4 +114,13 @@ include_once "../partials/scriptdatatables.php";
   $(function() {
     $('#mytable').DataTable();
   });
+
+  if ($('div#hasil_verifikasi_insentif').length) {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Insentif berhasil diverifikasi',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  }
 </script>
