@@ -1,6 +1,4 @@
 <?php
-echo '<meta http-equiv="refresh" content="900;url=../logout.php"/>';
-
 session_start();
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -110,6 +108,9 @@ include_once "../partials/scripts.php";
 
   <!-- REQUIRED SCRIPTS -->
   <button class="btn btn-success btn-lg rounded-circle" id="tothetop" onclick="topFunction();" style="position : fixed; bottom: 20px; right: 20px; display: none;"><i class="fas fa-angle-double-up"></i></button>
+  <?php
+  echo '<meta http-equiv="refresh" content="900;url=../logout.php"/>';
+  ?>
 </body>
 
 <script src="../plugins/tempusdominus-bootstrap-4/js/jQuery-provider.min.js"></script>
