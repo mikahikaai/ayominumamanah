@@ -8,3 +8,4 @@ setcookie('id', '', time()-3600);
 setcookie('keylog', '', time()-3600);
  
 echo '<meta http-equiv="refresh" content="0;url=/login.php"/>';
+exit;
