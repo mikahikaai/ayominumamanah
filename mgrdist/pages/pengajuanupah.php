@@ -47,8 +47,8 @@ if (isset($_SESSION['hasil_verifikasi_upah'])) {
             <th>Tanggal Pengajuan</th>
             <th>No. Pengajuan</th>
             <th>Nama</th>
-            <th>Total Upah</th>
             <th>Status</th>
+            <th>Total Upah</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -73,14 +73,15 @@ if (isset($_SESSION['hasil_verifikasi_upah'])) {
           }
 
           $no = 1;
+          $total_upah = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_upah += $row['total_upah'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
               <td><?= tanggal_indo($row['tgl_pengajuan']) ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
@@ -90,19 +91,23 @@ if (isset($_SESSION['hasil_verifikasi_upah'])) {
                 } else {
                   echo 'Terverifikasi';
                 }
-
                 ?>
               </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_upah'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=detailpengajuan&acc_code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
-      <!-- <form action="" method="post">
-        <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
-      </form> -->
     </div>
   </div>
 </div>

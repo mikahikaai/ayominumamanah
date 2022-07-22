@@ -48,8 +48,9 @@ if (isset($_SESSION['hasil_verifikasi_insentif'])) {
             <th>Tanggal Pengajuan</th>
             <th>No. Pengajuan</th>
             <th>Nama</th>
-            <th>Total Insentif</th>
             <th>Status</th>
+            <th>Total Bongkar</th>
+            <th>Total Ontime</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -64,7 +65,7 @@ if (isset($_SESSION['hasil_verifikasi_insentif'])) {
           $stmt = $db->prepare($selectSql);
           $stmt->execute();
           if ($stmt->rowCount() > 0) {
-            $selectSql = "SELECT p.*, i.*,k.*, d.*, SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
+            $selectSql = "SELECT p.*, i.*,k.*, d.*, SUM(i.bongkar) total_bongkar, SUM(i.ontime) total_ontime FROM pengajuan_insentif_borongan p
           INNER JOIN gaji i on p.id_insentif = i.id
           INNER JOIN karyawan k on i.id_pengirim = k.id
           INNER JOIN distribusi d on i.id_distribusi = d.id
@@ -74,14 +75,17 @@ if (isset($_SESSION['hasil_verifikasi_insentif'])) {
           }
 
           $no = 1;
+          $total_bongkar = 0;
+          $total_ontime = 0;
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_bongkar += $row['total_bongkar'];
+            $total_ontime += $row['total_ontime'];
           ?>
             <tr>
               <td><?= $no++ ?></td>
               <td><?= tanggal_indo($row['tgl_pengajuan']) ?></td>
               <td><?= $row['no_pengajuan'] ?></td>
               <td><?= $row['nama'] ?></td>
-              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_insentif'], 0, ',', '.') ?></td>
               <td>
                 <?php
                 if ($row['terbayar'] == '0') {
@@ -93,16 +97,28 @@ if (isset($_SESSION['hasil_verifikasi_insentif'])) {
                 }
                 ?>
               </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
                 <a href="?page=detailpengajuaninsentif&acc_code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Lihat</a>
               </td>
             </tr>
           <?php } ?>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="5" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
-      <!-- <form action="" method="post">
-        <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan">Ajukan</button>
-      </form> -->
     </div>
   </div>
 </div>
