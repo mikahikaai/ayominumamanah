@@ -1,4 +1,6 @@
 <?php
+echo '<meta http-equiv="refresh" content="900;url=../logout.php"/>';
+
 session_start();
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
