@@ -33,7 +33,21 @@ if (isset($_POST['ajukan'])) {
       $stmt_insert->bindParam(4, $acc_code);
       $stmt_insert->execute();
     }
+    $sukses = true;
+    if ($sukses) {
+      $_SESSION['hasil_pengajuan_upah'] = true;
+    } else {
+      $_SESSION['hasil_pengajuan_upah'] = false;
+    }
   }
+}
+
+if (isset($_SESSION['hasil_pengajuan_upah'])) {
+  if ($_SESSION['hasil_pengajuan_upah']) {
+?>
+    <div id='hasil_pengajuan_upah'></div>
+<?php }
+  unset($_SESSION['hasil_pengajuan_upah']);
 }
 ?>
 
@@ -125,7 +139,7 @@ if (isset($_POST['ajukan'])) {
         <?php
         if ($stmt->rowCount() > 0) {
         ?>
-          <button type="submit" class="btn btn-md btn-success float-right mt-2" name="ajukan"><i class="fa fa-paper-plane"></i> Ajukan</button>
+          <button type="submit" class="btn btn-sm btn-success float-right mt-2" name="ajukan"><i class="fa fa-paper-plane"></i> Ajukan</button>
         <?php } ?>
     </form>
   </div>
@@ -182,4 +196,13 @@ include_once "../partials/scriptdatatables.php";
       }]
     });
   });
+
+  if ($('div#hasil_pengajuan_upah').length) {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Upah berhasil diajukan',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  }
 </script>

@@ -142,7 +142,7 @@ include_once "../partials/scriptdatatables.php";
   if ($('div#hasil_create').length) {
     Swal.fire({
       title: 'Sukses!',
-      text: 'Upah berhasil diajukan',
+      text: 'Insentif berhasil diajukan',
       icon: 'success',
       confirmButtonText: 'OK'
     })
