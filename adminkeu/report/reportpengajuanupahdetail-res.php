@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['jabatan'])){
-  echo '<meta http-equiv="refresh" content="900;url=../../logout.php"/>';
+if (!isset($_SESSION['jabatan'])) {
+  echo '<meta http-equiv="refresh" content="0;url=../../logout.php"/>';
   exit;
 }
 
@@ -28,11 +28,11 @@ if (isset($_GET['acc_code'])) {
   $stmt1->bindParam(1, $_GET['acc_code']);
   $stmt1->execute();
   $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-  
-  if ($stmt->rowCount() == 0){
+
+  if ($stmt->rowCount() == 0) {
     echo '<h1>Halaman Tidak Ditemukan</h1>';
     exit;
-  } 
+  }
 }
 ?>
 <style>

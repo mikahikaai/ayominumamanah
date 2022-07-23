@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['jabatan'])) {
-  echo '<meta http-equiv="refresh" content="900;url=../../logout.php"/>';
+  echo '<meta http-equiv="refresh" content="0;url=../../logout.php"/>';
   exit;
 }
 
