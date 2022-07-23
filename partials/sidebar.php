@@ -270,6 +270,12 @@
                   <p>Pengajuan Insentif</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?page=cetakupah" class="nav-link" id="cetakupah">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cetak Upah</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" id="rekapitulasi">

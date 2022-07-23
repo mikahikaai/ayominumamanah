@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'database/database.php';
 
 $database = new Database;
@@ -162,6 +162,11 @@ if (isset($_GET['acc_code'])) {
         </div>
       </div>
     </div>
+    <?php
+    if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
+      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $_GET['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
+    <?php } ?>
+    ?>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

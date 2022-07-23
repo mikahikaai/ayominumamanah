@@ -3,6 +3,9 @@
 $database = new Database;
 $db = $database->getConnection();
 
+// var_dump(dirname(__DIR__, 2) . '/dist/img/verif');
+// die();
+
 include '../plugins/phpqrcode/qrlib.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -53,6 +56,21 @@ if (isset($_POST['verif'])) {
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    $selectVerif = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
+      INNER JOIN gaji u ON p.id_upah = u.id
+      INNER JOIN distribusi d ON d.id = u.id_distribusi
+      INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
+      INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
+      WHERE qrcode=? AND terbayar='2'";
+    $stmtVerif = $db->prepare($selectVerif);
+    $stmtVerif->bindParam(1, $id_qr_code);
+    $stmtVerif->execute();
+
+    $stmtVerif1 = $db->prepare($selectVerif);
+    $stmtVerif1->bindParam(1, $id_qr_code);
+    $stmtVerif1->execute();
+    $rowVerif1 = $stmtVerif1->fetch(PDO::FETCH_ASSOC);
+
     $emailTo = $row["email"]; //email kamu atau email penerima link reset
 
     $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -74,14 +92,94 @@ if (isset($_POST['verif'])) {
       $mail->addReplyTo("no-reply@gmail.com");
 
       //Content
+      $mail->addEmbeddedImage('../dist/verif/' . $rowVerif1['qrcode'] . '.png', 'qrcode');
       $mail->isHTML(true);                                  // Set email format to HTML
       $mail->Subject = "Pemberitahuan Verifikasi Upah";
-      $mail->Body    = "<h1>Penganjuan upah Anda dengan No. " . $row['no_pengajuan'] . " telah terverifikasi</h1><p> Silahkan ambil upah Anda diloket pengambilan upah</p>";
+      $html = "<body style='background-color: wheat'>
+      <h2>Hai, " . $rowVerif1['nama_pengirim'] . " !<br>Selamat !! Penganjuan upah Anda dengan No. " . $rowVerif1['no_pengajuan'] . " sudah diverifikasi!</h2>
+      Berikut rincian upah yang sudah diverifikasi :
+        <table style='border-collapse: collapse; margin-top: 20px;'>
+          <tr>
+            <td>Nama Karyawan</td>
+            <td style='font-weight: bold;'> : " . $rowVerif1['nama_pengirim'] . "</td>
+          </tr>
+          <tr>
+            <td>No. Pengajuan</td>
+            <td style='font-weight: bold;'> : " . $rowVerif1['no_pengajuan'] . "</td>
+          </tr>
+          <tr>
+            <td>Tanggal Pengajuan</td>
+            <td style='font-weight: bold;'> : " . $rowVerif1['tgl_pengajuan'] . "</td>
+          </tr>
+          <tr>
+            <td>Kode Verifikasi</td>
+            <td style='font-weight: bold; color: red'> : " . $rowVerif1['acc_code'] . "</td>
+          </tr>
+        </table>
+      <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;'>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Tanggal & Jam Berangkat</th>
+            <th>No Perjalanan</th>
+            <th>Nama</th>
+            <th>Upah</th>
+          </tr>
+        </thead>
+        <tbody>";
+      $no = 1;
+      $total_verif = 0;
+      while ($rowVerif = $stmtVerif->fetch(PDO::FETCH_ASSOC)) {
+        $total_verif += $rowVerif['upah'];
+        $html .= "
+            <tr>
+              <td align='center'>" . $no++ . "</td>
+              <td>" . tanggal_indo($rowVerif['jam_berangkat']) . "</td>
+              <td>" . $rowVerif['no_perjalanan'] . "</td>
+              <td>" . $rowVerif['nama_pengirim'] . "</td>
+              <td style='text-align: right;'>" . 'Rp. ' . number_format($rowVerif['upah'], 0, ',', '.') . "</td>
+            </tr> ";
+      }
+      $html .= "
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan='4' style='text-align: center; font-weight: bold;'>TOTAL</td>
+            <td style='text-align: right; font-weight: bold;'>" . 'Rp. ' . number_format($total_verif, 0, ',', '.') . "</td>
+          </tr>
+        </tfoot>
+      </table>
+      <table width='100%' style='border-collapse: collapse; margin-top: 20px;'>
+        <tr>
+          <td width='70%'></td>
+          <td align='center'>Banjarbaru, " . tanggal_indo($rowVerif1['tgl_verifikasi']) . "</td>
+        </tr>
+        <tr>
+          <td width='70%'></td>
+          <td align='center'><img src='cid:qrcode' width='150px' height='150px'></td>
+        </tr>
+        <tr>
+          <td width='70%'></td>
+          <td align='center'><u><b>" . $rowVerif1['nama_verifikator'] . "</b></u></td>
+        </tr>
+      </table>
+      <p>Anda dapat mengambil upah dengan menggunakan salah satu metode dibawah ini : </p>
+      <ul>
+        <li>Menyerahkan barcode yang ada didalam email kepada Admin, atau</li>
+        <li>Menyebutkan kode verifikasi yang ada di dalam email secara langsung kepada Admin.</li>
+      </ul>
+      <p>Pastikan email ini jangan sampai hilang ya !<p>
+      <p>Lebih semangat lagi kerjanya !<p>
+      <h5 style='font-weight: bold'>Best Regard<h5>
+      <h5>Admin PKS</h5>
+      </body>";
       //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+      $mail->Body = $html;
       $mail->send();
     } catch (Exception $e) {
       echo 'Message could not be sent.';
       echo 'Mailer Error: ' . $mail->ErrorInfo;
+      die();
     }
     $sukses = true;
 
@@ -96,6 +194,7 @@ if (isset($_POST['verif'])) {
   }
 }
 ?>
+
 
 <div class="content-header">
   <div class="container-fluid">
