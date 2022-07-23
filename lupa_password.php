@@ -44,8 +44,8 @@ if (isset($_POST['kirim'])) {
       $mail->isSMTP();                                      // Set mailer to use SMTP
       $mail->Host = 'smtp.gmail.com';                     // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = "mikahikaai100@gmail.com";             // SMTP username
-      $mail->Password = 'khjjztrrumnocaav';                         // SMTP password
+      $mail->Username = "mikahikaai10000@gmail.com";             // SMTP username
+      $mail->Password = 'itodwtwalxmuhaes';                         // SMTP password
       $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
       $mail->Port = 587;                                    // TCP port to connect to
 
