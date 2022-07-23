@@ -109,7 +109,7 @@ if (isset($_POST['verif'])) {
           </tr>
           <tr>
             <td>Tanggal Pengajuan</td>
-            <td style='font-weight: bold;'> : " . $rowVerif1['tgl_pengajuan'] . "</td>
+            <td style='font-weight: bold;'> : " . tanggal_indo($rowVerif1['tgl_pengajuan'], true) . "</td>
           </tr>
           <tr>
             <td>Kode Verifikasi</td>

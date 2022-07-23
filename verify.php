@@ -113,10 +113,9 @@ if (isset($_GET['code'])) {
               LEFT JOIN distributor r2 on d.nama_pel_2 = r2.id
               LEFT JOIN distributor r3 on d.nama_pel_3 = r3.id
               INNER JOIN karyawan k ON k.id = u.id_pengirim
-              WHERE no_pengajuan=? AND qrcode=?";
+              WHERE qrcode=?";
               $stmtdetail = $db->prepare($detailsql);
-              $stmtdetail->bindParam(1, $row['no_pengajuan']);
-              $stmtdetail->bindParam(2, $_GET['code']);
+              $stmtdetail->bindParam(1, $_GET['code']);
               $stmtdetail->execute();
               while ($rowdetail = $stmtdetail->fetch(PDO::FETCH_ASSOC)) {
               ?>
@@ -133,7 +132,7 @@ if (isset($_GET['code'])) {
                     <label for="">Tanggal Perjalanan</label>
                   </div>
                   <div class="col-md-9">
-                    <span><?= date_create($rowdetail['jam_berangkat'])->format('d-m-Y H:i:s') ?></span>
+                    <span><?= tanggal_indo($rowdetail['jam_berangkat']) ?></span>
                   </div>
                 </div>
                 <div class="row">
