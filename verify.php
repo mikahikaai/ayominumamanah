@@ -164,7 +164,7 @@ if (isset($_GET['acc_code'])) {
     </div>
     <?php
     if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
-      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $_GET['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
+      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['qrcode']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
     <?php } ?>
     ?>
   </div>
