@@ -12,7 +12,7 @@ if (isset($_GET['code'])) {
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
   WHERE qrcode=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['acc_code']);
+  $stmt->bindParam(1, $_GET['code']);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   // var_dump($stmt->fetch(PDO::FETCH_ASSOC));
