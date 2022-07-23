@@ -46,7 +46,7 @@ if (isset($_GET['code'])) {
 </head>
 
 <body>
-  <div class="container my-3">
+  <div class="container my-2">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Data Verifikasi Pengajuan Upah</h3>
@@ -161,16 +161,16 @@ if (isset($_GET['code'])) {
             </div>
           </div>
         </div>
+        <?php
+        if (isset($_SESSION['jabatan'])) {
+          if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
+            <a href="./adminkeu/report/reportpengajuanupahdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-md btn-warning float-end mt-3"><i class="fa fa-print"></i> Cetak</a>
+        <?php
+          }
+        }
+        ?>
       </div>
     </div>
-    <?php
-    if (isset($_SESSION['jabatan'])) {
-      if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
-        <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
-    <?php
-      }
-    }
-    ?>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
