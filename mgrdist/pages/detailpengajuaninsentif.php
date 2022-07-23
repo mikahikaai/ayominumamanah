@@ -54,17 +54,17 @@ if (isset($_POST['verif'])) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $selectVerif = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_insentif_borongan p
-      RIGHT JOIN gaji u ON p.id_upah = u.id
+      RIGHT JOIN gaji u ON p.id_insentif = u.id
       INNER JOIN distribusi d ON d.id = u.id_distribusi
       LEFT JOIN karyawan k1 ON k1.id = u.id_pengirim
       LEFT JOIN karyawan k2 ON k2.id = p.id_verifikator
       WHERE qrcode=? AND terbayar='2'";
     $stmtVerif = $db->prepare($selectVerif);
-    $stmtVerif->bindParam(1, $id_qr_code);
+    $stmtVerif->bindParam(1, $id_qr_code_insentif);
     $stmtVerif->execute();
 
     $stmtVerif1 = $db->prepare($selectVerif);
-    $stmtVerif1->bindParam(1, $id_qr_code);
+    $stmtVerif1->bindParam(1, $id_qr_code_insentif);
     $stmtVerif1->execute();
     $rowVerif1 = $stmtVerif1->fetch(PDO::FETCH_ASSOC);
 
@@ -150,7 +150,7 @@ if (isset($_POST['verif'])) {
             <td style='text-align: right; font-weight: bold;'>" . 'Rp. ' . number_format($total_ontime, 0, ',', '.') . "</td>
           </tr>
           <tr>
-            <td colspan='5' style='text-align: center; font-weight: bold;'>GRAND TOTAL</td>
+            <td colspan='4' style='text-align: center; font-weight: bold;'>GRAND TOTAL</td>
             <td colspan='2' style='text-align: center; font-weight: bold;'>" . 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') . "</td>
           </tr>
         </tfoot>
