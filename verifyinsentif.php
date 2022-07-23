@@ -110,7 +110,7 @@ if (isset($_GET['code'])) {
             <div class="form-group">
               <?php
               $detailsql = "SELECT d.*, i.*, p.*, k.*, i.bongkar bongkar2, r1.nama nama_pel_1, r1.alamat_dropping alamat_pel_1, r2.nama nama_pel_2, r2.alamat_dropping alamat_pel_2, r3.alamat_dropping alamat_pel_3, r3.nama nama_pel_3 FROM pengajuan_insentif_borongan p
-              INNER JOIN gaji i ON p.id_insentif = i.id
+              RIGHT JOIN gaji i ON p.id_insentif = i.id
               INNER JOIN distribusi d ON d.id = i.id_distribusi
               LEFT JOIN distributor r1 on d.nama_pel_1 = r1.id
               LEFT JOIN distributor r2 on d.nama_pel_2 = r2.id
@@ -118,7 +118,7 @@ if (isset($_GET['code'])) {
               INNER JOIN karyawan k ON k.id = i.id_pengirim
               WHERE qrcode=?";
               $stmtdetail = $db->prepare($detailsql);
-              $stmtdetail->bindParam(2, $_GET['code']);
+              $stmtdetail->bindParam(1, $_GET['code']);
               $stmtdetail->execute();
               while ($rowdetail = $stmtdetail->fetch(PDO::FETCH_ASSOC)) {
               ?>
@@ -135,7 +135,7 @@ if (isset($_GET['code'])) {
                     <label for="">Tanggal Perjalanan</label>
                   </div>
                   <div class="col-md-9">
-                    <span><?= date_create($rowdetail['jam_berangkat'])->format('d-m-Y H:i:s') ?></span>
+                    <span><?= tanggal_indo($rowdetail['jam_berangkat']) ?></span>
                   </div>
                 </div>
                 <div class="row">
@@ -184,6 +184,7 @@ if (isset($_GET['code'])) {
             <a href="./adminkeu/report/reportpengajuaninsentifdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-md btn-warning float-end mt-3"><i class="fa fa-print"></i> Cetak</a>
         <?php
           }
+          echo $_SESSION['jabatan'];
         }
         ?>
       </div>
