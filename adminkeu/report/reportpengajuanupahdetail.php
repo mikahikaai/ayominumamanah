@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['jabatan'])) {
+  echo '<meta http-equiv="refresh" content="900;url=../../logout.php"/>';
+  exit;
+}
 
 require_once '../../vendor/autoload.php';
 
