@@ -190,6 +190,10 @@ if (isset($_GET['page'])) {
       file_exists('pages/cetakupah.php') ? include 'pages/cetakupah.php' : include '../pages/404.php';
       $title = 'Cetak Upah';
       break;
+    case 'cetakinsentif':
+      file_exists('pages/cetakinsentif.php') ? include 'pages/cetakinsentif.php' : include '../pages/404.php';
+      $title = 'Cetak Insentif';
+      break;
     case 'ubahpassword':
       file_exists('../pages/ubahpassword.php') ? include '../pages/ubahpassword.php' : include '../pages/404.php';
       $title = 'Ubah Password';

@@ -57,10 +57,10 @@ if (isset($_POST['verif'])) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $selectVerif = "SELECT d.*, u.*, p.*, k1.nama nama_pengirim, k2.nama nama_verifikator FROM pengajuan_upah_borongan p
-      INNER JOIN gaji u ON p.id_upah = u.id
+      RIGHT JOIN gaji u ON p.id_upah = u.id
       INNER JOIN distribusi d ON d.id = u.id_distribusi
-      INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
-      INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
+      LEFT JOIN karyawan k1 ON k1.id = u.id_pengirim
+      LEFT JOIN karyawan k2 ON k2.id = p.id_verifikator
       WHERE qrcode=? AND terbayar='2'";
     $stmtVerif = $db->prepare($selectVerif);
     $stmtVerif->bindParam(1, $id_qr_code);

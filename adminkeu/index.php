@@ -232,7 +232,11 @@ include_once "../partials/scripts.php";
       $("a#cetakupah").addClass("active");
       $("li#pengajuaninsentif").addClass("menu-open");
       $("a#link_pengajuaninsentif").addClass("active");
-    }else if (title == "Rekap Pengajuan Insentif") {
+    } else if (title == "Cetak Insentif") {
+      $("a#cetakinsentif").addClass("active");
+      $("li#pengajuaninsentif").addClass("menu-open");
+      $("a#link_pengajuaninsentif").addClass("active");
+    } else if (title == "Rekap Pengajuan Insentif") {
       $("a#rekappengajuaninsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");

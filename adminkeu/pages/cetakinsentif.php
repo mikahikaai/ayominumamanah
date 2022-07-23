@@ -7,7 +7,7 @@ include_once "../partials/cssdatatables.php";
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Tulis Kode Verifikasi</h3>
     </div>
-    <form action="report/reportpengajuanupahdetail.php" method="get" target="_blank">
+    <form action="report/reportpengajuaninsentifdetail.php" method="get" target="_blank">
       <div class="card-body">
         <div class="row mb-2 mt-2 align-items-center">
           <div class="col-md-2">

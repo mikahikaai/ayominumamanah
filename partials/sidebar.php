@@ -276,6 +276,12 @@
                   <p>Cetak Upah</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?page=cetakinsentif" class="nav-link" id="cetakinsentif">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cetak Insentif</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item" id="rekapitulasi">

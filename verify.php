@@ -109,7 +109,7 @@ if (isset($_GET['code'])) {
             <div class="form-group">
               <?php
               $detailsql = "SELECT d.*, u.*, p.*, k.*, r1.nama nama_pel_1, r1.alamat_dropping alamat_pel_1, r2.nama nama_pel_2, r2.alamat_dropping alamat_pel_2, r3.alamat_dropping alamat_pel_3, r3.nama nama_pel_3 FROM pengajuan_upah_borongan p
-              INNER JOIN gaji u ON p.id_upah = u.id
+              RIGHT JOIN gaji u ON p.id_upah = u.id
               INNER JOIN distribusi d ON d.id = u.id_distribusi
               LEFT JOIN distributor r1 on d.nama_pel_1 = r1.id
               LEFT JOIN distributor r2 on d.nama_pel_2 = r2.id

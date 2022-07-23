@@ -4,13 +4,13 @@ include 'database/database.php';
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['acc_code'])) {
+if (isset($_GET['code'])) {
   $selectSql = "SELECT d.*, i.*, p.*, k1.*, k2.nama nama_verifikator, SUM(i.bongkar+i.ontime) total_insentif FROM pengajuan_insentif_borongan p
   INNER JOIN gaji i ON p.id_insentif = i.id
   INNER JOIN distribusi d ON d.id = i.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = i.id_pengirim
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE acc_code=?";
+  WHERE qrcode=?";
   $stmt = $db->prepare($selectSql);
   $stmt->bindParam(1, $_GET['acc_code']);
   $stmt->execute();
@@ -113,9 +113,8 @@ if (isset($_GET['acc_code'])) {
               LEFT JOIN distributor r2 on d.nama_pel_2 = r2.id
               LEFT JOIN distributor r3 on d.nama_pel_3 = r3.id
               INNER JOIN karyawan k ON k.id = i.id_pengirim
-              WHERE no_pengajuan=? AND qrcode=?";
+              WHERE qrcode=?";
               $stmtdetail = $db->prepare($detailsql);
-              $stmtdetail->bindParam(1, $row['no_pengajuan']);
               $stmtdetail->bindParam(2, $_GET['code']);
               $stmtdetail->execute();
               while ($rowdetail = $stmtdetail->fetch(PDO::FETCH_ASSOC)) {
@@ -168,7 +167,7 @@ if (isset($_GET['acc_code'])) {
                     <label for="">Total Insentif</label>
                   </div>
                   <div class="col-md-9">
-                    <span><?= "Rp. " . number_format($rowdetail['bongkar2']+$rowdetail['ontime'], 0, ',', '.') ?></span>
+                    <span><?= "Rp. " . number_format($rowdetail['bongkar2'] + $rowdetail['ontime'], 0, ',', '.') ?></span>
                   </div>
                 </div>
                 <hr>
@@ -176,6 +175,14 @@ if (isset($_GET['acc_code'])) {
             </div>
           </div>
         </div>
+        <?php
+        if (isset($_SESSION['jabatan'])) {
+          if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
+            <a href="./adminkeu/report/reportpengajuaninsentifdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-md btn-warning float-end mt-3"><i class="fa fa-print"></i> Cetak</a>
+        <?php
+          }
+        }
+        ?>
       </div>
     </div>
   </div>
