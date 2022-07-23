@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 include 'database/database.php';
 
 $database = new Database;
