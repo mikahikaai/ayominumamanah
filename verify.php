@@ -162,9 +162,12 @@ if (isset($_GET['code'])) {
       </div>
     </div>
     <?php
-    if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
-      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
-    <?php } ?>
+    if (isset($_SESSION['jabatan'])) {
+      if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
+        <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
+    <?php
+      }
+    }
     ?>
   </div>
 
