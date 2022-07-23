@@ -4,15 +4,15 @@ include 'database/database.php';
 $database = new Database;
 $db = $database->getConnection();
 
-if (isset($_GET['acc_code'])) {
+if (isset($_GET['code'])) {
   $selectSql = "SELECT d.*, u.*, p.*, k1.*, k2.nama nama_verifikator, SUM(upah) total_upah FROM pengajuan_upah_borongan p
   INNER JOIN gaji u ON p.id_upah = u.id
   INNER JOIN distribusi d ON d.id = u.id_distribusi
   INNER JOIN karyawan k1 ON k1.id = u.id_pengirim
   INNER JOIN karyawan k2 ON k2.id = p.id_verifikator
-  WHERE acc_code=?";
+  WHERE qrcode=?";
   $stmt = $db->prepare($selectSql);
-  $stmt->bindParam(1, $_GET['acc_code']);
+  $stmt->bindParam(1, $_GET['code']);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   // var_dump($stmt->fetch(PDO::FETCH_ASSOC));
@@ -164,7 +164,7 @@ if (isset($_GET['acc_code'])) {
     </div>
     <?php
     if ($_SESSION['jabatan'] == "ADMINKEU") { ?>
-      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['qrcode']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
+      <a href="./adminkeu/report/reportpengajuanupahdetail.php?code=<?= $row['acc_code']; ?>" class="btn btn-sm btn-warning float-right"><i class="fa fa-print"></i> Cetak</a>
     <?php } ?>
     ?>
   </div>
