@@ -140,7 +140,7 @@ $db = $database->getConnection();
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td></td>
           </tr>

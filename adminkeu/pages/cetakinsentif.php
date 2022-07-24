@@ -12,7 +12,7 @@ include_once "../partials/cssdatatables.php";
         <div class="form-group row">
           <label for="kode" class="col-sm-2 col-form-label">Kode Verifikasi</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" name="kode_verif" placeholder="Kode Verifikasi">
+            <input type="text" class="form-control" name="acc_code" placeholder="Kode Verifikasi">
           </div>
           <button type="submit" class="btn btn-warning btn-sm col-sm-2">
             <i class="fa fa-print"></i> Cetak
