@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['jabatan'])) {
+  echo '<meta http-equiv="refresh" content="0;url=../../logout.php"/>';
+  exit;
+}
 include "../../database/database.php";
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
