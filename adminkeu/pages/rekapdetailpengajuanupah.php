@@ -63,6 +63,7 @@ if (isset($_GET['acc_code'])) {
             <th>Nama</th>
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
+            <th>Kode Verifikasi</th>
             <th>Status</th>
             <th>Upah</th>
           </tr>
@@ -100,6 +101,15 @@ if (isset($_GET['acc_code'])) {
               </td>
               <td>
                 <?php
+                if (empty($row['qrcode'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['acc_code'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
                 } else if ($row['terbayar'] == '1') {
@@ -115,7 +125,7 @@ if (isset($_GET['acc_code'])) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah, 0, ',', '.') ?></td>
           </tr>
         </tfoot>

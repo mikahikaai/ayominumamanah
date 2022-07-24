@@ -55,6 +55,7 @@ if (isset($_GET['acc_code'])) {
             <th>Nama Karyawan</th>
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
+            <th>Kode Verifikasi</th>
             <th>Status</th>
             <th>Bongkar</th>
             <th>Ontime</th>
@@ -63,63 +64,72 @@ if (isset($_GET['acc_code'])) {
         <tbody>
           <?php
 
-$no = 1;
-$total_bongkar = 0;
-$total_ontime = 0;
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-  $total_bongkar += $row['bongkar'];
-  $total_ontime += $row['ontime'];
-?>
-  <tr>
-    <td><?= $no++ ?></td>
-    <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
-    <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
-    <td><?= $row['nama_pengirim'] ?></td>
-    <td>
-      <?php
-      if (empty($row['tgl_verifikasi'])) {
-        echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
-      } else {
-        echo tanggal_indo($row['tgl_verifikasi']);
-      }
-      ?>
-    </td>
-    <td>
-      <?php
-      if (empty($row['nama_verifikator'])) {
-        echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
-      } else {
-        echo $row['nama_verifikator'];
-      }
-      ?>
-    </td>
-    <td>
-      <?php
-      if ($row['terbayar'] == '0') {
-        echo 'Belum';
-      } else if ($row['terbayar'] == '1') {
-        echo 'Mengajukan';
-      } else {
-        echo 'Terverifikasi';
-      }
-      ?>
-    </td>
-    <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>
-    <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
-  </tr>
-<?php } ?>
-</tbody>
-<tfoot>
-<tr>
-  <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
-  <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
-  <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
-</tr>
-<tr>
-  <td colspan="7" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
-  <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
-</tr>
-</tfoot>
+          $no = 1;
+          $total_bongkar = 0;
+          $total_ontime = 0;
+          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $total_bongkar += $row['bongkar'];
+            $total_ontime += $row['ontime'];
+          ?>
+            <tr>
+              <td><?= $no++ ?></td>
+              <td><?= tanggal_indo($row['jam_berangkat']) ?></td>
+              <td><a href="?page=detaildistribusi&id=<?= $row['id_distribusi'] ?>"><?= $row['no_perjalanan'] ?></a></td>
+              <td><?= $row['nama_pengirim'] ?></td>
+              <td>
+                <?php
+                if (empty($row['tgl_verifikasi'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo tanggal_indo($row['tgl_verifikasi']);
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['nama_verifikator'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['nama_verifikator'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if (empty($row['qrcode'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['acc_code'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                if ($row['terbayar'] == '0') {
+                  echo 'Belum';
+                } else if ($row['terbayar'] == '1') {
+                  echo 'Mengajukan';
+                } else {
+                  echo 'Terverifikasi';
+                }
+                ?>
+              </td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['bongkar'], 0, ',', '.') ?></td>
+              <td style="text-align: right;"><?= 'Rp. ' . number_format($row['ontime'], 0, ',', '.') ?></td>
+            </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
+            <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
+          </tr>
+          <tr>
+            <td colspan="8" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
+          </tr>
+        </tfoot>
       </table>
       <button type="button" class="btn btn-sm mt-2 btn-danger float-right mr-1" onclick="history.back();"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>

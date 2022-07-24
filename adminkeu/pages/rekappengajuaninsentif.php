@@ -33,7 +33,7 @@ $db = $database->getConnection();
       </a>
     </div>
     <div class="card-body">
-      <table id="mytable" class="table table-bordered table-hover">
+      <table id="mytable" class="table table-bordered table-hover" style="white-space: nowrap;">
         <thead>
           <tr>
             <th>No.</th>
@@ -42,6 +42,7 @@ $db = $database->getConnection();
             <th>Nama Karyawan</th>
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
+            <th>Kode Verifikasi</th>
             <th>Status</th>
             <th>Total Bongkar</th>
             <th>Total Ontime</th>
@@ -115,6 +116,15 @@ $db = $database->getConnection();
               </td>
               <td>
                 <?php
+                if (empty($row['qrcode'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['acc_code'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
                 } else if ($row['terbayar'] == '1') {
@@ -127,20 +137,27 @@ $db = $database->getConnection();
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_bongkar'], 0, ',', '.') ?></td>
               <td style="text-align: right;"><?= 'Rp. ' . number_format($row['total_ontime'], 0, ',', '.') ?></td>
               <td>
-                <a href="?page=rekapdetailpengajuaninsentif&acc_code=<?= $row['acc_code']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat</a>
+                <a href="?page=rekapdetailpengajuaninsentif&acc_code=<?= $row['acc_code']; ?>" class="btn btn-primary btn-sm mr-1"><i class="fa fa-eye"></i> Lihat</a>
+                <?php if ($row['terbayar'] == '2') { ?>
+                  <a href="report/reportpengajuaninsentifdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa fa-download"></i> Unduh
+                  </a>
+                <?php } else { ?>
+                  <button class="btn btn-sm btn-secondary" disabled><i class="fa fa-download"></i> Unduh</button>
+                <?php } ?>
               </td>
             </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
             <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="7" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+            <td colspan="8" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
             <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
             <td></td>
           </tr>
