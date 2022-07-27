@@ -273,13 +273,13 @@
               <li class="nav-item">
                 <a href="?page=cetakupah" class="nav-link" id="cetakupah">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Cetak Upah</p>
+                  <p>Cetak Pengajuan Upah</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="?page=cetakinsentif" class="nav-link" id="cetakinsentif">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Cetak Insentif</p>
+                  <p>Cetak Pengajuan Insentif</p>
                 </a>
               </li>
             </ul>
