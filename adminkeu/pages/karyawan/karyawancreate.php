@@ -102,9 +102,6 @@ if ($stmt->rowCount() > 0) {
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Data Tambah Karyawan</h3>
-      <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-arrow-left"></i> Kembali
-      </a>
     </div>
     <div class="card-body">
       <form action="" method="post" id='karyawancreate'>
@@ -326,7 +323,7 @@ if ($stmt->rowCount() > 0) {
         </div>
       </button>
       <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-times"></i> Batal
+        <i class="fa fa-arrow-left"></i> Kembali
       </a>
       <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1">
         <i class="fa fa-save"></i> Simpan
