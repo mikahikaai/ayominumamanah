@@ -95,7 +95,13 @@ if (isset($_POST['verif'])) {
       $mail->addEmbeddedImage('../dist/verif/' . $rowVerif1['qrcode'] . '.png', 'qrcode');
       $mail->isHTML(true);                                  // Set email format to HTML
       $mail->Subject = "Pemberitahuan Verifikasi Upah";
-      $html = "<body style='background-color: whitesmoke'>
+      $html = "
+      <style>
+      table#content-mail tbody tr:nth-child(even) {
+        background-color: #e4ede4;
+      }
+      </style>
+      <body style='background-color: whitesmoke'>
       <h2>Hai, " . $rowVerif1['nama_pengirim'] . " !<br>Selamat !! Penganjuan upah Anda dengan No. " . $rowVerif1['no_pengajuan'] . " sudah diverifikasi!</h2>
       Berikut rincian upah yang sudah diverifikasi :
         <table style='border-collapse: collapse; margin-top: 20px;'>
@@ -116,7 +122,7 @@ if (isset($_POST['verif'])) {
             <td style='font-weight: bold; color: red'> : " . $rowVerif1['acc_code'] . "</td>
           </tr>
         </table>
-      <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;'>
+      <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;' id='content-mail'>
         <thead>
           <tr style='background-color: #5a5e5a;'>
             <th>No.</th>
@@ -132,7 +138,7 @@ if (isset($_POST['verif'])) {
       while ($rowVerif = $stmtVerif->fetch(PDO::FETCH_ASSOC)) {
         $total_verif += $rowVerif['upah'];
         $html .= "
-            <tr style='tr:nth-child(even): background-color: #e4ede4;'>
+            <tr>
               <td align='center'>" . $no++ . "</td>
               <td>" . tanggal_indo($rowVerif['jam_berangkat']) . "</td>
               <td>" . $rowVerif['no_perjalanan'] . "</td>
