@@ -184,7 +184,6 @@ if (isset($_GET['code'])) {
             <a href="./adminkeu/report/reportpengajuaninsentifdetail.php?acc_code=<?= $row['acc_code']; ?>" target="_blank" class="btn btn-md btn-warning float-end mt-3"><i class="fa fa-print"></i> Cetak</a>
         <?php
           }
-          echo $_SESSION['jabatan'];
         }
         ?>
       </div>
