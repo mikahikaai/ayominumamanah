@@ -200,12 +200,12 @@ if (isset($_POST['verif'])) {
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pengajuan Upah</h1>
+        <h1 class="m-0">Detail Pengajuan Upah</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="?page=home">Home</a></li>
-          <li class="breadcrumb-item"><a href="?page=pengajuanupah">Verifikasi Upah</a></li>
+          <li class="breadcrumb-item"><a href="?page=pengajuanupah">Verifikasi Pengajuan Upah</a></li>
           <li class="breadcrumb-item active">Detail Pengajuan Upah</li>
         </ol>
       </div><!-- /.col -->
@@ -218,7 +218,7 @@ if (isset($_POST['verif'])) {
 <div class="content">
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Detail Upah Belum Terbayar</h3>
+      <h3 class="card-title">Data Detail Pengajuan Upah Belum Terverifikasi</h3>
       <!-- <a href="export/penggajianrekap-pdf.php" class="btn btn-success btn-sm float-right">
         <i class="fa fa-plus-circle"></i> Export PDF
       </a> -->
