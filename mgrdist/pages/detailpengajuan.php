@@ -132,7 +132,7 @@ if (isset($_POST['verif'])) {
       while ($rowVerif = $stmtVerif->fetch(PDO::FETCH_ASSOC)) {
         $total_verif += $rowVerif['upah'];
         $html .= "
-            <tr style='nth-child(even): background-color: #e4ede4;'>
+            <tr style='td:nth-child(even): background-color: #e4ede4;'>
               <td align='center'>" . $no++ . "</td>
               <td>" . tanggal_indo($rowVerif['jam_berangkat']) . "</td>
               <td>" . $rowVerif['no_perjalanan'] . "</td>
