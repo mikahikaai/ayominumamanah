@@ -118,7 +118,7 @@ if (isset($_POST['verif'])) {
         </table>
       <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;'>
         <thead>
-          <tr>
+          <tr style='background-color: #5a5e5a;'>
             <th>No.</th>
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
@@ -132,7 +132,7 @@ if (isset($_POST['verif'])) {
       while ($rowVerif = $stmtVerif->fetch(PDO::FETCH_ASSOC)) {
         $total_verif += $rowVerif['upah'];
         $html .= "
-            <tr>
+            <tr style='nth-child(even): background-color: #e4ede4;'>
               <td align='center'>" . $no++ . "</td>
               <td>" . tanggal_indo($rowVerif['jam_berangkat']) . "</td>
               <td>" . $rowVerif['no_perjalanan'] . "</td>
@@ -143,7 +143,7 @@ if (isset($_POST['verif'])) {
       $html .= "
         </tbody>
         <tfoot>
-          <tr>
+          <tr style='background-color: blanchedalmond'>
             <td colspan='4' style='text-align: center; font-weight: bold;'>TOTAL</td>
             <td style='text-align: right; font-weight: bold;'>" . 'Rp. ' . number_format($total_verif, 0, ',', '.') . "</td>
           </tr>
