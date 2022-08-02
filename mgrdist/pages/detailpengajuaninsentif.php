@@ -115,7 +115,7 @@ if (isset($_POST['verif'])) {
         </table>
       <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;'>
         <thead>
-          <tr>
+          <tr style='background-color: #5a5e5a;'>
             <th>No.</th>
             <th>Tanggal & Jam Berangkat</th>
             <th>No Perjalanan</th>
@@ -144,12 +144,12 @@ if (isset($_POST['verif'])) {
       $html .= "
         </tbody>
         <tfoot>
-          <tr>
+          <tr style='background-color: blanchedalmond>
             <td colspan='4' style='text-align: center; font-weight: bold;'>TOTAL</td>
             <td style='text-align: right; font-weight: bold;'>" . 'Rp. ' . number_format($total_bongkar, 0, ',', '.') . "</td>
             <td style='text-align: right; font-weight: bold;'>" . 'Rp. ' . number_format($total_ontime, 0, ',', '.') . "</td>
           </tr>
-          <tr>
+          <tr style='background-color: blanchedalmond>
             <td colspan='4' style='text-align: center; font-weight: bold;'>GRAND TOTAL</td>
             <td colspan='2' style='text-align: center; font-weight: bold;'>" . 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') . "</td>
           </tr>

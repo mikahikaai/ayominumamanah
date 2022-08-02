@@ -96,11 +96,6 @@ if (isset($_POST['verif'])) {
       $mail->isHTML(true);                                  // Set email format to HTML
       $mail->Subject = "Pemberitahuan Verifikasi Upah";
       $html = "
-      <style>
-      table#content-mail tbody tr:nth-child(even) {
-        background-color: #e4ede4;
-      }
-      </style>
       <body style='background-color: whitesmoke'>
       <h2>Hai, " . $rowVerif1['nama_pengirim'] . " !<br>Selamat !! Penganjuan upah Anda dengan No. " . $rowVerif1['no_pengajuan'] . " sudah diverifikasi!</h2>
       Berikut rincian upah yang sudah diverifikasi :
@@ -122,7 +117,7 @@ if (isset($_POST['verif'])) {
             <td style='font-weight: bold; color: red'> : " . $rowVerif1['acc_code'] . "</td>
           </tr>
         </table>
-      <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;' id='content-mail'>
+      <table border='1' width='100%' style='border-collapse: collapse; margin-top: 20px;'>
         <thead>
           <tr style='background-color: #5a5e5a;'>
             <th>No.</th>
