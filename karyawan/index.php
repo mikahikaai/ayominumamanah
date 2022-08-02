@@ -118,6 +118,7 @@ include_once "../partials/scripts.php";
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
+    $('input').attr('autocomplete', 'off')
     $('#datetimepicker1').tempusDominus({
       localization: id = {
         today: 'Hari Ini',

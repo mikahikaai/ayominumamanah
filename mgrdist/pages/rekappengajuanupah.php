@@ -39,6 +39,7 @@ $db = $database->getConnection();
             <th>Nama Karyawan</th>
             <th>Tanggal Verifikasi</th>
             <th>Nama Verifikator</th>
+            <th>Kode Verifikasi</th>
             <th>Status</th>
             <th>Total Upah</th>
             <th>Opsi</th>
@@ -111,6 +112,15 @@ $db = $database->getConnection();
               </td>
               <td>
                 <?php
+                if (empty($row['qrcode'])) {
+                  echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+                } else {
+                  echo $row['acc_code'];
+                }
+                ?>
+              </td>
+              <td>
+                <?php
                 if ($row['terbayar'] == '0') {
                   echo 'Belum';
                 } else if ($row['terbayar'] == '1') {
@@ -130,7 +140,7 @@ $db = $database->getConnection();
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+            <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
             <td style="text-align: right; font-weight: bold;"></td>
             <td></td>
           </tr>
@@ -159,8 +169,8 @@ include_once "../partials/scriptdatatables.php";
 
         // Total over all pages
         nb_cols = api.columns().nodes().length;
-        var j = 7;
-        while (j < nb_cols && j < 8) {
+        var j = 8;
+        while (j < nb_cols && j < 9) {
           total = api
             .column(j)
             .data()

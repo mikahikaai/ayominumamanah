@@ -118,6 +118,7 @@ include_once "../partials/scripts.php";
 <script>
   $("title").html("Amanah | <?= $title ?>");
   $(document).ready(function() {
+    $('input').attr('autocomplete', 'off')
     $('#datetimepicker1').tempusDominus({
       localization: id = {
         today: 'Hari Ini',
@@ -261,6 +262,8 @@ include_once "../partials/scripts.php";
       $("li#master_distribusi").addClass("menu-open");
       $("a#link_master_distribusi").addClass("active");
     }
+
+
   });
 
   var mybutton = document.getElementById("tothetop");

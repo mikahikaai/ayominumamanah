@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['jabatan'])) {
+  echo '<meta http-equiv="refresh" content="0;url=../../logout.php"/>';
+  exit;
+}
 include "../../database/database.php";
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -120,8 +125,9 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
       <th>Tanggal Pengajuan</th>
       <th>No Pengajuan</th>
       <th>Nama Karyawan</th>
-      <th>Nama Verifikator</th>
       <th>Tanggal Verifikasi</th>
+      <th>Nama Verifikator</th>
+      <th>Kode Verifikasi</th>
       <th>Status</th>
       <th>Total Bongkar</th>
       <th>Total Ontime</th>
@@ -144,20 +150,28 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td><?= $row['nama_pengirim'] ?></td>
         <td>
           <?php
+          if (empty($row['tgl_verifikasi'])) {
+            echo "<div style='color: red;'>Belum Diverifikasi</div>";
+          } else {
+            echo tanggal_indo($row['tgl_verifikasi']);
+          }
+          ?>
+        </td>
+        <td>
+          <?php
           if (empty($row['nama_verifikator'])) {
             echo "<div style='color: red;'>Belum Diverifikasi</div>";
           } else {
             echo $row['nama_verifikator'];
           }
           ?>
-
         </td>
         <td>
           <?php
-          if (empty($row['tgl_verifikasi'])) {
-            echo "<div style='color: red;'>Belum Diverifikasi</div>";
+          if (empty($row['qrcode'])) {
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
           } else {
-            echo tanggal_indo($row['tgl_verifikasi']);
+            echo $row['acc_code'];
           }
           ?>
         </td>
@@ -177,12 +191,12 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   </tbody>
   <tfoot>
     <tr style="background-color: blanchedalmond">
-      <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+      <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar, 0, ',', '.') ?></td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_ontime, 0, ',', '.') ?></td>
     </tr>
     <tr style="background-color: blanchedalmond">
-      <td colspan="7" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
+      <td colspan="8" style="text-align: center; font-weight: bold;">GRAND TOTAL</td>
       <td colspan="2" style="text-align: center; font-weight: bold;"><?= 'Rp. ' . number_format($total_bongkar + $total_ontime, 0, ',', '.') ?></td>
     </tr>
   </tfoot>

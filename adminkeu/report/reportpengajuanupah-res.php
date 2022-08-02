@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['jabatan'])) {
+  echo '<meta http-equiv="refresh" content="0;url=../../logout.php"/>';
+  exit;
+}
 include "../../database/database.php";
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -11,12 +16,12 @@ $tgl_awal = $_SESSION['tgl_rekap_awal_pengajuan_upah']->format('Y-m-d H:i:s');
 $tgl_akhir = $_SESSION['tgl_rekap_akhir_pengajuan_upah']->format('Y-m-d H:i:s');
 
 $selectSql = "SELECT p.*, u.*, d.*, k1.nama nama_pengirim, k2.nama nama_verifikator , SUM(upah) total_upah FROM pengajuan_upah_borongan p
-  INNER JOIN gaji u on p.id_upah = u.id
+  RIGHT JOIN gaji u on p.id_upah = u.id
   LEFT JOIN karyawan k1 on u.id_pengirim = k1.id
   LEFT JOIN karyawan k2 on p.id_verifikator = k2.id
   INNER JOIN distribusi d on u.id_distribusi = d.id
   WHERE u.id_pengirim = IF (? = 'all', u.id_pengirim, ?) AND (p.tgl_pengajuan BETWEEN ? AND ?) AND p.terbayar = IF (? = 'all', p.terbayar, ?)
-  GROUP BY qrcode ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
+  GROUP BY acc_code ORDER BY tgl_pengajuan ASC, no_pengajuan ASC";
 $stmt = $db->prepare($selectSql);
 $stmt->bindParam(1, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
 $stmt->bindParam(2, $_SESSION['id_karyawan_rekap_pengajuan_upah']);
@@ -120,8 +125,9 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
       <th>Tanggal Pengajuan</th>
       <th>No Pengajuan</th>
       <th>Nama Karyawan</th>
-      <th>Nama Verifikator</th>
       <th>Tanggal Verifikasi</th>
+      <th>Nama Verifikator</th>
+      <th>Kode Verifikasi</th>
       <th>Status</th>
       <th>Total Upah</th>
     </tr>
@@ -141,6 +147,15 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         <td><?= $row['nama_pengirim'] ?></td>
         <td>
           <?php
+          if (empty($row['tgl_verifikasi'])) {
+            echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
+          } else {
+            echo tanggal_indo($row['tgl_verifikasi']);
+          }
+          ?>
+        </td>
+        <td>
+          <?php
           if (empty($row['nama_verifikator'])) {
             echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
           } else {
@@ -151,10 +166,10 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
         </td>
         <td>
           <?php
-          if (empty($row['tgl_verifikasi'])) {
+          if (empty($row['qrcode'])) {
             echo "<div style='color: red;'>BELUM DIVERIFIKASI</div>";
           } else {
-            echo tanggal_indo($row['tgl_verifikasi']);
+            echo $row['acc_code'];
           }
           ?>
         </td>
@@ -173,7 +188,7 @@ $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
   </tbody>
   <tfoot>
     <tr style="background-color: blanchedalmond">
-      <td colspan="7" style="text-align: center; font-weight: bold;">TOTAL</td>
+      <td colspan="8" style="text-align: center; font-weight: bold;">TOTAL</td>
       <td style="text-align: right; font-weight: bold;"><?= 'Rp. ' . number_format($total_upah_global, 0, ',', '.') ?></td>
     </tr>
   </tfoot>
