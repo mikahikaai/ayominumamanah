@@ -11,19 +11,26 @@ if (isset($_SESSION['id'])) {
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+
+
 if (isset($_POST['button_edit'])) {
-  if ($_POST['email'] == $row['email']) {
-?>
+  $selectsql2 = "SELECT email FROM karyawan WHERE email =? AND id != ?";
+  $stmt2 = $db->prepare($selectsql2);
+  $stmt2->bindParam(1, $_POST['email']);
+  $stmt2->bindParam(2, $_SESSION['id']);
+  $stmt2->execute();
+  if ($stmt2->rowCount() > 0) { ?>
     <div class="alert alert-danger alert-dismissable">
       <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
       <h5><i class="icon fas fa-times"></i>Gagal Ubah Email</h5>
       Email sudah ada
     </div>
-<?php } else {
+<?php
+  } else {
     $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
     $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
     $updatesql = "UPDATE karyawan SET nama=?, nik=?, tempat_lahir=?, tanggal_lahir=?, jenis_kelamin=?,
-        alamat=?, agama=?, status=?, gol_darah=?, no_telepon=?, email=?  where id=?";
+            alamat=?, agama=?, status=?, gol_darah=?, no_telepon=?, email=?  where id=?";
     $alamat = strtoupper($_POST['alamat']);
     $tempat_lahir = strtoupper($_POST['tempat_lahir']);
     $stmt = $db->prepare($updatesql);
@@ -47,6 +54,7 @@ if (isset($_POST['button_edit'])) {
       $_SESSION['pesan'] = "Gagal Mengubah Data";
     }
     echo '<meta http-equiv="refresh" content="0;url=?page=home"/>';
+    exit;
   }
 }
 ?>
