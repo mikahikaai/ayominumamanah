@@ -28,7 +28,7 @@ if (isset($_POST['kirim'])) {
   } else {
     $emailTo = $rowselect["email"]; //email kamu atau email penerima link reset
     $code = uniqid(true); //Untuk kode atau parameter acak
-    $query = 'INSERT INTO reset_password VALUES (NULL,?,?,?,0)';
+    $query = 'INSERT INTO reset_password VALUES (NULL,?,?,?,"0")';
     $tgl_reset = date('Y-m-d');
     $stmt = $db->prepare($query);
     $stmt->bindParam(1, $tgl_reset);

@@ -107,8 +107,8 @@ if (isset($_POST['reset'])) {
                 <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
               </div>
               <div class="form-group">
-                <input id="password-field" type="password" class="form-control" placeholder="Konfirmasi Password Baru" name="password2" required>
-                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                <input id="password-field2" type="password" class="form-control" placeholder="Konfirmasi Password Baru" name="password2" required>
+                <span toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
               </div>
               <div class="form-group">
                 <button type="submit" class="form-control btn btn-primary submit px-3" name="reset">Reset</button>
