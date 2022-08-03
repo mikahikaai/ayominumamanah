@@ -12,6 +12,11 @@ if (isset($_GET['id'])) {
 }
 
 if (isset($_POST['button_edit'])) {
+  $selectsql2 = "SELECT email FROM karyawan WHERE email =? AND id != ?";
+  $stmt2 = $db->prepare($selectsql2);
+  $stmt2->bindParam(1, $_POST['email']);
+  $stmt2->bindParam(2, $_SESSION['id']);
+  $stmt2->execute();
   if ($_POST['password'] != $_POST['password2']) {
 ?>
     <div class="alert alert-danger alert-dismissable">
@@ -19,7 +24,14 @@ if (isset($_POST['button_edit'])) {
       <h5><i class="icon fas fa-times"></i>Gagal Ubah Password</h5>
       Password tidak sama
     </div>
-<?php } else {
+  <?php } elseif ($stmt2->rowCount() > 0) { ?>
+    <div class="alert alert-danger alert-dismissable">
+      <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
+      <h5><i class="icon fas fa-times"></i>Gagal Ubah Email</h5>
+      Email sudah ada
+    </div>
+<?php
+  } else {
     $tanggal_lahir_format = date_create_from_format('d/m/Y', $_POST['tanggal_lahir']);
     $tanggal_lahir = $tanggal_lahir_format->format('Y-m-d');
     $password = $_POST['password'] == '' && $_POST['password2'] == '' ? $row['password'] : md5($_POST['password']);
@@ -155,7 +167,6 @@ if (isset($_POST['button_edit'])) {
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="tanggal_lahir">Tanggal Lahir</label>
               <label for="tanggal_lahir">Tanggal Lahir</label>
               <input type="text" id="datetimepicker2" data-td-target="#datetimepicker2" name="tanggal_lahir" class="form-control" value="<?= $row['tanggal_lahir'] ?>" required>
             </div>

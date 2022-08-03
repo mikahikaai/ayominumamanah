@@ -9,6 +9,12 @@ $stmt->bindParam(2, $_POST['no_telepon']);
 $stmt->bindParam(3, $_POST['nik']);
 $stmt->execute();
 
+$selectsql2 = "SELECT email FROM karyawan WHERE email =? AND id != ?";
+$stmt2 = $db->prepare($selectsql2);
+$stmt2->bindParam(1, $_POST['email']);
+$stmt2->bindParam(2, $_SESSION['id']);
+$stmt2->execute();
+
 if ($stmt->rowCount() > 0) {
 ?>
   <div class="alert alert-danger alert-dismissable">
@@ -31,6 +37,13 @@ if ($stmt->rowCount() > 0) {
       <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
       <h5><i class="icon fas fa-times"></i>Gagal</h5>
       Password belum diisi
+    </div>
+  <?php
+  } elseif ($stmt2->rowCount() > 0) { ?>
+    <div class="alert alert-danger alert-dismissable">
+      <button class="close" type="button" data-dismiss="alert" aria-hidden="true">X</button>
+      <h5><i class="icon fas fa-times"></i>Gagal Menambahkan Email</h5>
+      Email sudah ada
     </div>
 <?php
   } else {
@@ -321,12 +334,12 @@ if ($stmt->rowCount() > 0) {
             </div>
           </div>
         </div>
-      </button>
-      <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
-        <i class="fa fa-arrow-left"></i> Kembali
-      </a>
-      <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1">
-        <i class="fa fa-save"></i> Simpan
+        </button>
+        <a href="?page=karyawanread" class="btn btn-danger btn-sm float-right">
+          <i class="fa fa-arrow-left"></i> Kembali
+        </a>
+        <button type="submit" name="button_create" class="btn btn-success btn-sm float-right mr-1">
+          <i class="fa fa-save"></i> Simpan
       </form>
     </div>
   </div>
