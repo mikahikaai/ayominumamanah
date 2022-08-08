@@ -133,6 +133,11 @@ if ($stmt->rowCount() > 0) {
     </div>
   </div>
 </div>
+
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
+
 <!-- /.content -->
 <script>
   new Autocomplete("search", {

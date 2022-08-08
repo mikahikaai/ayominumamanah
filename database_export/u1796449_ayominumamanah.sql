@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 19, 2022 at 05:06 PM
+-- Generation Time: Jul 30, 2022 at 01:25 AM
 -- Server version: 10.5.15-MariaDB-cll-lve
 -- PHP Version: 7.4.29
 
@@ -37,7 +37,6 @@ CREATE TABLE `armada` (
   `kecepatan_muatan` int(3) NOT NULL,
   `tanggal_registrasi` datetime NOT NULL DEFAULT current_timestamp(),
   `tanggal_update_data` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `standby` enum('0','1') DEFAULT '0' COMMENT '0 = Terpakai, 1 = Standby',
   `status_keaktifan` enum('AKTIF','NON AKTIF') NOT NULL DEFAULT 'AKTIF'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -45,25 +44,25 @@ CREATE TABLE `armada` (
 -- Dumping data for table `armada`
 --
 
-INSERT INTO `armada` (`id`, `plat`, `jenis_mobil`, `kateg_mobil`, `kecepatan_kosong`, `kecepatan_muatan`, `tanggal_registrasi`, `tanggal_update_data`, `standby`, `status_keaktifan`) VALUES
-(1, 'DA 8062 PR', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2022-03-18 04:18:35', '0', 'AKTIF'),
-(2, 'DA 8063 PQ', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2022-04-08 03:23:17', '0', 'NON AKTIF'),
-(3, 'DA 8063 PR', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', '0', 'AKTIF'),
-(4, 'DA 8148 PQ', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(5, 'DA 8148 PR', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(6, 'DA 8160 PR', 'FUSO', 'XL', 45, 30, '2019-12-16 23:47:31', '2020-11-03 03:47:44', '0', 'AKTIF'),
-(7, 'DA 8170 PQ', 'FUSO', 'XL', 45, 30, '2019-12-16 23:47:31', '2020-11-03 03:47:44', '0', 'AKTIF'),
-(8, 'DA 8540 PP', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', '0', 'AKTIF'),
-(9, 'DA 8956 PP', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', '0', 'AKTIF'),
-(10, 'DA 8704 TPC', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', '0', 'AKTIF'),
-(12, 'DA 8754 PM', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', '0', 'AKTIF'),
-(13, 'DA 8790 TPB', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(14, 'DA 8913 TPC', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(15, 'DA 8950 TPB', 'GRAN MAX', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(16, 'DA 8727 PR', 'GRAN MAX', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(17, 'DA 8238 PT', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', '0', 'AKTIF'),
-(18, 'DA 8068 PU', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', '0', 'AKTIF'),
-(19, 'DA 8017 TPF', 'PS', 'L', 50, 35, '2020-08-03 10:29:27', '2020-11-03 03:47:44', '0', 'AKTIF');
+INSERT INTO `armada` (`id`, `plat`, `jenis_mobil`, `kateg_mobil`, `kecepatan_kosong`, `kecepatan_muatan`, `tanggal_registrasi`, `tanggal_update_data`, `status_keaktifan`) VALUES
+(1, 'DA 8062 PR', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2022-03-18 04:18:35', 'AKTIF'),
+(2, 'DA 8063 PQ', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2022-04-08 03:23:17', 'NON AKTIF'),
+(3, 'DA 8063 PR', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', 'AKTIF'),
+(4, 'DA 8148 PQ', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(5, 'DA 8148 PR', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(6, 'DA 8160 PR', 'FUSO', 'XL', 45, 30, '2019-12-16 23:47:31', '2020-11-03 03:47:44', 'AKTIF'),
+(7, 'DA 8170 PQ', 'FUSO', 'XL', 45, 30, '2019-12-16 23:47:31', '2020-11-03 03:47:44', 'AKTIF'),
+(8, 'DA 8540 PP', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', 'AKTIF'),
+(9, 'DA 8956 PP', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', 'AKTIF'),
+(10, 'DA 8704 TPC', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', 'AKTIF'),
+(12, 'DA 8754 PM', 'ENGKEL', 'M', 55, 40, '2019-12-16 23:43:03', '2020-11-01 13:13:33', 'AKTIF'),
+(13, 'DA 8790 TPB', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(14, 'DA 8913 TPC', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(15, 'DA 8950 TPB', 'GRAN MAX', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(16, 'DA 8727 PR', 'GRAN MAX', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(17, 'DA 8238 PT', 'PS', 'L', 50, 35, '2019-12-16 23:40:35', '2020-11-03 03:47:44', 'AKTIF'),
+(18, 'DA 8068 PU', 'L300', 'S', 55, 40, '2019-12-16 23:46:39', '2020-11-01 13:13:48', 'AKTIF'),
+(19, 'DA 8017 TPF', 'PS', 'L', 50, 35, '2020-08-03 10:29:27', '2020-11-03 03:47:44', 'AKTIF');
 
 -- --------------------------------------------------------
 
@@ -104,7 +103,7 @@ CREATE TABLE `distribusi` (
   `keterangan` varchar(255) DEFAULT NULL,
   `tgl_validasi` datetime DEFAULT NULL,
   `validasi_oleh` int(11) DEFAULT NULL,
-  `status` enum('0','1','2','3') NOT NULL DEFAULT '0' COMMENT '0 = perlu validasi\r\n1 = sudah validasi\r\n2 = perlu validasi UM\r\n3 completed'
+  `status` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0 = perlu validasi1 = sudah validasi'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -123,14 +122,19 @@ INSERT INTO `distribusi` (`id`, `tanggal`, `no_perjalanan`, `id_plat`, `driver`,
 (4911, '2022-07-11 02:45:11', 'NJ/2022/07/0006', 17, 11, 27, NULL, 133, 208, 153, '1', 15, 15, 15, 15, 15, 21, 21, 21, 21, 21, 50, 50, 51, 51, 52, '2022-07-11 10:45:06', '2022-07-11 19:05:37', '2022-07-11 18:45:03', '', '2022-07-14 05:45:13', 56, '1'),
 (4912, '2022-07-11 02:47:01', 'NJ/2022/07/0007', 12, 15, 32, 38, 227, 77, NULL, '1', 10, 20, 30, 40, 50, 18, 19, 20, 21, 22, NULL, NULL, NULL, NULL, NULL, '2022-07-11 10:46:23', '2022-07-11 15:02:01', '2022-07-11 13:45:17', '', '2022-07-14 05:45:26', 56, '1'),
 (4913, '2022-07-13 19:54:22', 'NJ/2022/07/0008', 19, 11, 38, 17, 99, 135, NULL, '1', 0, 0, 0, 0, 150, 0, 0, 0, 0, 150, NULL, NULL, NULL, NULL, NULL, '2022-07-13 14:54:00', '2022-07-13 23:27:23', '2022-07-13 23:45:33', '', '2022-07-14 05:45:47', 56, '1'),
-(4914, '2022-07-14 05:58:03', 'NJ/2022/07/0009', 1, 11, 27, 38, 172, 83, NULL, '1', 100, 100, 100, 50, 150, 50, 50, 50, 100, 150, NULL, NULL, NULL, NULL, NULL, '2022-07-14 13:58:01', '2022-07-15 04:13:38', NULL, NULL, NULL, NULL, '0'),
-(4915, '2022-07-14 07:22:23', 'NJ/2022/07/0010', 8, 15, 32, 34, 189, 30, 6, '1', 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 10, 20, 30, 40, 50, '2022-07-14 15:22:22', '2022-07-15 04:30:51', NULL, NULL, NULL, NULL, '0'),
-(4916, '2022-07-14 07:22:49', 'NJ/2022/07/0011', 10, 15, 38, 27, 135, NULL, NULL, '1', 100, 100, 50, 50, 100, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:22:48', '2022-07-14 22:23:41', NULL, NULL, NULL, NULL, '0'),
-(4917, '2022-07-14 07:23:29', 'NJ/2022/07/0012', 17, 9, 38, 20, 185, 100, NULL, '1', 0, 0, 0, 0, 150, 0, 0, 0, 0, 200, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:23:28', '2022-07-14 22:06:13', NULL, NULL, NULL, NULL, '0'),
-(4918, '2022-07-14 07:24:16', 'NJ/2022/07/0013', 1, 37, 16, 33, 66, 40, NULL, '1', 0, 0, 0, 50, 50, 0, 0, 0, 0, 250, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:24:14', '2022-07-15 06:47:22', NULL, NULL, NULL, NULL, '0'),
-(4919, '2022-07-14 07:25:00', 'NJ/2022/07/0014', 17, 37, 39, 17, 123, NULL, NULL, '1', 100, 0, 0, 0, 300, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:24:53', '2022-07-15 05:23:46', NULL, NULL, NULL, NULL, '0'),
-(4920, '2022-07-15 08:14:15', 'NJ/2022/07/0015', 6, 11, 38, 27, 30, 6, NULL, '1', 0, 0, 0, 0, 100, 0, 0, 0, 0, 100, NULL, NULL, NULL, NULL, NULL, '2022-07-15 16:14:09', '2022-07-16 04:25:43', NULL, NULL, NULL, NULL, '0'),
-(4921, '2022-07-19 05:41:05', 'NJ/2022/07/0016', 6, 2, 20, 33, 30, 95, NULL, '1', 100, 20, 0, 10, 300, 0, 0, 0, 0, 315, NULL, NULL, NULL, NULL, NULL, '2022-07-19 13:50:46', '2022-07-20 08:02:57', NULL, NULL, NULL, NULL, '0');
+(4914, '2022-07-14 05:58:03', 'NJ/2022/07/0009', 1, 11, 27, 38, 172, 83, NULL, '1', 100, 100, 100, 50, 150, 50, 50, 50, 100, 150, NULL, NULL, NULL, NULL, NULL, '2022-07-14 13:58:01', '2022-07-15 04:13:38', '2022-07-15 03:50:32', '', '2022-07-22 07:50:49', 56, '1'),
+(4915, '2022-07-14 07:22:23', 'NJ/2022/07/0010', 8, 15, 32, 34, 189, 30, 6, '1', 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 10, 20, 30, 40, 50, '2022-07-14 15:22:22', '2022-07-15 04:30:51', '2022-07-15 04:12:45', '', '2022-07-19 12:12:58', 56, '1'),
+(4916, '2022-07-14 07:22:49', 'NJ/2022/07/0011', 10, 15, 38, 27, 135, NULL, NULL, '1', 100, 100, 50, 50, 100, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:22:48', '2022-07-14 22:23:41', '2022-07-14 22:13:15', '', '2022-07-19 12:13:27', 56, '1'),
+(4917, '2022-07-14 07:23:29', 'NJ/2022/07/0012', 17, 9, 38, 20, 185, 100, NULL, '1', 0, 0, 0, 0, 150, 0, 0, 0, 0, 200, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:23:28', '2022-07-14 22:06:13', '2022-07-14 22:13:44', '', '2022-07-19 12:13:53', 56, '1'),
+(4918, '2022-07-14 07:24:16', 'NJ/2022/07/0013', 1, 37, 16, 33, 66, 40, NULL, '1', 0, 0, 0, 50, 50, 0, 0, 0, 0, 250, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:24:14', '2022-07-15 06:47:22', '2022-07-15 06:14:26', '', '2022-07-19 12:14:40', 56, '1'),
+(4919, '2022-07-14 07:25:00', 'NJ/2022/07/0014', 17, 37, 39, 17, 123, NULL, NULL, '1', 100, 0, 0, 0, 300, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-14 15:24:53', '2022-07-15 05:23:46', '2022-07-15 06:14:57', '', '2022-07-19 12:15:11', 56, '1'),
+(4920, '2022-07-15 08:14:15', 'NJ/2022/07/0015', 6, 11, 38, 27, 30, 6, NULL, '1', 0, 0, 0, 0, 100, 0, 0, 0, 0, 100, NULL, NULL, NULL, NULL, NULL, '2022-07-15 16:14:09', '2022-07-16 04:25:43', '2022-07-16 05:15:20', '', '2022-07-19 12:15:48', 56, '1'),
+(4921, '2022-07-19 05:41:05', 'NJ/2022/07/0016', 6, 2, 20, 33, 30, 95, NULL, '1', 100, 20, 0, 10, 300, 0, 0, 0, 0, 315, NULL, NULL, NULL, NULL, NULL, '2022-07-19 13:50:46', '2022-07-20 08:02:57', NULL, NULL, NULL, NULL, '0'),
+(4922, '2022-07-20 02:39:54', 'NJ/2022/07/0017', 17, 11, 27, 33, 124, 69, NULL, '1', 0, 0, 0, 0, 125, 0, 0, 0, 0, 175, NULL, NULL, NULL, NULL, NULL, '2022-07-20 10:39:38', '2022-07-20 21:50:20', NULL, NULL, NULL, NULL, '0'),
+(4923, '2022-07-20 02:41:31', 'NJ/2022/07/0018', 19, 11, 39, 20, 66, NULL, NULL, '1', 50, 0, 0, 0, 300, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-20 10:41:27', '2022-07-21 01:28:06', NULL, NULL, NULL, NULL, '0'),
+(4924, '2022-07-20 02:42:05', 'NJ/2022/07/0019', 10, 11, 16, NULL, 135, NULL, NULL, '1', 600, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-07-20 10:42:02', '2022-07-20 18:20:25', NULL, NULL, NULL, NULL, '0'),
+(4925, '2022-07-20 02:43:02', 'NJ/2022/07/0020', 7, 37, 17, 38, 75, 82, 83, '1', 0, 0, 0, 0, 150, 0, 0, 0, 0, 150, 100, 0, 0, 0, 250, '2022-07-20 10:43:00', '2022-07-21 03:31:40', NULL, NULL, NULL, NULL, '0'),
+(4926, '2022-07-20 02:44:45', 'NJ/2022/07/0021', 8, 12, 39, 34, 40, 105, NULL, '1', 0, 0, 0, 0, 200, 0, 0, 0, 0, 100, NULL, NULL, NULL, NULL, NULL, '2022-07-20 10:44:40', '2022-07-21 02:12:29', NULL, NULL, NULL, NULL, '0');
 
 -- --------------------------------------------------------
 
@@ -442,30 +446,45 @@ INSERT INTO `gaji` (`id`, `id_distribusi`, `id_pengirim`, `ontime`, `bongkar`, `
 (55, 4913, 11, 5817.17, 9000, 95520),
 (56, 4913, 38, 5817.17, 9000, 64866.76),
 (57, 4913, 17, 5817.17, 9000, 63998.4),
-(58, 4914, 11, 0, 0, 0),
-(59, 4914, 27, 0, 0, 0),
-(60, 4914, 38, 0, 0, 0),
-(61, 4915, 15, 0, 0, 0),
-(62, 4915, 32, 0, 0, 0),
-(63, 4915, 34, 0, 0, 0),
-(64, 4916, 15, 0, 0, 0),
-(65, 4916, 38, 0, 0, 0),
-(66, 4916, 27, 0, 0, 0),
-(67, 4917, 9, 0, 0, 0),
-(68, 4917, 38, 0, 0, 0),
-(69, 4917, 20, 0, 0, 0),
-(70, 4918, 37, 0, 0, 0),
-(71, 4918, 16, 0, 0, 0),
-(72, 4918, 33, 0, 0, 0),
-(73, 4919, 37, 0, 0, 0),
-(74, 4919, 39, 0, 0, 0),
-(75, 4919, 17, 0, 0, 0),
-(76, 4920, 11, 0, 0, 0),
-(77, 4920, 38, 0, 0, 0),
-(78, 4920, 27, 0, 0, 0),
+(58, 4914, 11, 10618, 21000, 110000),
+(59, 4914, 27, 10618, 21000, 71000),
+(60, 4914, 38, 10618, 21000, 74700),
+(61, 4915, 15, 10138, 16000, 90500),
+(62, 4915, 32, 10138, 16000, 90500),
+(63, 4915, 34, 10138, 16000, 74700),
+(64, 4916, 15, 5817, 9000, 78587),
+(65, 4916, 38, 5817, 9000, 64867),
+(66, 4916, 27, 5817, 9000, 61654),
+(67, 4917, 9, 2896, 10500, 39121),
+(68, 4917, 38, 2896, 10500, 32291),
+(69, 4917, 20, 2896, 10500, 39121),
+(70, 4918, 37, 14148, 10000, 100000),
+(71, 4918, 16, 14148, 10000, 73700),
+(72, 4918, 33, 14148, 10000, 74700),
+(73, 4919, 37, 12898, 11000, 100000),
+(74, 4919, 39, 12898, 11000, 74700),
+(75, 4919, 17, 12898, 11000, 73700),
+(76, 4920, 11, 11786, 6000, 110000),
+(77, 4920, 38, 11786, 6000, 74700),
+(78, 4920, 27, 11786, 6000, 71000),
 (79, 4921, 2, 0, 0, 0),
 (80, 4921, 20, 0, 0, 0),
-(81, 4921, 33, 0, 0, 0);
+(81, 4921, 33, 0, 0, 0),
+(82, 4922, 11, 0, 0, 0),
+(83, 4922, 27, 0, 0, 0),
+(84, 4922, 33, 0, 0, 0),
+(85, 4923, 11, 0, 0, 0),
+(86, 4923, 39, 0, 0, 0),
+(87, 4923, 20, 0, 0, 0),
+(88, 4924, 11, 0, 0, 0),
+(89, 4924, 16, 0, 0, 0),
+(90, 4924, NULL, 0, 0, 0),
+(91, 4925, 37, 0, 0, 0),
+(92, 4925, 17, 0, 0, 0),
+(93, 4925, 38, 0, 0, 0),
+(94, 4926, 12, 0, 0, 0),
+(95, 4926, 39, 0, 0, 0),
+(96, 4926, 34, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -540,9 +559,9 @@ INSERT INTO `karyawan` (`id`, `username`, `password`, `nama`, `nik`, `tempat_lah
 (35, 'hrifani0002', '98abb5754d6ebe7b7030b6ce1b056d49', 'HADI RIFANI', '6301050901930002', 'BANJARMASIN', '1993-01-09', 'LAKI-LAKI', 'BENTOK KAMPUNG RT 00 RW 002 BATI-BATI', 'ISLAM', 'KAWIN', '-', 'DRIVER', '087716341778', 'B1', NULL, '2021-06-17 11:09:01', '2022-07-12 05:33:37', 'BORONGAN', 'NON AKTIF', 100000, NULL),
 (36, 'agusti0003', '4d01de37a408887149c2e71468fabf76', 'ADHIE GUSTI RIANTO', '6372052808920003', 'GUNTUNG PAYUNG', '1992-08-27', 'LAKI-LAKI', 'JL BAYEM, RT 038 RW 007, LOKTABAT UTARA, BANJARBARU UTARA', 'ISLAM', 'KAWIN', 'O', 'DRIVER', '-', 'A', NULL, '2021-06-17 11:15:19', '2022-07-12 05:33:37', 'BORONGAN', 'NON AKTIF', 85000, NULL),
 (37, 'riyandi0007', 'cc706ad6f27265c3229678a44ce6a4e9', 'RIYANDI', '6372022711890007', 'BANJARMASIN', '1989-11-27', 'LAKI-LAKI', 'JL. MAKMUR RT 006 RW 004 KEL. LANDASAN ULIN UTARA, KEC LIANG ANGGANG', 'ISLAM', 'KAWIN', 'O', 'DRIVER', '-', 'B1', NULL, '2021-07-16 10:14:15', '2022-07-12 05:33:37', 'BORONGAN', 'AKTIF', 100000, NULL),
-(38, 'msaputra0003', '0d87f4997d019174a6a0f45d41141a0f', 'MUHAMMAD SAPUTRA', '6203070404050003', 'PALINGKAU LAMA', '2005-04-19', 'LAKI-LAKI', 'TRANSAD PALAM BLOK D RT 010 RW 004 KELURAHAN PALAM KECAMATAN CEMPAKA, BANJARBARU', 'ISLAM', 'BELUM KAWIN', '-', 'HELPER', '000000000000', '-', NULL, '2022-01-04 11:04:15', '2022-07-12 05:33:37', 'BORONGAN', 'AKTIF', 74700, NULL),
+(38, 'msaputra0003', '0d87f4997d019174a6a0f45d41141a0f', 'MUHAMMAD SAPUTRA', '6203070404050003', 'PALINGKAU LAMA', '2005-04-19', 'LAKI-LAKI', 'TRANSAD PALAM BLOK D RT 010 RW 004 KELURAHAN PALAM KECAMATAN CEMPAKA, BANJARBARU', 'ISLAM', 'BELUM KAWIN', '-', 'HELPER', '000000000000', '-', 'mikahikaai10@gmail.com', '2022-01-04 11:04:15', '2022-07-22 00:25:39', 'BORONGAN', 'AKTIF', 74700, NULL),
 (39, 'miqbal0005', '990b733c35fb45b10b0e2b88c73b53a4', 'M IQBAL BADALI', '6372030106990005', 'BANGKAL', '1999-06-01', 'LAKI-LAKI', 'JL. H. MR COKROKUSUMO RT 006 RW 002 KEL. BANGKAL, KEC. CEMPAKA', 'ISLAM', 'BELUM KAWIN', '-', 'HELPER', '000000000000', '', NULL, '2022-03-17 11:03:13', '2022-07-12 05:33:37', 'BORONGAN', 'AKTIF', 74700, NULL),
-(56, 'spvdist', '202cb962ac59075b964b07152d234b70', 'ADUL', '6372022809930001', 'KOTABARU', '1993-05-05', 'LAKI-LAKI', 'ulin', 'ISLAM', 'KAWIN', 'B', 'SPVDISTRIBUSI', '000088885555', 'B2 UMUM', NULL, '2022-04-18 09:59:15', '2022-07-12 05:33:37', 'BULANAN', 'AKTIF', 120000, '626241a637ddd.png'),
+(56, 'spvdist', '202cb962ac59075b964b07152d234b70', 'NURI DEWI SETYOWATI', '6372022809930001', 'KOTABARU', '1993-05-05', 'PEREMPUAN', 'ULIN', 'ISLAM', 'KAWIN', 'B', 'SPVDISTRIBUSI', '000088885555', 'B2 UMUM', 'nuridewi@gmail.com', '2022-04-18 09:59:15', '2022-07-19 18:28:17', 'BULANAN', 'AKTIF', 0, '626241a637ddd.png'),
 (57, 'rseptiadi0003', '202cb962ac59075b964b07152d234b70', 'RIAN SEPTIADI', '6372022809930003', 'PELAIHARI', '1993-09-28', 'LAKI-LAKI', 'KOMPLEK GRIYA ULIN PERMAI, JL. ASABRI 3 BLOK I NO.14, RT 004 RW 005, LANDASAN ULIN TIMUR', 'ISLAM', 'KAWIN', 'B', 'ADMINKEU', '087810035627', 'A', 'mikahikaai@gmail.com', '2022-04-18 12:38:05', '2022-07-12 05:37:02', 'BULANAN', 'AKTIF', 100000, '62cd04b56b9c3.png'),
 (58, 'adminkeu', '81dc9bdb52d04dc20036dbd8313ed055', 'MUHAMMAD HUMAIDI', '6303073112970011', 'ASTAMBUL', '1997-12-31', 'LAKI-LAKI', 'TAMBANGAN ', 'ISLAM', 'BELUM KAWIN', 'A', 'ADMINKEU', '081545031254', '-', 'muhammad.hummayde@gmail.com', '2022-04-19 16:38:23', '2022-07-12 06:38:54', 'BULANAN', 'AKTIF', 100000, '626241a637ddf.png'),
 (64, 'mgrdist', '202cb962ac59075b964b07152d234b70', 'ANNISA AMALIA HAKIM', '6307064801960004', 'BANJARBARU', '1996-01-08', 'PEREMPUAN', 'GUNTUNG MANGGIS', 'ISLAM', 'KAWIN', 'O', 'MGRDISTRIBUSI', '082154026028', 'A', NULL, '2022-04-22 14:57:42', '2022-07-12 14:12:18', 'BULANAN', 'AKTIF', 0, '62cd813ec6174.png');
@@ -560,6 +579,7 @@ CREATE TABLE `pengajuan_insentif_borongan` (
   `id_insentif` int(11) NOT NULL,
   `tgl_verifikasi` date DEFAULT NULL,
   `id_verifikator` int(11) DEFAULT NULL,
+  `acc_code` varchar(30) DEFAULT NULL,
   `qrcode` varchar(30) DEFAULT NULL,
   `terbayar` enum('0','1','2') DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -568,19 +588,30 @@ CREATE TABLE `pengajuan_insentif_borongan` (
 -- Dumping data for table `pengajuan_insentif_borongan`
 --
 
-INSERT INTO `pengajuan_insentif_borongan` (`id`, `tgl_pengajuan`, `no_pengajuan`, `id_insentif`, `tgl_verifikasi`, `id_verifikator`, `qrcode`, `terbayar`) VALUES
-(3, '2022-06-22', 'PJI/2022/06/0001', 5, '2022-07-03', 64, '62c1c2f3c7a84', '2'),
-(5, '2022-06-22', 'PJI/2022/06/0002', 8, '2022-07-12', 64, '62cd8916c9bdd', '2'),
-(6, '2022-06-22', 'PJI/2022/06/0002', 11, '2022-07-12', 64, '62cd8916c9bdd', '2'),
-(7, '2022-06-22', 'PJI/2022/06/0001', 7, '2022-07-03', 64, '62c1c2f3c7a84', '2'),
-(8, '2022-07-13', 'PJI/2022/07/0001', 10, '2022-07-14', 64, '62d02fcc966ee', '2'),
-(9, '2022-07-13', 'PJI/2022/07/0001', 13, '2022-07-14', 64, '62d02fdc091d6', '2'),
-(10, '2022-07-17', 'PJI/2022/07/0002', 4, NULL, NULL, NULL, '1'),
-(11, '2022-07-17', 'PJI/2022/07/0002', 32, NULL, NULL, NULL, '1'),
-(12, '2022-07-17', 'PJI/2022/07/0002', 44, NULL, NULL, NULL, '1'),
-(13, '2022-07-17', 'PJI/2022/07/0002', 47, NULL, NULL, NULL, '1'),
-(14, '2022-07-17', 'PJI/2022/07/0002', 54, NULL, NULL, NULL, '1'),
-(15, '2022-07-17', 'PJI/2022/07/0002', 56, NULL, NULL, NULL, '1');
+INSERT INTO `pengajuan_insentif_borongan` (`id`, `tgl_pengajuan`, `no_pengajuan`, `id_insentif`, `tgl_verifikasi`, `id_verifikator`, `acc_code`, `qrcode`, `terbayar`) VALUES
+(3, '2022-06-22', 'PJI/2022/06/0001', 5, '2022-07-03', 64, '62c1c2f3c7a84', '62c1c2f3c7a84', '2'),
+(5, '2022-06-22', 'PJI/2022/06/0002', 8, '2022-07-12', 64, '62cd8916c9bdd', '62cd8916c9bdd', '2'),
+(6, '2022-06-22', 'PJI/2022/06/0002', 11, '2022-07-12', 64, '62cd8916c9bdd', '62cd8916c9bdd', '2'),
+(7, '2022-06-22', 'PJI/2022/06/0001', 7, '2022-07-03', 64, '62c1c2f3c7a84', '62c1c2f3c7a84', '2'),
+(8, '2022-07-13', 'PJI/2022/07/0001', 10, '2022-07-14', 64, '62d02fcc966ee', '62d02fcc966ee', '2'),
+(9, '2022-07-13', 'PJI/2022/07/0001', 13, '2022-07-14', 64, '62d02fdc091d6', '62d02fdc091d6', '2'),
+(10, '2022-07-17', 'PJI/2022/07/0002', 4, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(11, '2022-07-17', 'PJI/2022/07/0002', 32, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(12, '2022-07-17', 'PJI/2022/07/0002', 44, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(13, '2022-07-17', 'PJI/2022/07/0002', 47, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(14, '2022-07-17', 'PJI/2022/07/0002', 54, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(15, '2022-07-17', 'PJI/2022/07/0002', 56, '2022-07-19', 64, '62d6eeeb40c64', '62d6eeeb40c64', '2'),
+(16, '2022-07-19', 'PJI/2022/07/0003', 31, '2022-07-20', 64, '62d81aaf95f05', '62d81aaf95f05', '2'),
+(17, '2022-07-19', 'PJI/2022/07/0003', 40, '2022-07-20', 64, '62d81aaf95f05', '62d81aaf95f05', '2'),
+(18, '2022-07-19', 'PJI/2022/07/0003', 43, '2022-07-20', 64, '62d81aaf95f05', '62d81aaf95f05', '2'),
+(19, '2022-07-19', 'PJI/2022/07/0003', 46, '2022-07-20', 64, '62d81aaf95f05', '62d81aaf95f05', '2'),
+(20, '2022-07-19', 'PJI/2022/07/0003', 49, '2022-07-20', 64, '62d81aaf95f05', '62d81aaf95f05', '2'),
+(28, '2022-07-21', 'PJI/2022/07/0004', 55, '2022-07-22', 64, '62d9a777ccf65', '62d9a777c6c2d', '2'),
+(29, '2022-07-21', 'PJI/2022/07/0004', 58, NULL, NULL, '62d9a6090bec1', NULL, '1'),
+(30, '2022-07-22', 'PJI/2022/07/0005', 60, NULL, NULL, '62d9ed696a5ff', NULL, '1'),
+(31, '2022-07-22', 'PJI/2022/07/0006', 65, '2022-07-23', 64, '62dbcd8f08944', '62dbcd8f0147c', '2'),
+(32, '2022-07-22', 'PJI/2022/07/0007', 68, NULL, NULL, '62d9f3ee054df', NULL, '1'),
+(33, '2022-07-22', 'PJI/2022/07/0007', 77, NULL, NULL, '62d9f3ee054df', NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -595,6 +626,7 @@ CREATE TABLE `pengajuan_upah_borongan` (
   `id_upah` int(11) NOT NULL,
   `tgl_verifikasi` date DEFAULT NULL,
   `id_verifikator` int(11) DEFAULT NULL,
+  `acc_code` varchar(30) DEFAULT NULL,
   `qrcode` varchar(30) DEFAULT NULL,
   `terbayar` enum('0','1','2') DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -603,25 +635,29 @@ CREATE TABLE `pengajuan_upah_borongan` (
 -- Dumping data for table `pengajuan_upah_borongan`
 --
 
-INSERT INTO `pengajuan_upah_borongan` (`id`, `tgl_pengajuan`, `no_pengajuan`, `id_upah`, `tgl_verifikasi`, `id_verifikator`, `qrcode`, `terbayar`) VALUES
-(5, '2022-06-20', 'PJU/2022/06/0001', 4, '2022-07-04', 64, '62c27b54cea72', '2'),
-(18, '2022-07-03', 'PJU/2022/07/0001', 10, '2022-07-03', 64, '62c1c389af518', '2'),
-(19, '2022-07-03', 'PJU/2022/07/0001', 13, '2022-07-03', 64, '62c1c389af518', '2'),
-(20, '2022-07-13', 'PJU/2022/07/0002', 5, '2022-07-14', 64, '62d02dcb393b1', '2'),
-(21, '2022-07-13', 'PJU/2022/07/0002', 7, '2022-07-14', 64, '62d02dcb393b1', '2'),
-(22, '2022-07-13', 'PJU/2022/07/0002', 31, '2022-07-14', 64, '62d02e1fa5665', '2'),
-(23, '2022-07-13', 'PJU/2022/07/0003', 8, '2022-07-14', 64, '62d05c8121668', '2'),
-(24, '2022-07-13', 'PJU/2022/07/0003', 11, '2022-07-14', 64, '62d05c8121668', '2'),
-(25, '2022-07-14', 'PJU/2022/07/0004', 40, '2022-07-17', 64, '62d437d5c0cad', '2'),
-(26, '2022-07-14', 'PJU/2022/07/0004', 43, '2022-07-17', 64, '62d437d5c0cad', '2'),
-(27, '2022-07-14', 'PJU/2022/07/0004', 46, '2022-07-17', 64, '62d437d5c0cad', '2'),
-(28, '2022-07-14', 'PJU/2022/07/0005', 32, '2022-07-17', 64, '62d3ccf25572f', '2'),
-(29, '2022-07-14', 'PJU/2022/07/0005', 44, '2022-07-17', 64, '62d3ccf25572f', '2'),
-(30, '2022-07-14', 'PJU/2022/07/0005', 47, '2022-07-17', 64, '62d3ccf25572f', '2'),
-(31, '2022-07-14', 'PJU/2022/07/0005', 54, '2022-07-17', 64, '62d3ccf25572f', '2'),
-(32, '2022-07-14', 'PJU/2022/07/0005', 56, '2022-07-17', 64, '62d3ccf25572f', '2'),
-(33, '2022-07-17', 'PJU/2022/07/0006', 49, NULL, NULL, NULL, '1'),
-(34, '2022-07-17', 'PJU/2022/07/0006', 55, NULL, NULL, NULL, '1');
+INSERT INTO `pengajuan_upah_borongan` (`id`, `tgl_pengajuan`, `no_pengajuan`, `id_upah`, `tgl_verifikasi`, `id_verifikator`, `acc_code`, `qrcode`, `terbayar`) VALUES
+(5, '2022-06-20', 'PJU/2022/06/0001', 4, '2022-07-04', 64, '62c27b54cea72', '62c27b54cea72', '2'),
+(18, '2022-07-03', 'PJU/2022/07/0001', 10, '2022-07-03', 64, '62c1c389af518', '62c1c389af518', '2'),
+(19, '2022-07-03', 'PJU/2022/07/0001', 13, '2022-07-03', 64, '62c1c389af518', '62c1c389af518', '2'),
+(20, '2022-07-13', 'PJU/2022/07/0002', 5, '2022-07-14', 64, '62d02dcb393b1', '62d02dcb393b1', '2'),
+(21, '2022-07-13', 'PJU/2022/07/0002', 7, '2022-07-14', 64, '62d02dcb393b1', '62d02dcb393b1', '2'),
+(22, '2022-07-13', 'PJU/2022/07/0002', 31, '2022-07-14', 64, '62d02e1fa5665', '62d02e1fa5665', '2'),
+(23, '2022-07-13', 'PJU/2022/07/0003', 8, '2022-07-14', 64, '62d05c8121668', '62d05c8121668', '2'),
+(24, '2022-07-13', 'PJU/2022/07/0003', 11, '2022-07-14', 64, '62d05c8121668', '62d05c8121668', '2'),
+(25, '2022-07-14', 'PJU/2022/07/0004', 40, '2022-07-17', 64, '62d437d5c0cad', '62d437d5c0cad', '2'),
+(26, '2022-07-14', 'PJU/2022/07/0004', 43, '2022-07-17', 64, '62d437d5c0cad', '62d437d5c0cad', '2'),
+(27, '2022-07-14', 'PJU/2022/07/0004', 46, '2022-07-17', 64, '62d437d5c0cad', '62d437d5c0cad', '2'),
+(28, '2022-07-14', 'PJU/2022/07/0005', 32, '2022-07-17', 64, '62d3ccf25572f', '62d3ccf25572f', '2'),
+(29, '2022-07-14', 'PJU/2022/07/0005', 44, '2022-07-17', 64, '62d3ccf25572f', '62d3ccf25572f', '2'),
+(30, '2022-07-14', 'PJU/2022/07/0005', 47, '2022-07-17', 64, '62d3ccf25572f', '62d3ccf25572f', '2'),
+(31, '2022-07-14', 'PJU/2022/07/0005', 54, '2022-07-17', 64, '62d3ccf25572f', '62d3ccf25572f', '2'),
+(32, '2022-07-14', 'PJU/2022/07/0005', 56, '2022-07-17', 64, '62d3ccf25572f', '62d3ccf25572f', '2'),
+(35, '2022-07-21', 'PJU/2022/07/0006', 49, '2022-07-22', 64, '62d9a1f586e0b', '62d9a1f582bdd', '2'),
+(36, '2022-07-21', 'PJU/2022/07/0006', 55, '2022-07-22', 64, '62d9ebbdc0464', '62d9ebbdbbc2a', '2'),
+(37, '2022-07-22', 'PJU/2022/07/0007', 58, NULL, NULL, '62db72a143b38', NULL, '1'),
+(38, '2022-07-22', 'PJU/2022/07/0008', 60, NULL, NULL, '62dba274c03b3', NULL, '1'),
+(39, '2022-07-22', 'PJU/2022/07/0008', 65, NULL, NULL, '62dba274c03b3', NULL, '1'),
+(40, '2022-07-23', 'PJU/2022/07/0009', 68, '2022-07-23', 64, '62dbd6a7b4824', '62dbd6a7afbe1', '2');
 
 -- --------------------------------------------------------
 
@@ -634,7 +670,7 @@ CREATE TABLE `reset_password` (
   `tanggal_reset` date NOT NULL,
   `id_karyawan` int(11) NOT NULL,
   `code` varchar(100) NOT NULL,
-  `expired` tinyint(1) NOT NULL DEFAULT 0
+  `expired` enum('0','1') NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -642,10 +678,10 @@ CREATE TABLE `reset_password` (
 --
 
 INSERT INTO `reset_password` (`id`, `tanggal_reset`, `id_karyawan`, `code`, `expired`) VALUES
-(5, '2022-07-02', 57, '162c04e9c3bf05', 1),
-(6, '2022-07-02', 57, '162c04f13bdeae', 1),
-(7, '2022-07-06', 57, '162c584dde6387', 1),
-(9, '2022-07-12', 58, '162cd154114828', 1);
+(5, '2022-07-02', 57, '162c04e9c3bf05', '1'),
+(6, '2022-07-02', 57, '162c04f13bdeae', '1'),
+(7, '2022-07-06', 57, '162c584dde6387', '1'),
+(9, '2022-07-12', 58, '162cd154114828', '1');
 
 --
 -- Indexes for dumped tables
@@ -719,43 +755,43 @@ ALTER TABLE `reset_password`
 -- AUTO_INCREMENT for table `armada`
 --
 ALTER TABLE `armada`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `distribusi`
 --
 ALTER TABLE `distribusi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4922;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4928;
 
 --
 -- AUTO_INCREMENT for table `distributor`
 --
 ALTER TABLE `distributor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
 
 --
 -- AUTO_INCREMENT for table `gaji`
 --
 ALTER TABLE `gaji`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `pengajuan_insentif_borongan`
 --
 ALTER TABLE `pengajuan_insentif_borongan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `pengajuan_upah_borongan`
 --
 ALTER TABLE `pengajuan_upah_borongan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `reset_password`
@@ -797,6 +833,12 @@ ALTER TABLE `pengajuan_insentif_borongan`
 --
 ALTER TABLE `pengajuan_upah_borongan`
   ADD CONSTRAINT `pengajuan_upah_borongan_ibfk_1` FOREIGN KEY (`id_upah`) REFERENCES `gaji` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `reset_password`
+--
+ALTER TABLE `reset_password`
+  ADD CONSTRAINT `reset_password_ibfk_1` FOREIGN KEY (`id`) REFERENCES `karyawan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -244,6 +244,11 @@ if (isset($_GET['id'])) {
     </div>
   </div>
 </div>
+
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
+
 <script>
   $(document).ready(function() {
     $(":checkbox").bind("click", false);

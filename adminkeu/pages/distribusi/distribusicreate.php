@@ -534,6 +534,11 @@ if ($stmt->rowCount() > 0) {
     </div>
   </div>
 </div>
+
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
+
 <script>
   $("#datetimepicker1").keydown(function(event) {
     return false;

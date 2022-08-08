@@ -144,6 +144,11 @@ if (isset($_GET['id'])) {
   </div>
 </div>
 <!-- /.content -->
+
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
+
 <script>
   new Autocomplete("search", {
     // default selects the first item in

@@ -83,6 +83,10 @@ if (isset($_GET['id'])) {
   </div>
 </div>
 
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
+
 <script>
   var lat = <?= $row['lat']; ?>;
   var lng = <?= $row['lng']; ?>;

@@ -129,3 +129,7 @@ if ($stmt->rowCount() > 0) {
   </div>
 </div>
 <!-- /.content -->
+
+<?php
+include_once "../partials/scriptdatatables.php";
+?>
