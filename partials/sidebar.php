@@ -106,6 +106,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="?page=rangerekapgaji" class="nav-link" id="rekapgaji">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Gaji</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="?page=rangerekapdistribusi" class="nav-link" id="rekapdistribusi">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Distribusi</p>
@@ -190,6 +196,12 @@
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapgaji" class="nav-link" id="rekapgaji">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Gaji</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -315,6 +327,12 @@
                 <a href="?page=rangerekapinsentif" class="nav-link" id="rekapinsentif">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rekap Insentif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?page=rangerekapgaji" class="nav-link" id="rekapgaji">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rekap Gaji</p>
                 </a>
               </li>
               <li class="nav-item">

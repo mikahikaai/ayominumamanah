@@ -46,6 +46,14 @@ if (isset($_GET['page'])) {
       file_exists('pages/rekapupah.php') ? include 'pages/rekapupah.php' : include '../pages/404.php';
       $title = 'Rekap Upah';
       break;
+    case 'rangerekapgaji':
+      file_exists('pages/rangerekapgaji.php') ? include 'pages/rangerekapgaji.php' : include '../pages/404.php';
+      $title = 'Rekap Gaji';
+      break;
+    case 'rekapgaji':
+      file_exists('pages/rekapdetailgaji.php') ? include 'pages/rekapdetailgaji.php' : include '../pages/404.php';
+      $title = 'Rekap Gaji';
+      break;
     case 'rekapdetailupah':
       file_exists('pages/rekapdetailupah.php') ? include 'pages/rekapdetailupah.php' : include '../pages/404.php';
       $title = 'Rekap Upah';

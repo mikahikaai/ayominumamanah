@@ -253,6 +253,10 @@ include_once "../partials/scripts.php";
       $("a#rekapinsentif").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
       $("a#link_rekapitulasi").addClass("active");
+    } else if (title == "Rekap Gaji") {
+      $("a#rekapgaji").addClass("active");
+      $("li#rekapitulasi").addClass("menu-open");
+      $("a#link_rekapitulasi").addClass("active");
     } else if (title == "Rekap Distribusi") {
       $("a#rekapdistribusi").addClass("active");
       $("li#rekapitulasi").addClass("menu-open");
