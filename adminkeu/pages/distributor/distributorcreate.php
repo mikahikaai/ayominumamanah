@@ -20,7 +20,7 @@ if ($stmt->rowCount() > 0) {
   if (isset($_POST['button_create'])) {
     $insertsql = "insert into distributor (id_da, nama, paket, alamat_dropping, no_telepon, jarak, lat, lng) values (?,?,?,?,?,?,?,?)";
     $stmt = $db->prepare($insertsql);
-    $id_da = strtoupper($_POST['id_da']);
+    $id_da = strtoupper("DA" . $_POST['id_da']);
     $nama_distributor = strtoupper($_POST['nama']);
     $alamat_dropping_distributor = strtoupper($_POST['alamat_dropping']);
     $stmt->bindParam(1, $id_da);
@@ -72,7 +72,10 @@ if ($stmt->rowCount() > 0) {
       <form action="" method="post">
         <div class="form-group">
           <label for="id_da">ID Distributor</label>
-          <input type="text" name="id_da" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['id_da'] : '' ?>" style="text-transform: uppercase;" required>
+          <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">DA</span>
+            <input type="text" name="id_da" aria-describedby="basic-addon1" class="form-control" value="<?= isset($_POST['button_create']) ? $_POST['id_da'] : '' ?>" style="text-transform: uppercase;" required>
+          </div>
         </div>
         <div class="form-group">
           <label for="nama">Nama Lengkap</label>
